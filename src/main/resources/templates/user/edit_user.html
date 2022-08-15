@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit User</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <div class="container">
+
+        <a href="#" class="navbar-brand">Spring MVC with JPA</a>
+
+        <ul class="navbar-nav ml-auto mb-2">
+            <li class="nav-item">
+
+                <a th:href="@{/users}">
+                    <button type="button" class="btn btn-light">Back</button>
+                </a>
+
+            </li>
+        </ul>
+
+    </div>
+</nav>
+
+<form th:method="PATCH" th:action="@{/users/{id}(id=${user.getId()})}" th:object="${user}">
+    <div class="container">
+        <table class="table center">
+
+            <tr>
+                <th>
+                    <label for="name">Name</label>
+                </th>
+                <td>
+                    <input type="text" th:field="*{name}" id="name">
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    <label for="last_name">Last Name</label>
+                </th>
+                <td>
+                    <input type="text" th:field="*{lastName}" id="last_name">
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    <label for="email">Email</label>
+                </th>
+                <td>
+                    <input type="email" th:field="*{email}" id="email">
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    <label for="phone_number">Phone Number</label>
+                </th>
+                <td>
+                    <input type="tel" th:field="*{phoneNumber}" id="phone_number">
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                </th>
+
+                <td>
+                    <input type="submit" value="Edit User">
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>
