@@ -17,7 +17,7 @@
             <ul class="navbar-nav ml-auto mb-2">
                 <li class="nav-item">
 
-                    <a th:href="@{/users/new}">
+                    <a th:href="@{/admin/users/new}">
                         <button type="button" class="btn btn-light">Add User</button>
                     </a>
 
@@ -45,7 +45,7 @@
                 <th scope="row" th:text="${iter.index} + 1"></th>
 
                 <td>
-                    <a th:href="@{/users/{id}(id=${user.getId()})}"
+                    <a th:href="@{/admin/users/{id}(id=${user.getId()})}"
                        th:text="${user.getName() + ' ' + user.getLastName()}"></a>
                 </td>
 
@@ -56,13 +56,13 @@
                     <div class="btn-group" role="toolbar">
 
                         <div class="btn-group mr-2" role="group">
-                            <a th:href="@{/users/{id}/edit(id=${user.getId()})}">
+                            <a th:href="@{/admin/users/{id}/edit(id=${user.getId()})}">
                                 <button type="submit" class="btn btn-info">Edit</button>
                             </a>
                         </div>
 
                         <div class="btn-group mr-2" role="group">
-                            <form th:method="DELETE" th:action="@{/users/{id}(id=${user.getId()})}">
+                            <form th:method="DELETE" th:action="@{/admin/users/{id}(id=${user.getId()})}">
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
                         </div>
