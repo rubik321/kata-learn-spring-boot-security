@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import static ru.kata.spring.boot_security.demo.model.Role.ADMIN;
 import static ru.kata.spring.boot_security.demo.model.Role.USER;
 
 @Configuration
@@ -31,6 +32,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/", "/index").permitAll()
+                .antMatchers("/admin/**").hasRole(ADMIN.name())
+                .antMatchers("/user").hasAnyRole(ADMIN.name(), USER.name())
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().successHandler(successUserHandler)
@@ -50,6 +53,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .roles(USER.name())
                 .build();
 
-        return new InMemoryUserDetailsManager(user);
+        UserDetails admin = User.builder()
+                .username("admin")
+                .password(passwordEncoder.encode("admin"))
+                .roles(ADMIN.name())
+                .build();
+
+        return new InMemoryUserDetailsManager(user, admin);
     }
 }
