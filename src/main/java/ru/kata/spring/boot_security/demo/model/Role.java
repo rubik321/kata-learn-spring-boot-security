@@ -2,7 +2,9 @@ package ru.kata.spring.boot_security.demo.model;
 
 import org.springframework.security.core.GrantedAuthority;
 
-public class Role implements GrantedAuthority {
+public enum Role implements GrantedAuthority {
+    USER, ADMIN;
+
     @Override
     public String getAuthority() {
         return null;
