@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -18,14 +19,41 @@ public class User implements UserDetails {
     @Column
     private String name;
 
-    @Column(name = "last_name")
+    @Column
     private String lastName;
 
     @Column
     private String email;
 
-    @Column(name = "phone_number")
+    @Column
     private String phoneNumber;
+
+    @Column
+    @ManyToMany
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "role_id") }
+    )
+    private Set<Role> authorities;
+
+    @Column
+    private String username;
+
+    @Column
+    private String password;
+
+    @Column
+    private boolean isAccountNonExpired;
+
+    @Column
+    private boolean isAccountNonLocked;
+
+    @Column
+    private boolean isCredentialsNonExpired;
+
+    @Column
+    private boolean isEnabled;
 
     public User() {}
 
@@ -70,6 +98,41 @@ public class User implements UserDetails {
     }
 
     @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return isAccountNonExpired;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return isAccountNonLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return isCredentialsNonExpired;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (obj == this) {
             return true;
@@ -92,40 +155,5 @@ public class User implements UserDetails {
     @Override
     public String toString() {
         return "User{%s, %s, %s, %s}".formatted(name, lastName, email, phoneNumber);
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
-    @Override
-    public String getPassword() {
-        return null;
-    }
-
-    @Override
-    public String getUsername() {
-        return null;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
     }
 }
