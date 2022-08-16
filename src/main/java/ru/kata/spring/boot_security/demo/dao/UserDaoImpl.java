@@ -26,11 +26,10 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Optional<User> getUserByUsername(String username) {
         try {
-            return (Optional<User>) entityManager.createQuery("select u from User u where u.username = :username")
-                    .setParameter("username", username).getSingleResult();
+            return Optional.of((User) entityManager.createQuery("select u from User u where u.username = :username")
+                    .setParameter("username", username).getSingleResult());
         } catch (NoResultException e) {
             return Optional.empty();
         }
