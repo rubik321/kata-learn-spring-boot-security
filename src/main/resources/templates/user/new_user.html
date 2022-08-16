@@ -16,7 +16,7 @@
         <ul class="navbar-nav ml-auto mb-2">
             <li class="nav-item">
 
-                <a th:href="@{/admin/users}">
+                <a th:href="@{/admin}">
                     <button type="button" class="btn btn-light">Back</button>
                 </a>
 
@@ -26,7 +26,7 @@
     </div>
 </nav>
 
-<form th:method="POST" th:action="@{/admin/users}" th:object="${user}">
+<form th:method="POST" th:action="@{/admin}" th:object="${user}">
     <div class="container">
         <table class="table center">
 
