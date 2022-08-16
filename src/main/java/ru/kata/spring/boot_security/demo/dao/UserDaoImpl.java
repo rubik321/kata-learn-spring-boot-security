@@ -4,8 +4,10 @@ import org.springframework.stereotype.Repository;
 import ru.kata.spring.boot_security.demo.model.User;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -21,6 +23,17 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User getUser(long id) {
         return entityManager.find(User.class, id);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Optional<User> getUserByUsername(String username) {
+        try {
+            return (Optional<User>) entityManager.createQuery("select u from User u where u.username = :username")
+                    .setParameter("username", username).getSingleResult();
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
