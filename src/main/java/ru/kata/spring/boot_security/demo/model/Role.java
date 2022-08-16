@@ -7,25 +7,33 @@ import java.util.Set;
 
 @Entity
 @Table(name = "roles")
-public enum Role implements GrantedAuthority {
-    USER, ADMIN;
-
+public class Role implements GrantedAuthority {
     @Id
-    private String name;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column
+    private String authority;
 
     @ManyToMany(mappedBy = "authorities")
     private Set<User> users;
 
+    public Role() {}
+
     @Override
     public String getAuthority() {
-        return name();
+        return authority;
     }
 
-    public String getName() {
-        return name;
+    public void setAuthority(String authority) {
+        this.authority = authority;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }
