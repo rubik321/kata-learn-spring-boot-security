@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.dao.RoleDao;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
@@ -12,10 +13,12 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 public class UserController {
 
     private final UserService userService;
+    private final RoleDao roleDao;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, RoleDao roleDao) {
         this.userService = userService;
+        this.roleDao = roleDao;
     }
 
     @GetMapping()
@@ -33,6 +36,7 @@ public class UserController {
     @GetMapping("/new")
     public String getUserCreationPage(Model model) {
         model.addAttribute("user", new User());
+        model.addAttribute("allAuthorities", roleDao.findAll());
         return "user/new_user";
     }
 
