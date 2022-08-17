@@ -54,6 +54,15 @@
 
             <tr>
                 <th>
+                    <label for="username">Username</label>
+                </th>
+                <td>
+                    <input type="text" th:field="*{username}" id="username">
+                </td>
+            </tr>
+
+            <tr>
+                <th>
                     <label for="email">Email</label>
                 </th>
                 <td>
@@ -67,6 +76,68 @@
                 </th>
                 <td>
                     <input type="tel" th:field="*{phoneNumber}" id="phone_number">
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    <label for="password">Password</label>
+                </th>
+                <td>
+                    <input type="password" th:field="*{password}" id="password">
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    <label>Properties</label>
+                </th>
+                <td>
+                    <div class="list">
+                        <div class="row">
+                            <label class="form-check-label form-check-inline">Roles:</label>
+                            <th:block th:each="role : ${allAuthorities}">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" name="roles"
+                                           th:text="${role.authority}"
+                                           th:value="${role.id}"
+                                           th:field="*{authorities}">
+                                </div>
+                            </th:block>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="expired"
+                                       th:checked="${user.isAccountNonExpired}">
+                            </div>
+                            <label class="form-check-label form-check-inline" for="expired">isAccountNonExpired</label>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="locked"
+                                       th:checked="${user.isAccountNonLocked}">
+                            </div>
+                            <label class="form-check-label form-check-inline" for="locked">isAccountNonLocked</label>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="credentialsExpired"
+                                       th:checked="${user.isCredentialsNonExpired}">
+                            </div>
+                            <label class="form-check-label form-check-inline" for="credentialsExpired">isCredentialsNonExpired</label>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="enabled"
+                                       th:checked="${user.isEnabled}">
+                            </div>
+                            <label class="form-check-label form-check-inline" for="enabled">isEnabled</label>
+                        </div>
+                    </div>
                 </td>
             </tr>
 
