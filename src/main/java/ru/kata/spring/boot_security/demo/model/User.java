@@ -45,16 +45,16 @@ public class User implements UserDetails {
     private String password;
 
     @Column
-    private boolean isAccountNonExpired;
+    private boolean isAccountNonExpired = true;
 
     @Column
-    private boolean isAccountNonLocked;
+    private boolean isAccountNonLocked = true;
 
     @Column
-    private boolean isCredentialsNonExpired;
+    private boolean isCredentialsNonExpired = true;
 
     @Column
-    private boolean isEnabled;
+    private boolean isEnabled = true;
 
     public User() {}
 
