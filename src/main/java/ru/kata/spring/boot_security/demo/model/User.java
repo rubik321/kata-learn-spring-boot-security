@@ -200,6 +200,6 @@ public class User implements UserDetails {
 
     @Override
     public String toString() {
-        return "User{%s, %s, %s, %s}".formatted(name, lastName, email, phoneNumber);
+        return "User{%s: %s}".formatted(id, username);
     }
 }
