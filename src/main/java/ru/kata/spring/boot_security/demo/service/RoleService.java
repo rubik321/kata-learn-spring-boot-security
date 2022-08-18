@@ -16,6 +16,6 @@ public class RoleService {
     }
 
     public List<Role> getAllRoles() {
-        return (List<Role>) roleRepository.findAll();
+        return roleRepository.findAll();
     }
 }
