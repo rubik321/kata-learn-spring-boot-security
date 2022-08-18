@@ -130,17 +130,9 @@ public class User implements UserDetails {
         return isAccountNonExpired;
     }
 
-    public void setAccountNonExpired(boolean accountNonExpired) {
-        isAccountNonExpired = accountNonExpired;
-    }
-
     @Override
     public boolean isAccountNonLocked() {
         return isAccountNonLocked;
-    }
-
-    public void setAccountNonLocked(boolean accountNonLocked) {
-        isAccountNonLocked = accountNonLocked;
     }
 
     @Override
@@ -148,16 +140,40 @@ public class User implements UserDetails {
         return isCredentialsNonExpired;
     }
 
-    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
-        isCredentialsNonExpired = credentialsNonExpired;
-    }
-
     @Override
     public boolean isEnabled() {
         return isEnabled;
     }
 
-    public void setEnabled(boolean enabled) {
+    public boolean getIsAccountNonExpired() {
+        return isAccountNonExpired;
+    }
+
+    public void setIsAccountNonExpired(boolean accountNonExpired) {
+        isAccountNonExpired = accountNonExpired;
+    }
+
+    public boolean getIsAccountNonLocked() {
+        return isAccountNonLocked;
+    }
+
+    public void setIsAccountNonLocked(boolean accountNonLocked) {
+        isAccountNonLocked = accountNonLocked;
+    }
+
+    public boolean getIsCredentialsNonExpired() {
+        return isCredentialsNonExpired;
+    }
+
+    public void setIsCredentialsNonExpired(boolean credentialsNonExpired) {
+        isCredentialsNonExpired = credentialsNonExpired;
+    }
+
+    public boolean getIsEnabled() {
+        return isEnabled;
+    }
+
+    public void setIsEnabled(boolean enabled) {
         isEnabled = enabled;
     }
 
