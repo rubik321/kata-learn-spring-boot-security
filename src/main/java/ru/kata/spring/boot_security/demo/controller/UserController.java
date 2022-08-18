@@ -49,6 +49,7 @@ public class UserController {
     @GetMapping("/{id}/edit")
     public String getUserEditPage(@PathVariable("id") long id, Model model) {
         model.addAttribute("user", userService.getUser(id));
+        model.addAttribute("allAuthorities", roleDao.findAll());
         return "user/edit_user";
     }
 
