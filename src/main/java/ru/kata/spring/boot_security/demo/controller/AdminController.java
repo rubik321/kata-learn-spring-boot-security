@@ -11,14 +11,14 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 
 @Controller
 @RequestMapping("admin")
-public class UserController {
+public class AdminController {
 
     private final UserService userService;
     private final RoleDao roleDao;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(UserService userService, RoleDao roleDao, PasswordEncoder passwordEncoder) {
+    public AdminController(UserService userService, RoleDao roleDao, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.roleDao = roleDao;
         this.passwordEncoder = passwordEncoder;
