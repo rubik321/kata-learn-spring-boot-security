@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.dao.RoleDao;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 @Controller
@@ -13,12 +13,12 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 public class AdminController {
 
     private final UserService userService;
-    private final RoleDao roleDao;
+    private final RoleService roleService;
 
     @Autowired
-    public AdminController(UserService userService, RoleDao roleDao) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
-        this.roleDao = roleDao;
+        this.roleService = roleService;
     }
 
     @GetMapping()
@@ -36,7 +36,7 @@ public class AdminController {
     @GetMapping("/new")
     public String getUserCreationPage(Model model) {
         model.addAttribute("user", new User());
-        model.addAttribute("allAuthorities", roleDao.findAll());
+        model.addAttribute("allAuthorities", roleService.getAllRoles());
         return "user/new_user";
     }
 
@@ -49,7 +49,7 @@ public class AdminController {
     @GetMapping("/{id}/edit")
     public String getUserEditPage(@PathVariable("id") long id, Model model) {
         model.addAttribute("user", userService.getUser(id));
-        model.addAttribute("allAuthorities", roleDao.findAll());
+        model.addAttribute("allAuthorities", roleService.getAllRoles());
         return "user/edit_user";
     }
 
