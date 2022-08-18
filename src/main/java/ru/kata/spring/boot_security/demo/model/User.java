@@ -103,9 +103,17 @@ public class User implements UserDetails {
         return authorities;
     }
 
+    public void setAuthorities(Set<Role> authorities) {
+        this.authorities = authorities;
+    }
+
     @Override
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
@@ -113,9 +121,17 @@ public class User implements UserDetails {
         return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return isAccountNonExpired;
+    }
+
+    public void setAccountNonExpired(boolean accountNonExpired) {
+        isAccountNonExpired = accountNonExpired;
     }
 
     @Override
@@ -123,14 +139,26 @@ public class User implements UserDetails {
         return isAccountNonLocked;
     }
 
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        isAccountNonLocked = accountNonLocked;
+    }
+
     @Override
     public boolean isCredentialsNonExpired() {
         return isCredentialsNonExpired;
     }
 
+    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
+        isCredentialsNonExpired = credentialsNonExpired;
+    }
+
     @Override
     public boolean isEnabled() {
         return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
     }
 
     @Override
@@ -145,12 +173,13 @@ public class User implements UserDetails {
         return Objects.equals(name, that.name)
                 && Objects.equals(lastName, that.lastName)
                 && Objects.equals(email, that.email)
-                && Objects.equals(phoneNumber, that.phoneNumber);
+                && Objects.equals(phoneNumber, that.phoneNumber)
+                && Objects.equals(username, that.username);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, lastName, email, phoneNumber);
+        return Objects.hash(name, lastName, email, phoneNumber, username);
     }
 
     @Override
