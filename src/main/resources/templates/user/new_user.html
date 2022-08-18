@@ -109,7 +109,7 @@
                         <div class="row">
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="checkbox" id="expired"
-                                       th:checked="${user.isAccountNonExpired}">
+                                       th:field="*{isAccountNonExpired}">
                             </div>
                             <label class="form-check-label form-check-inline" for="expired">isAccountNonExpired</label>
                         </div>
@@ -117,7 +117,7 @@
                         <div class="row">
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="checkbox" id="locked"
-                                       th:checked="${user.isAccountNonLocked}">
+                                       th:field="*{isAccountNonLocked}">
                             </div>
                             <label class="form-check-label form-check-inline" for="locked">isAccountNonLocked</label>
                         </div>
@@ -125,7 +125,7 @@
                         <div class="row">
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="checkbox" id="credentialsExpired"
-                                       th:checked="${user.isCredentialsNonExpired}">
+                                       th:field="*{isCredentialsNonExpired}">
                             </div>
                             <label class="form-check-label form-check-inline" for="credentialsExpired">isCredentialsNonExpired</label>
                         </div>
@@ -133,8 +133,9 @@
                         <div class="row">
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="checkbox" id="enabled"
-                                       th:checked="${user.isEnabled}">
+                                       th:field="*{isEnabled}">
                             </div>
+
                             <label class="form-check-label form-check-inline" for="enabled">isEnabled</label>
                         </div>
                     </div>
