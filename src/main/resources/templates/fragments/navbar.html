@@ -1,8 +1,12 @@
-<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="navbar">
+<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="navbar(user)">
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
         <div class="container-fluid">
 
-            <a href="#" class="navbar-brand" style="margin-left: 15px">User email with roles</a>
+            <a class="navbar-brand" style="margin-left: 15px">
+                <strong th:text="${user.email}"></strong>
+                with roles:
+                <span th:text="${#strings.setJoin(user.authorities, ' ')}"></span>
+            </a>
 
             <ul class="navbar-nav ml-auto mb-auto">
                 <li class="nav-item">
