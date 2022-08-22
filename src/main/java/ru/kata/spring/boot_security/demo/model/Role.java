@@ -57,6 +57,6 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String toString() {
-        return "Role{%s: %s}".formatted(id, authority);
+        return authority.replace("ROLE_", "");
     }
 }
