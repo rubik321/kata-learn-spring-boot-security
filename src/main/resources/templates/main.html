@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th:block sec:authorize="hasRole('ADMIN')" th:replace="~{fragments/head :: head('Admin panel')}"></th:block>
-    <th:block sec:authorize="hasRole('USER')" th:replace="~{fragments/head :: head('User page')}"></th:block>
+    <th:block th:replace="~{fragments/head :: head('Admin panel')}"></th:block>
 </head>
 <body>
 
@@ -13,7 +11,7 @@
 <div class="container-fluid h-100">
     <div class="row h-100">
         <div class="col-2 p-0 pt-3">
-            <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+            <div th:replace="~{fragments/sidebar :: sidebar(${users}, ${user})}"></div>
         </div>
 
         <div class="col-10 pt-3 px-4" style="text-align: justify; background-color: #f8f9fa">
