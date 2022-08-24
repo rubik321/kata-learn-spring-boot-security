@@ -4,7 +4,7 @@
 <head>
     <th:block th:replace="~{fragments/head :: head('Admin panel')}"></th:block>
 </head>
-<body>
+<body style="height: 100vh">
 
 <div th:replace="~{fragments/navbar :: navbar(${principal})}"></div>
 
@@ -13,8 +13,7 @@
         <div class="col-2 p-0 pt-3">
             <div th:replace="~{fragments/sidebar :: sidebar(${users}, ${principal})}"></div>
         </div>
-
-        <div class="col-10 pt-3 px-4" style="text-align: justify; background-color: #f8f9fa">
+        <div class="col-10 pt-3 px-4" style="background-color: #f8f9fa">
             <div th:replace="~{fragments/content :: content}"></div>
         </div>
     </div>
