@@ -1,11 +1,13 @@
-<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="sidebar">
+<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="sidebar(users, principal)">
     <nav>
-        <div class="list-group list-group-flush">
-             <a href="#" class="list-group-item list-group-item-action ripple rounded active" aria-current="true">
-                <span>Admin</span>
+        <div class="list-group list-group-flush" th:each="user: ${users}">
+            <a th:if="${principal.name} == ${user.name}" href="#"
+               class="list-group-item list-group-item-action ripple rounded active" aria-current="true">
+                <span th:text="${#strings.capitalize(user.name)}"></span>
             </a>
-            <a href="#" class="list- group-item list-group-item-action rounded ripple">
-                <span>User</span>
+            <a th:unless="${principal.name} == ${user.name}" href="#"
+               class="list-group-item list-group-item-action ripple rounded" aria-current="true">
+                <span th:text="${#strings.capitalize(user.name)}"></span>
             </a>
         </div>
     </nav>
