@@ -24,7 +24,7 @@ public class AdminController {
 
     @GetMapping()
     public String getUserList(Model model) {
-        model.addAttribute("user", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        model.addAttribute("principal", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         model.addAttribute("users", userService.getUserList());
         return "main";
     }
