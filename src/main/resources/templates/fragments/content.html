@@ -10,26 +10,40 @@
                     <!-- Navigation tabs -->
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home"
-                               role="tab" aria-controls="nav-home" aria-selected="true">Users table</a>
+                            <a class="nav-item nav-link active" id="nav-users-table-tab" data-bs-toggle="tab"
+                               href="#nav-users-table"
+                               role="tab" aria-controls="nav-users-table" aria-selected="true">Users table</a>
 
-                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile"
-                               role="tab" aria-controls="nav-profile" aria-selected="false">New User</a>
+                            <a class="nav-item nav-link" id="nav-new-user-tab" data-bs-toggle="tab"
+                               href="#nav-new-user"
+                               role="tab" aria-controls="nav-new-user" aria-selected="false">New User</a>
                         </div>
                     </nav>
 
                     <!-- Table with description -->
                     <div class="tab-content border-start border-end border-bottom rounded" id="nav-tabContent">
 
-                        <div class="d-print-inline-block py-3 px-4 border-top border-bottom">
-                            <h5 class="m-0">All users</h5>
+                        <div class="tab-pane fade show active" id="nav-users-table"
+                             role="tabpanel"
+                             aria-labelledby="nav-users-table-tab">
+
+                            <div class="d-print-inline-block py-3 px-4 border-top border-bottom">
+                                <h5 class="m-0">All users</h5>
+                            </div>
+
+                            <div class="px-4 pt-4 pb-4 bg-white"
+                                 th:insert="~{fragments/content-tabs/users-table :: users-table(${users})}"></div>
                         </div>
 
-                        <div class="tab-pane fade show active px-4 pt-4 pb-4 bg-white" id="nav-home" role="tabpanel"
-                             aria-labelledby="nav-home-tab">
+                        <div class="tab-pane fade" id="nav-new-user"
+                             role="tabpanel"
+                             aria-labelledby="nav-new-user-tab">
 
-                            <div th:replace="~{fragments/content-tabs/users-table :: users-table(${users})}"></div>
+                            <div class="d-print-inline-block py-3 px-4 border-top border-bottom">
+                                <h5 class="m-0">New User</h5>
+                            </div>
 
+                            <div class="px-4 pt-4 pb-4 bg-white">Test</div>
                         </div>
 
                     </div>
