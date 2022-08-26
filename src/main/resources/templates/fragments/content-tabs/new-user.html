@@ -27,10 +27,13 @@
 
         <div class="row mb-4">
             <label for="role" class="fw-bold text-center">Role</label>
-            <select name="roles" id="role" class="form-select" multiple th:size="${#sets.size(allAuthorities)}">
+            <select name="roles" id="role" class="form-select" multiple th:field="*{authorities}"
+                    th:size="${#sets.size(allAuthorities)}">
+
                 <th:block th:each="role : ${allAuthorities}">
-                    <option th:text="${role.toString()}" th:value="${role.id}" th:field="*{authorities}"></option>
+                    <option th:text="${role.toString()}" th:value="${role.id}"></option>
                 </th:block>
+
             </select>
         </div>
 
