@@ -24,6 +24,9 @@ public class User implements UserDetails {
     private String lastName;
 
     @Column
+    private int age;
+
+    @Column
     private String email;
 
     @Column
@@ -201,5 +204,13 @@ public class User implements UserDetails {
     @Override
     public String toString() {
         return "User{%s: %s}".formatted(id, username);
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 }
