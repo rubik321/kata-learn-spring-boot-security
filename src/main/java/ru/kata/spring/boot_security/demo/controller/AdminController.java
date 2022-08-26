@@ -26,6 +26,8 @@ public class AdminController {
     public String getUserList(Model model) {
         model.addAttribute("principal", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         model.addAttribute("users", userService.getUserList());
+        model.addAttribute("newUser", new User());
+        model.addAttribute("allAuthorities", roleService.getAllRoles());
         return "main";
     }
 

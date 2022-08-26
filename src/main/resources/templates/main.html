@@ -14,7 +14,7 @@
             <div th:replace="~{fragments/sidebar :: sidebar(${users}, ${principal})}"></div>
         </div>
         <div class="col-10 pt-3 px-4" style="background-color: #f8f9fa">
-            <div th:replace="~{fragments/content :: content(${users})}"></div>
+            <div th:replace="~{fragments/content :: content(${users}, ${newUser}, ${allAuthorities})}"></div>
         </div>
     </div>
 </div>
