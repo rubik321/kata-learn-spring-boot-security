@@ -85,6 +85,14 @@ public class User implements UserDetails {
         this.lastName = lastName;
     }
 
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -204,13 +212,5 @@ public class User implements UserDetails {
     @Override
     public String toString() {
         return "User{%s: %s}".formatted(id, email);
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
     }
 }
