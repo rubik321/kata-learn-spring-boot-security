@@ -11,9 +11,9 @@
             <ul class="navbar-nav ml-auto mb-auto">
                 <li class="nav-item">
 
-                    <a th:href="@{/logout}">
-                        <button type="button" class="btn btn-dark">Logout</button>
-                    </a>
+                    <form th:method="POST" th:action="@{/logout}">
+                        <button type="submit" class="btn btn-dark">Logout</button>
+                    </form>
 
                 </li>
             </ul>
