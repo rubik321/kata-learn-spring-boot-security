@@ -22,7 +22,7 @@
             <td th:text="${#strings.setJoin(user.authorities, ' ')}"></td>
             <td>
                 <div class="modal" tabindex="-1" role="dialog" th:id="${'editUser' + user.id}"
-                     th:insert="~{fragments/content-tabs/edit-user :: edit-user}"></div>
+                     th:insert="~{fragments/admin/edit-user :: edit-user}"></div>
 
                 <button type="button" class="btn text-white" data-bs-toggle="modal"
                         th:data-bs-target="${'#editUser' + user.id}"
@@ -32,7 +32,7 @@
             </td>
             <td>
                 <div class="modal" tabindex="-1" role="dialog" th:id="${'deleteUser' + user.id}"
-                     th:insert="~{fragments/content-tabs/delete-user :: delete-user}"></div>
+                     th:insert="~{fragments/admin/delete-user :: delete-user}"></div>
 
                 <button type="button" class="btn btn-danger text-white" data-bs-toggle="modal"
                         th:data-bs-target="${'#deleteUser' + user.id}">
