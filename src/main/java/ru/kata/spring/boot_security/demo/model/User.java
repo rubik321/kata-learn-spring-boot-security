@@ -203,7 +203,7 @@ public class User implements UserDetails {
 
     @Override
     public String toString() {
-        return "User{%s: %s}".formatted(id, username);
+        return "User{%s: %s}".formatted(id, email);
     }
 
     public int getAge() {
