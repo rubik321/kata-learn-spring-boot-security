@@ -6,7 +6,7 @@
 </head>
 <body style="height: 100vh">
 
-<div th:replace="~{fragments/navbar :: navbar(${user})}"></div>
+<div th:replace="~{fragments/navbar :: navbar(${principal})}"></div>
 
 <div class="container-fluid h-100">
     <div class="row h-100">
@@ -14,7 +14,7 @@
             <div th:replace="~{fragments/sidebar :: sidebar}"></div>
         </div>
         <div class="col-10 pt-3 px-4" style="background-color: #f8f9fa">
-            <div th:replace="~{fragments/user/content :: content(${user}, ${allAuthorities})}"></div>
+            <div th:replace="~{fragments/user/content :: content(${principal}, ${allAuthorities})}"></div>
         </div>
     </div>
 </div>
