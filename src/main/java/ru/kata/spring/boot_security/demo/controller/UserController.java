@@ -19,7 +19,7 @@ public class UserController {
 
     @GetMapping
     public String getUserPage(Model model) {
-        model.addAttribute("principal", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        model.addAttribute("user", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         model.addAttribute("allAuthorities", roleService.getAllRoles());
         return "user";
     }
