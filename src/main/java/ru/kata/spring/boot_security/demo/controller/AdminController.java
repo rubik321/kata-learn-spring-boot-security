@@ -28,7 +28,7 @@ public class AdminController {
         model.addAttribute("users", userService.getUserList());
         model.addAttribute("newUser", new User());
         model.addAttribute("allAuthorities", roleService.getAllRoles());
-        return "main";
+        return "admin";
     }
 
     @GetMapping("/{id}")
