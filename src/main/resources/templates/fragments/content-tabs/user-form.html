@@ -1,0 +1,49 @@
+<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="form(disabled, hidden)">
+    <div class="row mb-4">
+        <label for="id" class="fw-bold text-center">ID</label>
+        <input type="text" id="id" class="form-control" readonly th:name="id" th:value="${user.id}">
+    </div>
+
+    <div class="row mb-4">
+        <label for="firstName" class="fw-bold text-center">First name</label>
+        <input type="text" id="firstName" class="form-control" th:name="name" th:value="${user.name}"
+               th:disabled="${disabled}">
+    </div>
+
+    <div class="row mb-4">
+        <label for="lastName" class="fw-bold text-center">Last name</label>
+        <input type="text" id="lastName" class="form-control" th:name="lastName"
+               th:value="${user.lastName}" th:disabled="${disabled}">
+    </div>
+
+    <div class="row mb-4">
+        <label for="age" class="fw-bold text-center">Age</label>
+        <input type="number" id="age" class="form-control" th:name="age" th:value="${user.age}"
+               th:disabled="${disabled}">
+    </div>
+
+    <div class="row mb-4">
+        <label for="email" class="fw-bold text-center">Email</label>
+        <input type="email" id="email" class="form-control" th:name="email" th:value="${user.email}"
+               th:disabled="${disabled}">
+    </div>
+
+    <div class="row mb-4" th:hidden="${hidden}">
+        <label for="password" class="fw-bold text-center">Password</label>
+        <input type="password" id="password" class="form-control" th:name="password"
+               th:value="${user.password}" th:disabled="${disabled}">
+    </div>
+
+    <div class="row mb-4">
+        <label for="role" class="fw-bold text-center">Role</label>
+        <select id="role" class="form-select" multiple th:name="authorities" th:disabled="${disabled}"
+                th:size="${#sets.size(allAuthorities)}">
+            <option
+                    th:each="role : ${allAuthorities}"
+                    th:text="${role.toString()}"
+                    th:value="${role.id}"
+                    th:selected="${user.authorities.contains(role)}">
+            </option>
+        </select>
+    </div>
+</th:block>

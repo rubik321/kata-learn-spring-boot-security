@@ -1,4 +1,4 @@
-<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="users-table(users)">
+<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="users-table(users, allAuthorities)">
     <table class="table table-striped border-top">
         <thead>
         <tr>
@@ -21,12 +21,23 @@
             <td th:text="${user.email}"></td>
             <td th:text="${#strings.setJoin(user.authorities, ' ')}"></td>
             <td>
-                <button type="submit" class="btn text-white" style="background-color: #17a2b8">
+                <div class="modal" tabindex="-1" role="dialog" th:id="${'editUser' + user.id}"
+                     th:insert="~{fragments/content-tabs/edit-user :: edit-user}"></div>
+
+                <button type="button" class="btn text-white" data-bs-toggle="modal"
+                        th:data-bs-target="${'#editUser' + user.id}"
+                        style="background-color: #17a2b8">
                     Edit
                 </button>
             </td>
             <td>
-                <button type="submit" class="btn btn-danger">Delete</button>
+                <div class="modal" tabindex="-1" role="dialog" th:id="${'deleteUser' + user.id}"
+                     th:insert="~{fragments/content-tabs/delete-user :: delete-user}"></div>
+
+                <button type="button" class="btn btn-danger text-white" data-bs-toggle="modal"
+                        th:data-bs-target="${'#deleteUser' + user.id}">
+                    Delete
+                </button>
             </td>
         </tr>
         </tbody>
