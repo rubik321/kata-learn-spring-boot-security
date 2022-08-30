@@ -31,30 +31,10 @@ public class AdminController {
         return "admin";
     }
 
-    @GetMapping("/{id}")
-    public String getUser(@PathVariable("id") long id, Model model) {
-        model.addAttribute("user", userService.getUser(id));
-        return "user/user";
-    }
-
-    @GetMapping("/new")
-    public String getUserCreationPage(Model model) {
-        model.addAttribute("user", new User());
-        model.addAttribute("allAuthorities", roleService.getAllRoles());
-        return "user/new_user";
-    }
-
     @PostMapping()
     public String createUser(@ModelAttribute("user") User user) {
         userService.addUser(user);
         return "redirect:/admin";
-    }
-
-    @GetMapping("/{id}/edit")
-    public String getUserEditPage(@PathVariable("id") long id, Model model) {
-        model.addAttribute("user", userService.getUser(id));
-        model.addAttribute("allAuthorities", roleService.getAllRoles());
-        return "user/edit_user";
     }
 
     @PatchMapping("/{id}")
