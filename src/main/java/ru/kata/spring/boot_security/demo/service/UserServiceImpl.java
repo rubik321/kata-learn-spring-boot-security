@@ -47,9 +47,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User editUser(User user) {
         String newPassword = user.getPassword();
-        if (newPassword.equals("")) {
-            user.setPassword(getUser(user.getId()).getPassword());
-        } else {
+
+        if (!newPassword.equals(getUser(user.getId()).getPassword())) {
             user.setPassword(passwordEncoder.encode(newPassword));
         }
 
