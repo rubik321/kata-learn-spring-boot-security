@@ -3,11 +3,12 @@ package ru.kata.spring.boot_security.demo.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 @Configuration
@@ -24,32 +25,31 @@ public class WebSecurityConfig {
         this.userService = userService;
     }
 
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public AuthenticationManager getAuthenticationManager(HttpSecurity http) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class)
+                .userDetailsService(userService)
+                .passwordEncoder(passwordEncoder)
+                .and().build();
+    }
+
+    @Bean
+    public SecurityFilterChain authorizeAllRequests(HttpSecurity http) throws Exception {
         http
-            .authorizeRequests()
+                .authorizeRequests()
                 .antMatchers("/", "/index").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user").hasAnyRole("ADMIN", "USER")
-            .anyRequest().authenticated()
-            .and()
+                .anyRequest().authenticated()
+                .and()
                 .formLogin().successHandler(successUserHandler)
                 .loginPage("/login")
                 .usernameParameter("email")
                 .permitAll()
-            .and()
+                .and()
                 .logout()
                 .permitAll();
+        return http.build();
     }
 
-    protected void configure(AuthenticationManagerBuilder auth) {
-        auth.authenticationProvider(getDaoAuthenticationProvider());
-    }
-
-    @Bean
-    public DaoAuthenticationProvider getDaoAuthenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(passwordEncoder);
-        provider.setUserDetailsService(userService);
-        return provider;
-    }
 }
