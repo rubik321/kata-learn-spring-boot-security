@@ -23,7 +23,7 @@ public class Init {
     }
 
     @Autowired
-    private void setRoleService(RoleRepository roleRepository) {
+    private void setRoleRepository(RoleRepository roleRepository) {
         Init.roleRepository = roleRepository;
     }
 
