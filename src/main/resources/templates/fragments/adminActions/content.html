@@ -32,7 +32,7 @@
                             </div>
 
                             <div class="px-4 py-4 bg-white"
-                                 th:insert="~{fragments/admin/users-table :: users-table(${users}, ${allAuthorities})}"></div>
+                                 th:insert="~{fragments/adminActions/users-table :: users-table(${users}, ${allAuthorities})}"></div>
                         </div>
 
                         <div class="tab-pane fade" id="nav-new-user"
@@ -44,7 +44,7 @@
                             </div>
 
                             <div class="py-4 bg-white d-flex justify-content-center"
-                                 th:insert="~{fragments/admin/new-user :: new-user(${newUser}, ${allAuthorities})}"></div>
+                                 th:insert="~{fragments/adminActions/new-user :: new-user(${newUser}, ${allAuthorities})}"></div>
                         </div>
 
                     </div>
