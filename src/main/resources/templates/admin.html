@@ -2,16 +2,16 @@
 <html lang="en">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th:block th:replace="~{fragments/head :: head('Admin panel')}"></th:block>
+    <th:block th:replace="~{fragments/pageBlocks/head :: head('Admin panel')}"></th:block>
 </head>
 <body style="height: 100vh">
 
-<div th:replace="~{fragments/navbar :: navbar(${principal})}"></div>
+<div th:replace="~{fragments/pageBlocks/navbar :: navbar(${principal})}"></div>
 
 <div class="container-fluid h-100">
     <div class="row h-100">
         <div class="col-2 p-0 pt-3">
-            <div th:replace="~{fragments/sidebar :: sidebar(true)}"></div>
+            <div th:replace="~{fragments/pageBlocks/sidebar :: sidebar(true)}"></div>
         </div>
         <div class="col-10 pt-3 px-4 pb-5" style="background-color: #f8f9fa">
             <div th:replace="~{fragments/admin/content :: content(${users}, ${newUser}, ${allAuthorities})}"></div>
@@ -19,7 +19,7 @@
     </div>
 </div>
 
-<div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="~{fragments/pageBlocks/footer :: footer}"></div>
 
 </body>
 </html>

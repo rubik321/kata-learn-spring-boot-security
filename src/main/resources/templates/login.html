@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
-    <th:block th:replace="~{fragments/head :: head('Login page')}"></th:block>
+    <th:block th:replace="~{fragments/pageBlocks/head :: head('Login page')}"></th:block>
 </head>
 <body>
 <div class="container">
@@ -35,7 +35,7 @@
     </div>
 </div>
 
-<div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="~{fragments/pageBlocks/footer :: footer}"></div>
 
 </body>
 </html>
