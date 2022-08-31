@@ -4,10 +4,10 @@
         <div class="list-group list-group-flush" sec:authorize="hasRole('ADMIN')">
             <a class="list-group-item list-group-item-action ripple rounded" th:classappend="${isAdminPage}? 'active'"
                aria-current="true"
-               th:href="@{/templates/fragments/admin}">Admin</a>
+               th:href="@{/admin}">Admin</a>
             <a class="list-group-item list-group-item-action ripple rounded" th:classappend="${!isAdminPage}? 'active'"
                aria-current="true"
-               th:href="@{/templates/fragments/user}">User</a>
+               th:href="@{/user}">User</a>
         </div>
 
         <div class="list-group list-group-flush" sec:authorize="!hasRole('ADMIN')">
