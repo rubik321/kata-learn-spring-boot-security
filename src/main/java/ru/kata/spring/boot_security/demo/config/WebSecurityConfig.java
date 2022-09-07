@@ -48,7 +48,9 @@ public class WebSecurityConfig {
                 .permitAll()
                 .and()
                 .logout()
-                .permitAll();
+                .permitAll()
+                .and()
+                .csrf().disable().cors();
         return http.build();
     }
 
