@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -14,15 +16,20 @@ import java.util.List;
 public class AdminRestController {
 
     private final UserService userService;
+    private final RoleService roleService;
 
     @Autowired
-    public AdminRestController(UserService userService) {
+    public AdminRestController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping()
-    public List<User> getUserList() {
-        return userService.getUserList();
+    public Map<String,Object> getUserList() {
+        Map<String, Object> response = new HashMap<>();
+        response.put("users", userService.getUserList());
+        response.put("allAuthorities", roleService.getAllRoles());
+        return response;
     }
 
     @PostMapping()
@@ -35,7 +42,7 @@ public class AdminRestController {
         }
     }
 
-    @PatchMapping("/{id}")
+    @PostMapping("/{id}/edit")
     public ResponseEntity<String> editUser(@PathVariable("id") long id, @RequestBody User user) {
         try {
             userService.editUser(user);
@@ -45,7 +52,7 @@ public class AdminRestController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @PostMapping("/{id}/delete")
     public ResponseEntity<String> deleteUser(@PathVariable("id") long id) {
         try {
             userService.deleteUser(id);
