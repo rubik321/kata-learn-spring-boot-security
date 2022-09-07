@@ -2,11 +2,22 @@ const baseUrl = 'http://localhost:8080'
 const usersTableBodyEl = document.getElementById('users-tbody')
 const adminUrl = baseUrl + '/api/v1/admin'
 
-fetch(adminUrl)
-    .then(res => res.json())
-    .then(data => {
-        renderUsersTable(data['users'], data['allAuthorities'])
-    })
+fetchUsersTable()
+let users = JSON.parse(localStorage.getItem('users'))
+let allAuthorities = JSON.parse(localStorage.getItem('allAuthorities'))
+
+renderUsersTable(users, allAuthorities)
+
+async function fetchUsersTable() {
+    try {
+        const res = await fetch(adminUrl)
+        const data = await res.json();
+        localStorage.setItem('users', JSON.stringify(data['users']))
+        localStorage.setItem('allAuthorities', JSON.stringify(data['allAuthorities']))
+    } catch (e) {
+        console.error(e)
+    }
+}
 
 function renderUsersTable(users, allAuthorities) {
     let output = ''
@@ -45,12 +56,12 @@ function getModal(user, allAuthorities, type, url) {
 
     return `
         <div class="modal" tabindex="-1" role="dialog"
-             id="${type}User${user.id}">
+             id="${type}Modal-user${user.id}">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
 
                     <form method="POST"
-                          action="${url}/${user.id}">
+                          action="${url}/${user.id}" id="${type}Form-user${user.id}">
 
                         <div class="modal-header">
                             <h5 class="modal-title">${capitalize(type)} user</h5>
