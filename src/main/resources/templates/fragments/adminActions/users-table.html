@@ -1,0 +1,45 @@
+<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="users-table(users, allAuthorities)">
+    <table class="table table-striped border-top">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Age</th>
+            <th scope="col">Email</th>
+            <th scope="col">Role</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
+        </tr>
+        </thead>
+        <tbody class="border-top">
+        <tr class="align-middle" th:each="user : ${users}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.lastName}"></td>
+            <td th:text="${user.age}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${#strings.setJoin(user.authorities, ' ')}"></td>
+            <td>
+                <div class="modal" tabindex="-1" role="dialog" th:id="${'editUser' + user.id}"
+                     th:insert="~{fragments/adminActions/edit-user :: edit-user}"></div>
+
+                <button type="button" class="btn text-white" data-bs-toggle="modal"
+                        th:data-bs-target="${'#editUser' + user.id}"
+                        style="background-color: #17a2b8">
+                    Edit
+                </button>
+            </td>
+            <td>
+                <div class="modal" tabindex="-1" role="dialog" th:id="${'deleteUser' + user.id}"
+                     th:insert="~{fragments/adminActions/delete-user :: delete-user}"></div>
+
+                <button type="button" class="btn btn-danger text-white" data-bs-toggle="modal"
+                        th:data-bs-target="${'#deleteUser' + user.id}">
+                    Delete
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</th:block>

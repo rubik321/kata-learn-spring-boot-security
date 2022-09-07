@@ -1,0 +1,23 @@
+<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="navbar(principal)">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <div class="container-fluid">
+
+            <a class="navbar-brand" style="margin-left: 15px">
+                <strong th:text="${principal.email}"></strong>
+                with roles:
+                <span th:text="${#strings.setJoin(principal.authorities, ' ')}"></span>
+            </a>
+
+            <ul class="navbar-nav ml-auto mb-auto">
+                <li class="nav-item">
+
+                    <form th:method="POST" th:action="@{/logout}">
+                        <button type="submit" class="btn btn-dark">Logout</button>
+                    </form>
+
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+</th:block>

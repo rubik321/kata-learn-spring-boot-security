@@ -1,0 +1,45 @@
+<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="new-user(newUser, allAuthorities)">
+    <form th:method="POST" th:action="@{/admin}" th:object="${newUser}">
+        <div class="row mb-4">
+            <label for="firstName" class="fw-bold text-center">First name</label>
+            <input type="text" id="firstName" class="form-control" th:field="*{name}">
+        </div>
+
+        <div class="row mb-4">
+            <label for="lastName" class="fw-bold text-center">Last name</label>
+            <input type="text" id="lastName" class="form-control" th:field="*{lastName}">
+        </div>
+
+        <div class="row mb-4">
+            <label for="age" class="fw-bold text-center">Age</label>
+            <input type="number" id="age" class="form-control" th:field="*{age}">
+        </div>
+
+        <div class="row mb-4">
+            <label for="email" class="fw-bold text-center">Email</label>
+            <input type="email" id="email" class="form-control" th:field="*{email}">
+        </div>
+
+        <div class="row mb-4">
+            <label for="password" class="fw-bold text-center">Password</label>
+            <input type="password" id="password" class="form-control" th:field="*{password}">
+        </div>
+
+        <div class="row mb-4">
+            <label for="role" class="fw-bold text-center">Role</label>
+            <select name="roles" id="role" class="form-select" multiple th:field="*{authorities}"
+                    th:size="${#sets.size(allAuthorities)}">
+
+                    <option
+                            th:each="role : ${allAuthorities}"
+                            th:text="${role.toString()}"
+                            th:value="${role.id}">
+                    </option>
+            </select>
+        </div>
+
+        <div class="mb-4 d-flex justify-content-center">
+            <input type="submit" value="Add new user" class="btn btn-lg btn-success">
+        </div>
+    </form>
+</th:block>

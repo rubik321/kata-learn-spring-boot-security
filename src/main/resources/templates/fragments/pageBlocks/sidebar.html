@@ -1,0 +1,18 @@
+<th:block xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+          th:fragment="sidebar(isAdminPage)">
+    <nav >
+        <div class="list-group list-group-flush" sec:authorize="hasRole('ADMIN')">
+            <a class="list-group-item list-group-item-action ripple rounded" th:classappend="${isAdminPage}? 'active'"
+               aria-current="true"
+               th:href="@{/admin}">Admin</a>
+            <a class="list-group-item list-group-item-action ripple rounded" th:classappend="${!isAdminPage}? 'active'"
+               aria-current="true"
+               th:href="@{/user}">User</a>
+        </div>
+
+        <div class="list-group list-group-flush" sec:authorize="!hasRole('ADMIN')">
+            <a class="list-group-item list-group-item-action ripple rounded active" aria-current="true"
+               th:href="@{/user}">User</a>
+        </div>
+    </nav>
+</th:block>
