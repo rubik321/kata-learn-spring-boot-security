@@ -63,7 +63,7 @@ public class AdminRestController {
     public ResponseEntity<User> editUser(@PathVariable("id") long id, @RequestBody User user) {
         User editedUser = userService.editUser(user);
         if (editedUser == null) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.notFound().build();
         } else {
             return ResponseEntity.ok(user);
         }
@@ -73,7 +73,7 @@ public class AdminRestController {
     public ResponseEntity<String> deleteUser(@PathVariable("id") long id) {
         try {
             userService.deleteUser(id);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.noContent().build();
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
