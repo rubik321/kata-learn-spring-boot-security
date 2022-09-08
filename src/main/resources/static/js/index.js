@@ -114,6 +114,9 @@ function renderUsersTable() {
 }
 
 function getModal(user, type, url) {
+    const formIdPrefix = type + 'Form-user' + user.id
+    const modalIdPrefix = type + 'Modal-user' + user.id
+
     let disabled = false
     let btnClass = ''
     let btnText = ''
@@ -129,34 +132,32 @@ function getModal(user, type, url) {
     }
 
     return `
-        <div class="modal" tabindex="-1" role="dialog"
-             id="${type}Modal-user${user.id}">
+        <div class="modal" tabindex="-1" role="dialog" id="${modalIdPrefix}">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
 
                     <form method="POST"
-                          action="${url}/${user.id}" id="${type}Form-user${user.id}">
+                          action="${url}/${user.id}" id="${formIdPrefix}">
 
                         <div class="modal-header">
                             <h5 class="modal-title">${capitalize(type)} user</h5>
                             <button type="button" class="btn-close"
                                     data-bs-dismiss="modal"}
-                                    aria-label="Close"></button>
+                                    aria-label="Close"
+                                    id="${formIdPrefix}-crossBtn"></button>
                         </div>
 
                         <div class="modal-body">
                             <div class="row mb-4">
-                                <label for="id" class="fw-bold text-center">ID</label>
-                                <input type="text" id="${type}Form-user${user.id}-id"
+                                <label for="${formIdPrefix}-id" class="fw-bold text-center">ID</label>
+                                <input type="text" id="${formIdPrefix}-id"
                                        class="form-control" readonly
                                        name="id" value="${user.id}">
                             </div>
 
                             <div class="row mb-4">
-                                <label for="firstName"
-                                       class="fw-bold text-center">First
-                                    name</label>
-                                <input type="text" id="${type}Form-user${user.id}-firstName"
+                                <label for="${formIdPrefix}-firstName" class="fw-bold text-center">First name</label>
+                                <input type="text" id="${formIdPrefix}-firstName"
                                        class="form-control" 
                                        name="name"
                                        value="${user.name}"
@@ -164,10 +165,8 @@ function getModal(user, type, url) {
                             </div>
 
                             <div class="row mb-4">
-                                <label for="lastName"
-                                       class="fw-bold text-center">Last
-                                    name</label>
-                                <input type="text" id="${type}Form-user${user.id}-lastName"
+                                <label for="${formIdPrefix}-lastName" class="fw-bold text-center">Last name</label>
+                                <input type="text" id="${formIdPrefix}-lastName"
                                        class="form-control"
                                        name="lastName"
                                        value="${user.lastName}"
@@ -175,9 +174,8 @@ function getModal(user, type, url) {
                             </div>
 
                             <div class="row mb-4">
-                                <label for="age"
-                                       class="fw-bold text-center">Age</label>
-                                <input type="number" id="${type}Form-user${user.id}-age"
+                                <label for="${formIdPrefix}-age" class="fw-bold text-center">Age</label>
+                                <input type="number" id="${formIdPrefix}-age"
                                        class="form-control" 
                                        name="age"
                                        value="${user.age}"
@@ -185,9 +183,8 @@ function getModal(user, type, url) {
                             </div>
 
                             <div class="row mb-4">
-                                <label for="email"
-                                       class="fw-bold text-center">Email</label>
-                                <input type="email" id="${type}Form-user${user.id}-email"
+                                <label for="${formIdPrefix}-email" class="fw-bold text-center">Email</label>
+                                <input type="email" id="${formIdPrefix}-email"
                                        class="form-control" 
                                        name="email"
                                        value="${user.email}"
@@ -195,9 +192,8 @@ function getModal(user, type, url) {
                             </div>
 
                             <div class="row mb-4" hidden="${disabled}">
-                                <label for="password"
-                                       class="fw-bold text-center">Password</label>
-                                <input type="password" id="${type}Form-user${user.id}-password"
+                                <label for="${formIdPrefix}-password" class="fw-bold text-center">Password</label>
+                                <input type="password" id="${formIdPrefix}--password"
                                        class="form-control"
                                        name="password"
                                        value="${user.password}"
@@ -205,9 +201,8 @@ function getModal(user, type, url) {
                             </div>
 
                             <div class="row mb-4">
-                                <label for="role"
-                                       class="fw-bold text-center">Role</label>
-                                <select id="${type}Form-user${user.id}-formSelect" 
+                                <label for="${formIdPrefix}-authorities" class="fw-bold text-center">Role</label>
+                                <select id="${formIdPrefix}-authorities" 
                                         class="form-select"
                                         multiple name="authorities"
                                         disabled="${disabled}"
@@ -232,7 +227,7 @@ function getModal(user, type, url) {
         </div>
 
         <button type="button" class="btn ${type === 'edit' ? 'text-white' : 'btn-danger'}" data-bs-toggle="modal"
-                data-bs-target="#${type}Modal-user${user.id}"
+                data-bs-target="#${modalIdPrefix}" id="${modalIdPrefix}-btn"
                 style="${type === 'edit' ? 'background-color: #17a2b8' : ''}">
             ${capitalize(type)}
         </button>
