@@ -13,16 +13,16 @@ const newUser = {
     authorities: []
 }
 
-fetchUsersTable()
+fetchUsersTable(adminUrl)
 let users = JSON.parse(localStorage.getItem('users'))
 let allAuthorities = JSON.parse(localStorage.getItem('allAuthorities'))
 
-renderUsersTable()
-renderNewUserTab()
+renderUsersTable(users, allAuthorities, adminUrl)
+renderNewUserTab(newUser, allAuthorities, adminUrl)
 
-async function fetchUsersTable() {
+async function fetchUsersTable(url) {
     try {
-        const res = await fetch(adminUrl)
+        const res = await fetch(url)
         const data = await res.json();
         localStorage.setItem('users', JSON.stringify(data['users']))
         localStorage.setItem('allAuthorities', JSON.stringify(data['allAuthorities']))
@@ -31,7 +31,7 @@ async function fetchUsersTable() {
     }
 }
 
-function renderNewUserTab() {
+function renderNewUserTab(user, authorities, url) {
     const idPrefix = 'newUserForm'
     navTabContentEl.innerHTML += `
         <div class="tab-pane fade" id="nav-new-user"
@@ -43,7 +43,7 @@ function renderNewUserTab() {
             </div>
 
             <div class="py-4 bg-white d-flex justify-content-center">
-                <form method="POST" action="${adminUrl}" id="${idPrefix}">
+                <form method="POST" action="${url}" id="${idPrefix}">
                     <div class="row mb-4">
                         <label for="${idPrefix}-firstName" class="fw-bold text-center">First
                             name</label>
@@ -79,8 +79,8 @@ function renderNewUserTab() {
                     <div class="row mb-4">
                         <label for="${idPrefix}-authorities" class="fw-bold text-center">Role</label>
                         <select name="authorities" id="${idPrefix}-authorities" class="form-select" 
-                                multiple size="${allAuthorities.length}">
-                            ${getAuthoritiesOptions(newUser, allAuthorities)}
+                                multiple size="${authorities.length}">
+                            ${getAuthoritiesOptions(user, authorities)}
                         </select>
                     </div>
 
@@ -93,7 +93,7 @@ function renderNewUserTab() {
     `
 }
 
-function renderUsersTable() {
+function renderUsersTable(users, authorities, url) {
     let output = ''
 
     users.forEach(user => {
@@ -105,15 +105,15 @@ function renderUsersTable() {
                     <td>${user.age}</td>
                     <td>${user.email}</td>
                     <td>${user.authorities.map(a => a.authority).join(' ')}</td>
-                    <td>${getModal(user, 'edit', adminUrl)}</td>
-                    <td>${getModal(user, 'delete', adminUrl)}</td>
+                    <td>${getModal(user, authorities, 'edit', url)}</td>
+                    <td>${getModal(user, authorities, 'delete', url)}</td>
                 </tr>
             `
     })
     usersTableBodyEl.innerHTML = output
 }
 
-function getModal(user, type, url) {
+function getModal(user, authorities, type, url) {
     const formIdPrefix = type + 'Form-user' + user.id
     const modalIdPrefix = type + 'Modal-user' + user.id
 
@@ -206,8 +206,8 @@ function getModal(user, type, url) {
                                         class="form-select"
                                         multiple name="authorities"
                                         disabled="${disabled}"
-                                        size="${allAuthorities.length}">
-                                    ${getAuthoritiesOptions(user, allAuthorities)}
+                                        size="${authorities.length}">
+                                    ${getAuthoritiesOptions(user, authorities)}
                                 </select>
                             </div>
                         </div>
