@@ -60,12 +60,12 @@ public class AdminRestController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<String> editUser(@PathVariable("id") long id, @RequestBody User user) {
-        try {
-            userService.editUser(user);
-            return ResponseEntity.ok("User has successful edited");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error has occurred");
+    public ResponseEntity<User> editUser(@PathVariable("id") long id, @RequestBody User user) {
+        User editedUser = userService.editUser(user);
+        if (editedUser == null) {
+            return ResponseEntity.badRequest().build();
+        } else {
+            return ResponseEntity.ok(user);
         }
     }
 
@@ -73,9 +73,9 @@ public class AdminRestController {
     public ResponseEntity<String> deleteUser(@PathVariable("id") long id) {
         try {
             userService.deleteUser(id);
-            return ResponseEntity.ok("User has successful deleted");
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error has occurred");
+            return ResponseEntity.notFound().build();
         }
     }
 }
