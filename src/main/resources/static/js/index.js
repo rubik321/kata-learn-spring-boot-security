@@ -25,20 +25,17 @@ let allAuthorities = {}
 // Method: GET
 fetch(roleUrl)
     .then(res => res.json())
-    .then(data => {
-        allAuthorities = data
-        newUserFormAuthEl.setAttribute('size', allAuthorities.length)
-        newUserFormAuthEl.innerHTML = getAuthoritiesOptions(new User(), allAuthorities)
+    .then(authorities => {
+        allAuthorities = authorities
+        newUserFormAuthEl.setAttribute('size', authorities.length)
+        newUserFormAuthEl.innerHTML = getAuthoritiesOptions(new User(), authorities)
     })
 
 // Get users
 // Method: GET
 fetch(adminUrl)
     .then(res => res.json())
-    .then(data => {
-        let users = data['users']
-        renderUsersTable(users, allAuthorities, adminUrl)
-    })
+    .then(users => renderUsersTable(users, allAuthorities, adminUrl))
 
 newUserFormEl.addEventListener('submit', createUser);
 
