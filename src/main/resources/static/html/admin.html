@@ -100,6 +100,68 @@
                                         </table>
                                     </div>
                                 </div>
+
+                                <div class="tab-pane fade" id="nav-new-user"
+                                     role="tabpanel"
+                                     aria-labelledby="nav-new-user-tab">
+
+                                    <div class="d-print-inline-block py-3 px-4 border-top border-bottom">
+                                        <h5 class="m-0">New User</h5>
+                                    </div>
+
+                                    <div class="py-4 bg-white d-flex justify-content-center">
+                                        <form id="newUserForm">
+                                            <div class="row mb-4">
+                                                <label for="newUserForm-firstName" class="fw-bold text-center">First
+                                                    name</label>
+                                                <input type="text" name="firstName" id="newUserForm-firstName"
+                                                       class="form-control">
+                                            </div>
+
+                                            <div class="row mb-4">
+                                                <label for="newUserForm-lastName" class="fw-bold text-center">Last
+                                                    name</label>
+                                                <input type="text" name="lastName" id="newUserForm-lastName"
+                                                       class="form-control">
+                                            </div>
+
+                                            <div class="row mb-4">
+                                                <label for="newUserForm-age" class="fw-bold text-center">Age</label>
+                                                <input type="number" name="age" id="newUserForm-age"
+                                                       class="form-control">
+                                            </div>
+
+                                            <div class="row mb-4">
+                                                <label for="newUserForm-email" class="fw-bold text-center">Email</label>
+                                                <input type="email" name="email" id="newUserForm-email"
+                                                       class="form-control">
+                                            </div>
+
+                                            <div class="row mb-4">
+                                                <label for="newUserForm-password"
+                                                       class="fw-bold text-center">Password</label>
+                                                <input type="password" name="password" id="newUserForm-password"
+                                                       class="form-control">
+                                            </div>
+
+                                            <div class="row mb-4">
+                                                <label for="newUserForm-authorities"
+                                                       class="fw-bold text-center">Role</label>
+                                                <select name="authorities" id="newUserForm-authorities"
+                                                        class="form-select"
+                                                        multiple size="${authorities.length}">
+                                                    ${getAuthoritiesOptions(user, authorities)}
+                                                </select>
+                                            </div>
+
+                                            <div class="mb-4 d-flex justify-content-center">
+                                                <input type="submit" value="Add new user" class="btn btn-lg btn-success"
+                                                       id="newUserForm-addBtn">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>

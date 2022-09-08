@@ -2,7 +2,7 @@ const baseUrl = 'http://localhost:8080'
 const adminUrl = baseUrl + '/api/v1/admin'
 
 const usersTableBodyEl = document.getElementById('users-tbody')
-const navTabContentEl = document.getElementById('nav-tabContent')
+const newUserFormEl = document.getElementById('newUserForm')
 
 class User {
     constructor(name = '', lastName = '', age = 0,
@@ -29,8 +29,6 @@ fetch(adminUrl)
         renderUsersTable(users, allAuthorities, adminUrl)
     })
 
-renderNewUserTab(new User, allAuthorities)
-const newUserFormEl = document.getElementById('newUserForm')
 newUserFormEl.addEventListener('submit', createUser);
 
 async function createUser(event) {
@@ -60,68 +58,6 @@ function getUserFromFormData(data) {
     user.authorities = getSelectedAuthorities(document.getElementById('newUserForm-authorities'))
 
     return user
-}
-
-function renderNewUserTab(user, authorities) {
-    const idPrefix = 'newUserForm'
-    navTabContentEl.innerHTML += `
-        <div class="tab-pane fade" id="nav-new-user"
-             role="tabpanel"
-             aria-labelledby="nav-new-user-tab">
-
-            <div class="d-print-inline-block py-3 px-4 border-top border-bottom">
-                <h5 class="m-0">New User</h5>
-            </div>
-
-            <div class="py-4 bg-white d-flex justify-content-center">
-                <form id="${idPrefix}">
-                    <div class="row mb-4">
-                        <label for="${idPrefix}-firstName" class="fw-bold text-center">First
-                            name</label>
-                        <input type="text" name="firstName" id="${idPrefix}-firstName"
-                               class="form-control">
-                    </div>
-
-                    <div class="row mb-4">
-                        <label for="${idPrefix}-lastName" class="fw-bold text-center">Last
-                            name</label>
-                        <input type="text" name="lastName" id="${idPrefix}-lastName"
-                               class="form-control">
-                    </div>
-
-                    <div class="row mb-4">
-                        <label for="${idPrefix}-age" class="fw-bold text-center">Age</label>
-                        <input type="number" name="age" id="${idPrefix}-age" class="form-control">
-                    </div>
-
-                    <div class="row mb-4">
-                        <label for="${idPrefix}-email" class="fw-bold text-center">Email</label>
-                        <input type="email" name="email" id="${idPrefix}-email"
-                               class="form-control">
-                    </div>
-
-                    <div class="row mb-4">
-                        <label for="${idPrefix}-password"
-                               class="fw-bold text-center">Password</label>
-                        <input type="password" name="password" id="${idPrefix}-password"
-                               class="form-control">
-                    </div>
-
-                    <div class="row mb-4">
-                        <label for="${idPrefix}-authorities" class="fw-bold text-center">Role</label>
-                        <select name="authorities" id="${idPrefix}-authorities" class="form-select" 
-                                multiple size="${authorities.length}">
-                            ${getAuthoritiesOptions(user, authorities)}
-                        </select>
-                    </div>
-
-                    <div class="mb-4 d-flex justify-content-center">
-                        <input type="submit" value="Add new user" class="btn btn-lg btn-success" id="${idPrefix}-addBtn">
-                    </div>
-                </form>
-            </div>
-        </div>
-    `
 }
 
 function renderUsersTable(users, authorities) {
