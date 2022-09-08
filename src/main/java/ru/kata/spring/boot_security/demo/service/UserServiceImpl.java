@@ -25,13 +25,13 @@ public class UserServiceImpl implements UserService {
     }
     
     @Transactional
-    public void addUser(User user) {
+    public User addUser(User user) {
         Optional<User> userOptional = userRepository.findUserByUsername(user.getUsername());
         if (userOptional.isPresent()) {
             throw new IllegalStateException("User exists!");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        return userRepository.save(user);
     }
     
     public User getUser(long id) {
