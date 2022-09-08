@@ -68,7 +68,12 @@ function getUserFromFormData(data) {
     user.age = data.get('age')
     user.email = data.get('email')
     user.password = data.get('password')
-    user.authorities = getSelectedAuthorities(document.getElementById('newUserForm-authorities'))
+    user.authorities = Array.from(newUserFormAuthEl.selectedOptions).map(option => {
+        return {
+            id: option.value,
+            authority: option.text
+        }
+    })
 
     return user
 }
@@ -209,24 +214,6 @@ function getModal(user, authorities, type) {
             ${capitalize(type)}
         </button>
     `;
-}
-
-function getSelectedAuthorities(select) {
-    let result = [];
-    let options = select && select.options;
-    let opt;
-
-    for (let i = 0; i < options.length; i++) {
-        opt = options[i];
-
-        if (opt.selected) {
-            result.push({
-                id: opt.value,
-                authority: opt.text
-            });
-        }
-    }
-    return result;
 }
 
 function getAuthoritiesOptions(user, authorities) {
