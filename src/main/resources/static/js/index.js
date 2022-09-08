@@ -5,9 +5,9 @@ const usersTableBodyEl = document.getElementById('users-tbody')
 const navTabContentEl = document.getElementById('nav-tabContent')
 
 class User {
-    constructor(firstName = '', lastName = '', age = 0,
+    constructor(name = '', lastName = '', age = 0,
                 email = '', password = '', authorities = []) {
-        this.firstName = firstName,
+        this.name = name,
         this.lastName = lastName,
         this.age = age,
         this.email = email,
