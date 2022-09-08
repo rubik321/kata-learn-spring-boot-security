@@ -59,7 +59,7 @@ public class AdminRestController {
         }
     }
 
-    @PostMapping("/{id}/edit")
+    @PatchMapping("/{id}")
     public ResponseEntity<String> editUser(@PathVariable("id") long id, @RequestBody User user) {
         try {
             userService.editUser(user);
@@ -69,7 +69,7 @@ public class AdminRestController {
         }
     }
 
-    @PostMapping("/{id}/delete")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable("id") long id) {
         try {
             userService.deleteUser(id);
