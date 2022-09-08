@@ -4,13 +4,16 @@ const adminUrl = baseUrl + '/api/v1/admin'
 const usersTableBodyEl = document.getElementById('users-tbody')
 const navTabContentEl = document.getElementById('nav-tabContent')
 
-const newUser = {
-    firstName: '',
-    lastName: '',
-    age: '',
-    email: '',
-    password: '',
-    authorities: []
+class User {
+    constructor(firstName = '', lastName = '', age = 0,
+                email = '', password = '', authorities = []) {
+        this.firstName = firstName,
+        this.lastName = lastName,
+        this.age = age,
+        this.email = email,
+        this.password = password,
+        this.authorities = authorities
+    }
 }
 
 fetchUsersTable(adminUrl)
@@ -18,7 +21,7 @@ let users = JSON.parse(localStorage.getItem('users'))
 let allAuthorities = JSON.parse(localStorage.getItem('allAuthorities'))
 
 renderUsersTable(users, allAuthorities, adminUrl)
-renderNewUserTab(newUser, allAuthorities, adminUrl)
+renderNewUserTab(new User, allAuthorities, adminUrl)
 
 async function fetchUsersTable(url) {
     try {
