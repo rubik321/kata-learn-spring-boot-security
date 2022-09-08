@@ -12,8 +12,8 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
-@RestController
 @CrossOrigin
+@RestController
 @RequestMapping("api/v1/admin")
 public class AdminRestController {
 
