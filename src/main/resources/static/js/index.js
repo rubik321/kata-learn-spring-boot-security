@@ -5,6 +5,7 @@ const adminUrl = baseUrl + '/api/v1/admin'
 const usersTableBodyEl = document.getElementById('users-tbody')
 const newUserFormEl = document.getElementById('newUserForm')
 const newUserFormAuthEl = newUserFormEl.querySelector('#newUserForm-authorities')
+const navUsersTableTabEl = document.getElementById('nav-users-table-tab')
 
 class User {
     constructor(name = '', lastName = '', age = 0,
@@ -55,6 +56,7 @@ newUserFormEl.addEventListener('submit', event => {
         .then(res => res.json())
         .then(user => {
             renderUsersTable([user], allAuthorities)
+            navUsersTableTabEl.click()
             event.target.reset()
         })
 });
