@@ -23,6 +23,9 @@ let allAuthorities = JSON.parse(localStorage.getItem('allAuthorities'))
 renderUsersTable(users, allAuthorities, adminUrl)
 renderNewUserTab(new User, allAuthorities, adminUrl)
 
+const newUserFormEl = document.getElementById('newUserForm')
+newUserFormEl.addEventListener('submit', createUser);
+
 async function fetchUsersTable(url) {
     try {
         const res = await fetch(url)
@@ -32,6 +35,34 @@ async function fetchUsersTable(url) {
     } catch (e) {
         console.error(e)
     }
+}
+
+async function createUser(event) {
+    event.preventDefault()
+
+    const data = new FormData(event.target)
+
+    let response = await fetch(adminUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: getUserFromFormData(data)
+    })
+
+    let result = await response.text()
+}
+
+function getUserFromFormData(data) {
+    let user = new User()
+    user.name = data.get('firstName')
+    user.lastName = data.get('lastName')
+    user.age = data.get('age')
+    user.email = data.get('email')
+    user.password = data.get('password')
+    user.authorities = getSelectedAuthorities(document.getElementById('newUserForm-authorities'))
+
+    return JSON.stringify(user)
 }
 
 function renderNewUserTab(user, authorities, url) {
@@ -235,6 +266,24 @@ function getModal(user, authorities, type, url) {
             ${capitalize(type)}
         </button>
     `;
+}
+
+function getSelectedAuthorities(select) {
+    var result = [];
+    var options = select && select.options;
+    var opt;
+
+    for (var i=0, iLen=options.length; i<iLen; i++) {
+        opt = options[i];
+
+        if (opt.selected) {
+            result.push({
+                id: opt.value,
+                authority: opt.text
+            });
+        }
+    }
+    return result;
 }
 
 function getAuthoritiesOptions(user, authorities) {
