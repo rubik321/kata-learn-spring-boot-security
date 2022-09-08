@@ -54,8 +54,6 @@ newUserFormEl.addEventListener('submit', event => {
     })
         .then(res => res.json())
         .then(user => {
-            let users = []
-            users.push(user)
             renderUsersTable([user], allAuthorities)
             event.target.reset()
         })
