@@ -1,12 +1,24 @@
 const baseUrl = 'http://localhost:8080'
-const usersTableBodyEl = document.getElementById('users-tbody')
 const adminUrl = baseUrl + '/api/v1/admin'
+
+const usersTableBodyEl = document.getElementById('users-tbody')
+const navTabContentEl = document.getElementById('nav-tabContent')
+
+const newUser = {
+    firstName: '',
+    lastName: '',
+    age: '',
+    email: '',
+    password: '',
+    authorities: []
+}
 
 fetchUsersTable()
 let users = JSON.parse(localStorage.getItem('users'))
 let allAuthorities = JSON.parse(localStorage.getItem('allAuthorities'))
 
 renderUsersTable()
+renderNewUserTab()
 
 async function fetchUsersTable() {
     try {
@@ -17,6 +29,67 @@ async function fetchUsersTable() {
     } catch (e) {
         console.error(e)
     }
+}
+
+function renderNewUserTab() {
+    navTabContentEl.innerHTML += `
+        <div class="tab-pane fade" id="nav-new-user"
+             role="tabpanel"
+             aria-labelledby="nav-new-user-tab">
+
+            <div class="d-print-inline-block py-3 px-4 border-top border-bottom">
+                <h5 class="m-0">New User</h5>
+            </div>
+
+            <div class="py-4 bg-white d-flex justify-content-center">
+                <form id="newUserForm">
+                    <div class="row mb-4">
+                        <label for="newUser-firstName" class="fw-bold text-center">First
+                            name</label>
+                        <input type="text" name="firstName" id="newUser-firstName"
+                               class="form-control">
+                    </div>
+
+                    <div class="row mb-4">
+                        <label for="newUser-lastName" class="fw-bold text-center">Last
+                            name</label>
+                        <input type="text" name="lastName" id="newUser-lastName"
+                               class="form-control">
+                    </div>
+
+                    <div class="row mb-4">
+                        <label for="newUser-age" class="fw-bold text-center">Age</label>
+                        <input type="number" name="age" id="newUser-age" class="form-control">
+                    </div>
+
+                    <div class="row mb-4">
+                        <label for="newUser-email" class="fw-bold text-center">Email</label>
+                        <input type="email" name="email" id="newUser-email"
+                               class="form-control">
+                    </div>
+
+                    <div class="row mb-4">
+                        <label for="newUser-password"
+                               class="fw-bold text-center">Password</label>
+                        <input type="password" name="password" id="newUser-password"
+                               class="form-control">
+                    </div>
+
+                    <div class="row mb-4">
+                        <label for="role" class="fw-bold text-center">Role</label>
+                        <select name="roles" id="role" class="form-select" multiple size="${allAuthorities.length}">
+                            ${getAuthoritiesOptions(newUser, allAuthorities)}
+                        </select>
+                    </div>
+
+                    <div class="mb-4 d-flex justify-content-center">
+                        <input type="submit" value="Add new user"
+                               class="btn btn-lg btn-success">
+                    </div>
+                </form>
+            </div>
+        </div>
+    `;
 }
 
 function renderUsersTable() {
@@ -31,15 +104,15 @@ function renderUsersTable() {
                     <td>${user.age}</td>
                     <td>${user.email}</td>
                     <td>${user.authorities.map(a => a.authority).join(' ')}</td>
-                    <td>${getModal(user, allAuthorities, 'edit', adminUrl)}</td>
-                    <td>${getModal(user, allAuthorities, 'delete', adminUrl)}</td>
+                    <td>${getModal(user, 'edit', adminUrl)}</td>
+                    <td>${getModal(user, 'delete', adminUrl)}</td>
                 </tr>
             `
     })
     usersTableBodyEl.innerHTML = output
 }
 
-function getModal(user, allAuthorities, type, url) {
+function getModal(user, type, url) {
     let disabled = false
     let btnClass = ''
     let btnText = ''
