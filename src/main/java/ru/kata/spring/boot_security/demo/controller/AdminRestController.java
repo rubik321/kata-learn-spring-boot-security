@@ -48,6 +48,16 @@ public class AdminRestController {
         }
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUser(@PathVariable("id") long id) {
+        User user = userService.getUser(id);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(user);
+        }
+    }
+
     @PostMapping("/{id}/edit")
     public ResponseEntity<String> editUser(@PathVariable("id") long id, @RequestBody User user) {
         try {
