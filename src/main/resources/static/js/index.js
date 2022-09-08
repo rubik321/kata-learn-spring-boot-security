@@ -61,6 +61,24 @@ newUserFormEl.addEventListener('submit', event => {
         })
 });
 
+usersTableBodyEl.addEventListener('click', event => {
+    event.preventDefault()
+
+    const delBtnIsPressed = event.target.id === 'userDeleteBtn'
+    const saveBtnIsPressed = event.target.id === 'userSaveBtn'
+
+    // Delete user
+    // Method: DELETE
+    if (delBtnIsPressed) {
+        const id = event.target.parentElement.parentElement.dataset.id
+        fetch(`${adminUrl}/${id}`, {
+            method: 'DELETE'
+        })
+            .then(res => res.json())
+            .then(() => location.reload())
+    }
+})
+
 function getUserFromFormData(data) {
     let user = new User()
     user.name = data.get('firstName')
@@ -81,7 +99,7 @@ function getUserFromFormData(data) {
 function renderUsersTable(users, authorities) {
     users.forEach(user => {
         userTableRows += `
-                <tr class="align-middle">
+                <tr class="align-middle" id="tr-user${user.id}">
                     <td>${user.id}</td>
                     <td>${user.name}</td>
                     <td>${user.lastName}</td>
@@ -119,7 +137,7 @@ function getModal(user, authorities, type) {
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
 
-                    <form id="${formIdPrefix}">
+                    <form id="${type}UserForm" data-id="${user.id}">
 
                         <div class="modal-header">
                             <h5 class="modal-title">${capitalize(type)} user</h5>
@@ -198,7 +216,7 @@ function getModal(user, authorities, type) {
                             <button type="button" class="btn btn-secondary"
                                     data-bs-dismiss="modal">Close
                             </button>
-                            <button type="submit" class="${btnClass}">
+                            <button type="submit" class="${btnClass}" id="user${btnText}Btn">
                                 ${btnText}
                             </button>
                         </div>
