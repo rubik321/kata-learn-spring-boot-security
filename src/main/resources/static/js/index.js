@@ -16,26 +16,22 @@ class User {
     }
 }
 
-fetchUsersTable(adminUrl)
-let users = JSON.parse(localStorage.getItem('users'))
-let allAuthorities = JSON.parse(localStorage.getItem('allAuthorities'))
+let userTableRows = ''
+let allAuthorities = {}
 
-renderUsersTable(users, allAuthorities, adminUrl)
+// Get users
+// Method: GET
+fetch(adminUrl)
+    .then(res => res.json())
+    .then(data => {
+        let users = data['users']
+        allAuthorities = data['allAuthorities']
+        renderUsersTable(users, allAuthorities, adminUrl)
+    })
+
 renderNewUserTab(new User, allAuthorities)
-
 const newUserFormEl = document.getElementById('newUserForm')
 newUserFormEl.addEventListener('submit', createUser);
-
-async function fetchUsersTable(url) {
-    try {
-        const res = await fetch(url)
-        const data = await res.json();
-        localStorage.setItem('users', JSON.stringify(data['users']))
-        localStorage.setItem('allAuthorities', JSON.stringify(data['allAuthorities']))
-    } catch (e) {
-        console.error(e)
-    }
-}
 
 async function createUser(event) {
     event.preventDefault()
@@ -129,10 +125,8 @@ function renderNewUserTab(user, authorities) {
 }
 
 function renderUsersTable(users, authorities) {
-    let output = ''
-
     users.forEach(user => {
-        output += `
+        userTableRows += `
                 <tr class="align-middle">
                     <td>${user.id}</td>
                     <td>${user.name}</td>
@@ -145,7 +139,7 @@ function renderUsersTable(users, authorities) {
                 </tr>
             `
     })
-    usersTableBodyEl.innerHTML = output
+    usersTableBodyEl.innerHTML = userTableRows
 }
 
 function getModal(user, authorities, type) {
