@@ -37,24 +37,29 @@ fetch(adminUrl)
     .then(res => res.json())
     .then(users => renderUsersTable(users, allAuthorities, adminUrl))
 
-newUserFormEl.addEventListener('submit', createUser);
-
-async function createUser(event) {
+// Create user
+// Method: POST
+newUserFormEl.addEventListener('submit', event => {
     event.preventDefault()
 
     const data = new FormData(event.target)
     let user = getUserFromFormData(data)
 
-    let response = await fetch(adminUrl, {
+    fetch(adminUrl, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(user)
     })
-
-    let result = await response.text()
-}
+        .then(res => res.json())
+        .then(user => {
+            let users = []
+            users.push(user)
+            renderUsersTable([user], allAuthorities)
+            event.target.reset()
+        })
+});
 
 function getUserFromFormData(data) {
     let user = new User()
