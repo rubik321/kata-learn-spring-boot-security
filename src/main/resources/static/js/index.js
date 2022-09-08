@@ -44,7 +44,7 @@ newUserFormEl.addEventListener('submit', event => {
     event.preventDefault()
 
     const data = new FormData(event.target)
-    let user = getUserFromFormData(data)
+    const user = getUserFromFormData(data)
 
     fetch(adminUrl, {
         method: 'POST',
