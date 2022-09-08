@@ -6,7 +6,7 @@ fetchUsersTable()
 let users = JSON.parse(localStorage.getItem('users'))
 let allAuthorities = JSON.parse(localStorage.getItem('allAuthorities'))
 
-renderUsersTable(users, allAuthorities)
+renderUsersTable()
 
 async function fetchUsersTable() {
     try {
@@ -19,7 +19,7 @@ async function fetchUsersTable() {
     }
 }
 
-function renderUsersTable(users, allAuthorities) {
+function renderUsersTable() {
     let output = ''
 
     users.forEach(user => {
