@@ -9,8 +9,7 @@ import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -27,11 +26,13 @@ public class AdminRestController {
     }
 
     @GetMapping()
-    public Map<String,Object> getUserList() {
-        Map<String, Object> response = new HashMap<>();
-        response.put("users", userService.getUserList());
-        response.put("allAuthorities", roleService.getAllRoles());
-        return response;
+    public ResponseEntity<List<User>> getUserList() {
+        List<User> users = userService.getUserList();
+        if (users == null) {
+            return ResponseEntity.badRequest().build();
+        } else {
+            return ResponseEntity.ok(users);
+        }
     }
 
     @PostMapping()
