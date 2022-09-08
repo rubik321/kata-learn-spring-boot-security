@@ -268,11 +268,11 @@ function getModal(user, authorities, type) {
 }
 
 function getSelectedAuthorities(select) {
-    var result = [];
-    var options = select && select.options;
-    var opt;
+    let result = [];
+    let options = select && select.options;
+    let opt;
 
-    for (var i=0, iLen=options.length; i<iLen; i++) {
+    for (let i = 0; i < options.length; i++) {
         opt = options[i];
 
         if (opt.selected) {
