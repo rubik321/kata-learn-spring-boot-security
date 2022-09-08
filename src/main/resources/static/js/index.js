@@ -1,8 +1,10 @@
 const baseUrl = 'http://localhost:8080'
+const roleUrl = baseUrl + '/api/v1/role'
 const adminUrl = baseUrl + '/api/v1/admin'
 
 const usersTableBodyEl = document.getElementById('users-tbody')
 const newUserFormEl = document.getElementById('newUserForm')
+const newUserFormAuthEl = newUserFormEl.querySelector('#newUserForm-authorities')
 
 class User {
     constructor(name = '', lastName = '', age = 0,
@@ -19,13 +21,22 @@ class User {
 let userTableRows = ''
 let allAuthorities = {}
 
+// Get roles
+// Method: GET
+fetch(roleUrl)
+    .then(res => res.json())
+    .then(data => {
+        allAuthorities = data
+        newUserFormAuthEl.setAttribute('size', allAuthorities.length)
+        newUserFormAuthEl.innerHTML = getAuthoritiesOptions(new User(), allAuthorities)
+    })
+
 // Get users
 // Method: GET
 fetch(adminUrl)
     .then(res => res.json())
     .then(data => {
         let users = data['users']
-        allAuthorities = data['allAuthorities']
         renderUsersTable(users, allAuthorities, adminUrl)
     })
 
