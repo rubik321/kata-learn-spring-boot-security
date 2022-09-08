@@ -21,7 +21,7 @@ let users = JSON.parse(localStorage.getItem('users'))
 let allAuthorities = JSON.parse(localStorage.getItem('allAuthorities'))
 
 renderUsersTable(users, allAuthorities, adminUrl)
-renderNewUserTab(new User, allAuthorities, adminUrl)
+renderNewUserTab(new User, allAuthorities)
 
 const newUserFormEl = document.getElementById('newUserForm')
 newUserFormEl.addEventListener('submit', createUser);
@@ -65,7 +65,7 @@ function getUserFromFormData(data) {
     return JSON.stringify(user)
 }
 
-function renderNewUserTab(user, authorities, url) {
+function renderNewUserTab(user, authorities) {
     const idPrefix = 'newUserForm'
     navTabContentEl.innerHTML += `
         <div class="tab-pane fade" id="nav-new-user"
@@ -77,7 +77,7 @@ function renderNewUserTab(user, authorities, url) {
             </div>
 
             <div class="py-4 bg-white d-flex justify-content-center">
-                <form method="POST" action="${url}" id="${idPrefix}">
+                <form id="${idPrefix}">
                     <div class="row mb-4">
                         <label for="${idPrefix}-firstName" class="fw-bold text-center">First
                             name</label>
@@ -127,7 +127,7 @@ function renderNewUserTab(user, authorities, url) {
     `
 }
 
-function renderUsersTable(users, authorities, url) {
+function renderUsersTable(users, authorities) {
     let output = ''
 
     users.forEach(user => {
@@ -139,15 +139,15 @@ function renderUsersTable(users, authorities, url) {
                     <td>${user.age}</td>
                     <td>${user.email}</td>
                     <td>${user.authorities.map(a => a.authority).join(' ')}</td>
-                    <td>${getModal(user, authorities, 'edit', url)}</td>
-                    <td>${getModal(user, authorities, 'delete', url)}</td>
+                    <td>${getModal(user, authorities, 'edit')}</td>
+                    <td>${getModal(user, authorities, 'delete')}</td>
                 </tr>
             `
     })
     usersTableBodyEl.innerHTML = output
 }
 
-function getModal(user, authorities, type, url) {
+function getModal(user, authorities, type) {
     const formIdPrefix = type + 'Form-user' + user.id
     const modalIdPrefix = type + 'Modal-user' + user.id
 
@@ -170,8 +170,7 @@ function getModal(user, authorities, type, url) {
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
 
-                    <form method="POST"
-                          action="${url}/${user.id}" id="${formIdPrefix}">
+                    <form id="${formIdPrefix}">
 
                         <div class="modal-header">
                             <h5 class="modal-title">${capitalize(type)} user</h5>
