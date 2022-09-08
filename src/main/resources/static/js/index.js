@@ -32,6 +32,7 @@ async function fetchUsersTable() {
 }
 
 function renderNewUserTab() {
+    const idPrefix = 'newUserForm'
     navTabContentEl.innerHTML += `
         <div class="tab-pane fade" id="nav-new-user"
              role="tabpanel"
@@ -42,54 +43,54 @@ function renderNewUserTab() {
             </div>
 
             <div class="py-4 bg-white d-flex justify-content-center">
-                <form id="newUserForm">
+                <form method="POST" action="${adminUrl}" id="${idPrefix}">
                     <div class="row mb-4">
-                        <label for="newUser-firstName" class="fw-bold text-center">First
+                        <label for="${idPrefix}-firstName" class="fw-bold text-center">First
                             name</label>
-                        <input type="text" name="firstName" id="newUser-firstName"
+                        <input type="text" name="firstName" id="${idPrefix}-firstName"
                                class="form-control">
                     </div>
 
                     <div class="row mb-4">
-                        <label for="newUser-lastName" class="fw-bold text-center">Last
+                        <label for="${idPrefix}-lastName" class="fw-bold text-center">Last
                             name</label>
-                        <input type="text" name="lastName" id="newUser-lastName"
+                        <input type="text" name="lastName" id="${idPrefix}-lastName"
                                class="form-control">
                     </div>
 
                     <div class="row mb-4">
-                        <label for="newUser-age" class="fw-bold text-center">Age</label>
-                        <input type="number" name="age" id="newUser-age" class="form-control">
+                        <label for="${idPrefix}-age" class="fw-bold text-center">Age</label>
+                        <input type="number" name="age" id="${idPrefix}-age" class="form-control">
                     </div>
 
                     <div class="row mb-4">
-                        <label for="newUser-email" class="fw-bold text-center">Email</label>
-                        <input type="email" name="email" id="newUser-email"
+                        <label for="${idPrefix}-email" class="fw-bold text-center">Email</label>
+                        <input type="email" name="email" id="${idPrefix}-email"
                                class="form-control">
                     </div>
 
                     <div class="row mb-4">
-                        <label for="newUser-password"
+                        <label for="${idPrefix}-password"
                                class="fw-bold text-center">Password</label>
-                        <input type="password" name="password" id="newUser-password"
+                        <input type="password" name="password" id="${idPrefix}-password"
                                class="form-control">
                     </div>
 
                     <div class="row mb-4">
-                        <label for="role" class="fw-bold text-center">Role</label>
-                        <select name="roles" id="role" class="form-select" multiple size="${allAuthorities.length}">
+                        <label for="${idPrefix}-authorities" class="fw-bold text-center">Role</label>
+                        <select name="authorities" id="${idPrefix}-authorities" class="form-select" 
+                                multiple size="${allAuthorities.length}">
                             ${getAuthoritiesOptions(newUser, allAuthorities)}
                         </select>
                     </div>
 
                     <div class="mb-4 d-flex justify-content-center">
-                        <input type="submit" value="Add new user"
-                               class="btn btn-lg btn-success">
+                        <input type="submit" value="Add new user" class="btn btn-lg btn-success" id="${idPrefix}-addBtn">
                     </div>
                 </form>
             </div>
         </div>
-    `;
+    `
 }
 
 function renderUsersTable() {
@@ -255,7 +256,6 @@ function getAuthoritiesOptions(user, authorities) {
     return res
 }
 
-function capitalize(s)
-{
+function capitalize(s) {
     return s[0].toUpperCase() + s.slice(1);
 }
