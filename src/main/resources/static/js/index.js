@@ -41,13 +41,14 @@ async function createUser(event) {
     event.preventDefault()
 
     const data = new FormData(event.target)
+    let user = getUserFromFormData(data)
 
     let response = await fetch(adminUrl, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: getUserFromFormData(data)
+        body: JSON.stringify(user)
     })
 
     let result = await response.text()
@@ -62,7 +63,7 @@ function getUserFromFormData(data) {
     user.password = data.get('password')
     user.authorities = getSelectedAuthorities(document.getElementById('newUserForm-authorities'))
 
-    return JSON.stringify(user)
+    return user
 }
 
 function renderNewUserTab(user, authorities) {
