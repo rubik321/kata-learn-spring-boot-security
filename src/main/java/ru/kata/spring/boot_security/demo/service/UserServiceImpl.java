@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
     }
     
     @Transactional
-    public void deleteUser(long id) {
+    public void deleteUser(long id) throws IllegalStateException {
         boolean isUserExists = userRepository.existsById(id);
         if (!isUserExists) {
             throw new IllegalStateException(String.format("User with id = %s does not exist", id));
