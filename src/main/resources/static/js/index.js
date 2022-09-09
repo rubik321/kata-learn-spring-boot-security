@@ -98,12 +98,13 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
         }
 
         if (modifyBtnIsPressed) {
+            const userIndex = allUsers.findIndex(aUser => aUser.id === user.id)
+
             if (type === 'delete') {
                 deleteUser(user)
                     .then(() => {
-                        const index = allUsers.findIndex(aUser => aUser.id !== user.id)
-                        allUsers.splice(index, 1)
-                        userTableRows.splice(index, 1)
+                        allUsers.splice(userIndex, 1)
+                        userTableRows.splice(userIndex, 1)
                         userTableRowEl.remove()
                     })
                     .finally(() => {
@@ -115,11 +116,13 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
             if (type === 'edit') {
                 const newUser = getUserFromForm(document.getElementById('userForm'))
                 editUser(newUser)
-                    .then((user) => user)
+                    .then((user) => {
+                        allUsers[userIndex] = user
+                        updateUsersTable(user, userIndex)
+                    })
                     .finally(() => {
                         userModal.modal('hide')
                         userModal.remove()
-                        location.reload()
                     })
             }
         }
@@ -188,31 +191,40 @@ function getUserFromForm(form) {
     return user
 }
 
+function updateUsersTable(user, index) {
+    userTableRows[index] = getUserTableRowTemplate(user)
+    usersTableBodyEl.innerHTML = userTableRows.join('')
+}
+
 function renderUsersTable(users) {
     users.forEach(user => {
-        userTableRows.push(`
-                <tr class="align-middle" data-id="${user.id}">
-                    <td>${user.id}</td>
-                    <td>${user.name}</td>
-                    <td>${user.lastName}</td>
-                    <td>${user.age}</td>
-                    <td>${user.email}</td>
-                    <td>${user.authorities.map(a => a.authority).join(' ')}</td>
-                    <td>
-                        <button type="button" class="btn text-white" id="userEditBtn"
-                                style="background-color: #17a2b8">
-                            Edit
-                        </button>
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-danger" id="userDeleteBtn">
-                            Delete
-                        </button>
-                    </td>
-                </tr>
-            `)
+        userTableRows.push(getUserTableRowTemplate(user))
     })
     usersTableBodyEl.innerHTML = userTableRows.join('')
+}
+
+function getUserTableRowTemplate(user) {
+    return `
+        <tr class="align-middle" data-id="${user.id}">
+            <td>${user.id}</td>
+            <td>${user.name}</td>
+            <td>${user.lastName}</td>
+            <td>${user.age}</td>
+            <td>${user.email}</td>
+            <td>${user.authorities.map(a => a.authority).join(' ')}</td>
+            <td>
+                <button type="button" class="btn text-white" id="userEditBtn"
+                        style="background-color: #17a2b8">
+                    Edit
+                </button>
+            </td>
+            <td>
+                <button type="button" class="btn btn-danger" id="userDeleteBtn">
+                    Delete
+                </button>
+            </td>
+        </tr>
+    `
 }
 
 function getModal(user, authorities, type) {
