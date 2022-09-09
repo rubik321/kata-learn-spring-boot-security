@@ -99,16 +99,14 @@ usersTableBodyEl.addEventListener('click', event => {
             // Delete user
             // Method: DELETE
             if (deleteBtnIsPressed) {
-                fetch(`${adminUrl}/${user.id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
+                deleteUser(user)
                     .then(() => {
+                        allUsers = allUsers.filter(aUser => aUser.id != user.id)
+                        userTableRowEl.remove()
+                    })
+                    .finally(() => {
                         userModal.modal('hide')
                         userModal.remove()
-                        userTableRowEl.remove()
                     })
             }
         })
@@ -148,6 +146,15 @@ usersTableBodyEl.addEventListener('click', event => {
         })
     }
 })
+
+function deleteUser(user) {
+    return fetch(`${adminUrl}/${user.id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+}
 
 function editUser(user) {
     return fetch(`${adminUrl}/${user.id}`, {
