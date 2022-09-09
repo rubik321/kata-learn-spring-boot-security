@@ -231,9 +231,9 @@ function getModal(user, authorities, type) {
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary"
-                                    data-bs-dismiss="modal">Close
+                                    data-bs-dismiss="modal" id="${formIdPrefix}-closeBtn">Close
                             </button>
-                            <button type="submit" class="${btnClass}" id="user${btnText}Btn">
+                            <button type="submit" class="${btnClass}" id="${formIdPrefix}-${type}Btn">
                                 ${btnText}
                             </button>
                         </div>
