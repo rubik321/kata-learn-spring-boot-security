@@ -242,12 +242,6 @@ function getModal(user, authorities, type) {
                 </div>
             </div>
         </div>
-
-        <button type="button" class="btn ${type === 'edit' ? 'text-white' : 'btn-danger'}" data-bs-toggle="modal"
-                data-bs-target="#${modalIdPrefix}" id="${modalIdPrefix}-btn"
-                style="${type === 'edit' ? 'background-color: #17a2b8' : ''}">
-            ${capitalize(type)}
-        </button>
     `;
 }
 
