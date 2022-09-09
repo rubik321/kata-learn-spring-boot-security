@@ -132,8 +132,8 @@ function renderUsersTable(users) {
 }
 
 function getModal(user, authorities, type) {
-    const formIdPrefix = type + 'Form-user' + user.id
-    const modalIdPrefix = type + 'Modal-user' + user.id
+    const formIdPrefix = 'user' + capitalize(type) + 'Form'
+    const modalIdPrefix = 'user' + capitalize(type) + 'Modal'
 
     let disabled = false
     let btnClass = ''
