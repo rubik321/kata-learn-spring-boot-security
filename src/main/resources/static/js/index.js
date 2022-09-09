@@ -36,7 +36,7 @@ fetch(roleUrl)
 // Method: GET
 fetch(adminUrl)
     .then(res => res.json())
-    .then(users => renderUsersTable(users, allAuthorities, adminUrl))
+    .then(users => renderUsersTable(users))
 
 // Create user
 // Method: POST
@@ -55,7 +55,7 @@ newUserFormEl.addEventListener('submit', event => {
     })
         .then(res => res.json())
         .then(user => {
-            renderUsersTable([user], allAuthorities)
+            renderUsersTable([user])
             navUsersTableTabEl.click()
             event.target.reset()
         })
@@ -96,18 +96,29 @@ function getUserFromFormData(data) {
     return user
 }
 
-function renderUsersTable(users, authorities) {
+function renderUsersTable(users) {
     users.forEach(user => {
         userTableRows += `
-                <tr class="align-middle" id="tr-user${user.id}">
+                <tr class="align-middle" data-id="${user.id}">
                     <td>${user.id}</td>
                     <td>${user.name}</td>
                     <td>${user.lastName}</td>
                     <td>${user.age}</td>
                     <td>${user.email}</td>
                     <td>${user.authorities.map(a => a.authority).join(' ')}</td>
-                    <td>${getModal(user, authorities, 'edit')}</td>
-                    <td>${getModal(user, authorities, 'delete')}</td>
+                    <td>
+                        <button type="button" class="btn text-white" data-bs-toggle="modal"
+                                data-bs-target="#userEditModal" id="userEditBtn"
+                                style="background-color: #17a2b8">
+                            Edit
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                data-bs-target="#userDeleteModal" id="userDeleteBtn">
+                            Delete
+                        </button>
+                    </td>
                 </tr>
             `
     })
