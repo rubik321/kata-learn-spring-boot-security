@@ -60,6 +60,7 @@ newUserFormEl.addEventListener('submit', event => {
     })
         .then(res => res.json())
         .then(user => {
+            allUsers.push(user)
             renderUsersTable([user])
             navUsersTableTabEl.click()
             event.target.reset()
@@ -77,7 +78,7 @@ usersTableBodyEl.addEventListener('click', event => {
     let user = allUsers.filter(user => user.id == userId)[0]
 
     // Handle Delete button inside <tr>
-    if (delBtnIsPressed) {
+    if (delBtnIsPressed) {4
         modalDivEl.innerHTML += getModal(user, allAuthorities, 'delete')
         const userDeleteModal = $('#userDeleteModal')
         userDeleteModal.modal('show')
