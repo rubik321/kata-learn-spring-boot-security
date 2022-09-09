@@ -27,8 +27,7 @@ let allAuthorities = {}
 
 // Get roles
 // Method: GET
-fetch(roleUrl)
-    .then(res => res.json())
+getRoles()
     .then(authorities => {
         allAuthorities = authorities
         newUserFormAuthEl.setAttribute('size', authorities.length)
@@ -125,6 +124,11 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
             }
         }
     })
+}
+
+function getRoles() {
+    return fetch(roleUrl)
+        .then(res => res.json())
 }
 
 function getUsers() {
