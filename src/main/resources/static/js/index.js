@@ -67,7 +67,6 @@ newUserFormEl.addEventListener('submit', event => {
         })
 });
 
-// TODO: refactor the same code, follow DRY
 usersTableBodyEl.addEventListener('click', event => {
     event.preventDefault()
 
@@ -79,75 +78,65 @@ usersTableBodyEl.addEventListener('click', event => {
 
     // Handle Delete button inside <tr>
     if (delBtnIsPressed) {
-        modalDivEl.innerHTML += getModal(user, allAuthorities, 'delete')
-        const userModal = $('#userModal')
-        userModal.modal('show')
-
-        // Handle userModal button clicks
-        userModal.get()[0].addEventListener('click', event2 => {
-            event2.preventDefault()
-
-            const closeBtnIsPressed = event2.target.id === 'closeBtn'
-                || event2.target.id === 'crossBtn' || event2.target.id === 'userModal'
-            const modifyBtnIsPressed = event2.target.id === 'modifyBtn'
-
-            if (closeBtnIsPressed) {
-                userModal.modal('hide')
-                userModal.remove()
-            }
-
-            // Delete user
-            // Method: DELETE
-            if (modifyBtnIsPressed) {
-                deleteUser(user)
-                    .then(() => {
-                        const index = allUsers.findIndex(aUser => aUser.id != user.id)
-                        allUsers.splice(index, 1)
-                        userTableRows.splice(index, 1)
-                        userTableRowEl.remove()
-                    })
-                    .finally(() => {
-                        userModal.modal('hide')
-                        userModal.remove()
-                    })
-            }
-        })
+        handleUserModifyButtons(user, 'delete', userTableRowEl)
     }
 
     // Handle Edit button inside <tr>
     if (editBtnIsPressed) {
-        modalDivEl.innerHTML += getModal(user, allAuthorities, 'edit')
-        const userModal = $('#userModal')
-        userModal.modal('show')
+        handleUserModifyButtons(user, 'edit')
+    }
+})
 
-        // Handle userModal button clicks
-        userModal.get()[0].addEventListener('click', event2 => {
-            event2.preventDefault()
+function handleUserModifyButtons(user, type, userTableRowEl) {
+    modalDivEl.innerHTML += getModal(user, allAuthorities, type)
+    const userModal = $('#userModal')
+    userModal.modal('show')
 
-            const closeBtnIsPressed = event2.target.id === 'closeBtn'
-                || event2.target.id === 'crossBtn' || event2.target.id === 'userModal'
-            const modifyBtnIsPressed = event2.target.id === 'modifyBtn'
+    // Handle userModal button clicks
+    userModal.get()[0].addEventListener('click', event => {
+        event.preventDefault()
 
-            if (closeBtnIsPressed) {
-                userModal.modal('hide')
-                userModal.remove()
-            }
+        const closeBtnIsPressed = event.target.id === 'closeBtn'
+            || event.target.id === 'crossBtn' || event.target.id === 'userModal'
+        const modifyBtnIsPressed = event.target.id === 'modifyBtn'
 
+        if (closeBtnIsPressed) {
+            userModal.modal('hide')
+            userModal.remove()
+        }
+
+        // Delete user
+        // Method: DELETE
+        if (type === 'delete') {
+            deleteUser(user)
+                .then(() => {
+                    const index = allUsers.findIndex(aUser => aUser.id !== user.id)
+                    allUsers.splice(index, 1)
+                    userTableRows.splice(index, 1)
+                    userTableRowEl.remove()
+                })
+                .finally(() => {
+                    userModal.modal('hide')
+                    userModal.remove()
+                })
+        }
+
+        if (modifyBtnIsPressed) {
             // Edit user
             // Method: PATCH
-            if (modifyBtnIsPressed) {
+            if (type === 'edit') {
                 const newUser = getUserFromForm(document.getElementById('userForm'))
                 editUser(newUser)
-                    .then((user) => console.log(user))
+                    .then((user) => user)
                     .finally(() => {
                         userModal.modal('hide')
                         userModal.remove()
                         location.reload()
                     })
             }
-        })
-    }
-})
+        }
+    })
+}
 
 function deleteUser(user) {
     return fetch(`${adminUrl}/${user.id}`, {
