@@ -92,7 +92,6 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
     const userModal = $('#userModal')
     userModal.modal('show')
 
-    // Handle userModal button clicks
     userModal.get()[0].addEventListener('click', event => {
         event.preventDefault()
 
