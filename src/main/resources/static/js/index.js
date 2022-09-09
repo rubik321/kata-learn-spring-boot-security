@@ -89,7 +89,7 @@ usersTableBodyEl.addEventListener('click', event => {
 
             const closeBtnIsPressed = event2.target.id === 'closeBtn'
                 || event2.target.id === 'crossBtn' || event2.target.id === 'userModal'
-            const deleteBtnIsPressed = event2.target.id === 'deleteBtn'
+            const modifyBtnIsPressed = event2.target.id === 'modifyBtn'
 
             if (closeBtnIsPressed) {
                 userModal.modal('hide')
@@ -98,7 +98,7 @@ usersTableBodyEl.addEventListener('click', event => {
 
             // Delete user
             // Method: DELETE
-            if (deleteBtnIsPressed) {
+            if (modifyBtnIsPressed) {
                 deleteUser(user)
                     .then(() => {
                         const index = allUsers.findIndex(aUser => aUser.id != user.id)
@@ -126,7 +126,7 @@ usersTableBodyEl.addEventListener('click', event => {
 
             const closeBtnIsPressed = event2.target.id === 'closeBtn'
                 || event2.target.id === 'crossBtn' || event2.target.id === 'userModal'
-            const saveBtnIsPressed = event2.target.id === 'editBtn'
+            const modifyBtnIsPressed = event2.target.id === 'modifyBtn'
 
             if (closeBtnIsPressed) {
                 userModal.modal('hide')
@@ -135,7 +135,7 @@ usersTableBodyEl.addEventListener('click', event => {
 
             // Edit user
             // Method: PATCH
-            if (saveBtnIsPressed) {
+            if (modifyBtnIsPressed) {
                 const newUser = getUserFromForm(document.getElementById('userForm'))
                 editUser(newUser)
                     .then((user) => console.log(user))
@@ -317,7 +317,7 @@ function getModal(user, authorities, type) {
                             <button type="button" class="btn btn-secondary"
                                     data-bs-dismiss="modal" id="closeBtn">Close
                             </button>
-                            <button type="submit" class="${btnClass}" id="${type}Btn">
+                            <button type="submit" class="${btnClass}" id="modifyBtn">
                                 ${btnText}
                             </button>
                         </div>
