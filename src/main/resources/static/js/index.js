@@ -78,7 +78,7 @@ usersTableBodyEl.addEventListener('click', event => {
     let user = allUsers.filter(user => user.id == userId)[0]
 
     // Handle Delete button inside <tr>
-    if (delBtnIsPressed) {4
+    if (delBtnIsPressed) {
         modalDivEl.innerHTML += getModal(user, allAuthorities, 'delete')
         const userDeleteModal = $('#userDeleteModal')
         userDeleteModal.modal('show')
