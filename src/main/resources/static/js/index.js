@@ -80,20 +80,20 @@ usersTableBodyEl.addEventListener('click', event => {
     // Handle Delete button inside <tr>
     if (delBtnIsPressed) {
         modalDivEl.innerHTML += getModal(user, allAuthorities, 'delete')
-        const userDeleteModal = $('#userDeleteModal')
-        userDeleteModal.modal('show')
+        const userModal = $('#userModal')
+        userModal.modal('show')
 
-        // Handle userDeleteModal button clicks
-        userDeleteModal.get()[0].addEventListener('click', event2 => {
+        // Handle userModal button clicks
+        userModal.get()[0].addEventListener('click', event2 => {
             event2.preventDefault()
 
             const closeBtnIsPressed = event2.target.id === 'closeBtn'
-                || event2.target.id === 'crossBtn' || event2.target.id === 'userDeleteModal'
+                || event2.target.id === 'crossBtn' || event2.target.id === 'userModal'
             const deleteBtnIsPressed = event2.target.id === 'deleteBtn'
 
             if (closeBtnIsPressed) {
-                userDeleteModal.modal('hide')
-                userDeleteModal.remove()
+                userModal.modal('hide')
+                userModal.remove()
             }
 
             // Delete user
@@ -103,8 +103,8 @@ usersTableBodyEl.addEventListener('click', event => {
                     method: 'DELETE'
                 })
                     .then(() => {
-                        userDeleteModal.modal('hide')
-                        userDeleteModal.remove()
+                        userModal.modal('hide')
+                        userModal.remove()
                         userTableRowEl.remove()
                     })
             }
@@ -114,27 +114,26 @@ usersTableBodyEl.addEventListener('click', event => {
     // Handle Edit button inside <tr>
     if (editBtnIsPressed) {
         modalDivEl.innerHTML += getModal(user, allAuthorities, 'edit')
-        const userEditModal = $('#userEditModal')
-        userEditModal.modal('show')
+        const userModal = $('#userModal')
+        userModal.modal('show')
 
-        // Handle userEditModal button clicks
-        userEditModal.get()[0].addEventListener('click', event2 => {
+        // Handle userModal button clicks
+        userModal.get()[0].addEventListener('click', event2 => {
             event2.preventDefault()
 
             const closeBtnIsPressed = event2.target.id === 'closeBtn'
-                || event2.target.id === 'crossBtn' || event2.target.id === 'userEditModal'
+                || event2.target.id === 'crossBtn' || event2.target.id === 'userModal'
             const saveBtnIsPressed = event2.target.id === 'editBtn'
 
             if (closeBtnIsPressed) {
-                userEditModal.modal('hide')
-                userEditModal.remove()
+                userModal.modal('hide')
+                userModal.remove()
             }
 
             // Edit user
             // Method: PATCH
             if (saveBtnIsPressed) {
-                const userEditForm = document.getElementById('userEditForm')
-                const newUser = getUserFromForm(userEditForm)
+                const newUser = getUserFromForm(document.getElementById('userForm'))
 
                 fetch(`${adminUrl}/${user.id}`, {
                     method: 'PATCH',
@@ -145,8 +144,8 @@ usersTableBodyEl.addEventListener('click', event => {
                 })
                     .then(res => res.json())
                     .then(() => {
-                        userEditModal.modal('hide')
-                        userEditModal.remove()
+                        userModal.modal('hide')
+                        userModal.remove()
                         location.reload()
                     })
             }
@@ -202,11 +201,7 @@ function renderUsersTable(users) {
     usersTableBodyEl.innerHTML = userTableRows
 }
 
-// TODO: change id of Form and Modal
 function getModal(user, authorities, type) {
-    const formIdPrefix = 'user' + capitalize(type) + 'Form'
-    const modalIdPrefix = 'user' + capitalize(type) + 'Modal'
-
     let disabled = ''
     let btnClass = ''
     let btnText = ''
@@ -221,7 +216,7 @@ function getModal(user, authorities, type) {
     }
 
     return `
-        <div class="modal" tabindex="-1" role="dialog" id="${modalIdPrefix}">
+        <div class="modal" tabindex="-1" role="dialog" id="userModal">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
 
@@ -235,7 +230,7 @@ function getModal(user, authorities, type) {
 
                         <div class="modal-body">
                         
-                            <form id="${formIdPrefix}" data-id="${user.id}">
+                            <form id="userForm" data-id="${user.id}">
                                 <div class="row mb-4">
                                     <label for="id" class="fw-bold text-center">ID</label>
                                     <input type="text" id="id"
