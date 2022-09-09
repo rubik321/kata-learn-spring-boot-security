@@ -22,7 +22,7 @@ class User {
 }
 
 let allUsers = []
-let userTableRows = ''
+let userTableRows = []
 let allAuthorities = {}
 
 // Get roles
@@ -101,7 +101,9 @@ usersTableBodyEl.addEventListener('click', event => {
             if (deleteBtnIsPressed) {
                 deleteUser(user)
                     .then(() => {
-                        allUsers = allUsers.filter(aUser => aUser.id != user.id)
+                        const index = allUsers.findIndex(aUser => aUser.id != user.id)
+                        allUsers.splice(index, 1)
+                        userTableRows.splice(index, 1)
                         userTableRowEl.remove()
                     })
                     .finally(() => {
@@ -190,7 +192,7 @@ function getUserFromForm(form) {
 
 function renderUsersTable(users) {
     users.forEach(user => {
-        userTableRows += `
+        userTableRows.push(`
                 <tr class="align-middle" data-id="${user.id}">
                     <td>${user.id}</td>
                     <td>${user.name}</td>
@@ -210,9 +212,9 @@ function renderUsersTable(users) {
                         </button>
                     </td>
                 </tr>
-            `
+            `)
     })
-    usersTableBodyEl.innerHTML = userTableRows
+    usersTableBodyEl.innerHTML = userTableRows.join('')
 }
 
 function getModal(user, authorities, type) {
