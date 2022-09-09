@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
@@ -76,6 +77,16 @@ public class AdminRestController {
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/role")
+    public ResponseEntity<List<Role>> getRoleList() {
+        List<Role> roles = roleService.getAllRoles();
+        if (roles == null) {
+            return ResponseEntity.badRequest().build();
+        } else {
+            return ResponseEntity.ok(roles);
         }
     }
 }
