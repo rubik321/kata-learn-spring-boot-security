@@ -8,6 +8,7 @@ const newUserFormAuthEl = newUserFormEl.querySelector('#newUserForm-authorities'
 const navUsersTableTabEl = document.getElementById('nav-users-table-tab')
 const modalDivEl = document.getElementById('modal-div')
 
+// TODO: add id attr
 class User {
     constructor(name = '', lastName = '', age = 0,
                 email = '', password = '', authorities = []) {
@@ -67,15 +68,15 @@ newUserFormEl.addEventListener('submit', event => {
         })
 });
 
+// TODO: refactor the same code, follow DRY
 usersTableBodyEl.addEventListener('click', event => {
     event.preventDefault()
 
     const delBtnIsPressed = event.target.id === 'userDeleteBtn'
-    const saveBtnIsPressed = event.target.id === 'userSaveBtn'
+    const editBtnIsPressed = event.target.id === 'userEditBtn'
     const userTableRowEl = event.target.parentElement.parentElement
-    const userId = userTableRowEl.dataset.id
 
-    let user = allUsers.filter(user => user.id == userId)[0]
+    let user = allUsers.filter(user => user.id == userTableRowEl.dataset.id)[0]
 
     // Handle Delete button inside <tr>
     if (delBtnIsPressed) {
@@ -110,8 +111,53 @@ usersTableBodyEl.addEventListener('click', event => {
             }
         })
     }
+
+    // Handle Edit button inside <tr>
+    if (editBtnIsPressed) {
+        modalDivEl.innerHTML += getModal(user, allAuthorities, 'edit')
+        const userEditModal = $('#userEditModal')
+        userEditModal.modal('show')
+
+        // Handle userEditModal button clicks
+        userEditModal.get()[0].addEventListener('click', event2 => {
+            event2.preventDefault()
+
+            const closeBtnIsPressed = event2.target.id === 'userEditForm-closeBtn'
+                || event2.target.id === 'userEditForm-crossBtn' || event2.target.id === 'userEditModal'
+            const saveBtnIsPressed = event2.target.id === 'userEditForm-editBtn'
+
+            if (closeBtnIsPressed) {
+                userEditModal.modal('hide')
+                userEditModal.remove()
+            }
+
+            // Edit user
+            // Method: PATCH
+            if (saveBtnIsPressed) {
+                const userEditForm = document.getElementById('userEditForm')
+                const data = new FormData(userEditForm)
+                const newUser = getUserFromFormData(data)
+                newUser.id = user.id // TODO: remove when adding id in getUserFromFormData()
+
+                fetch(`${adminUrl}/${user.id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(newUser)
+                })
+                    .then(res => res.json())
+                    .then(() => {
+                        userEditModal.modal('hide')
+                        userEditModal.remove()
+                        location.reload()
+                    })
+            }
+        })
+    }
 })
 
+// TODO: get id from Form
 function getUserFromFormData(data) {
     let user = new User()
     user.name = data.get('firstName')
@@ -140,15 +186,13 @@ function renderUsersTable(users) {
                     <td>${user.email}</td>
                     <td>${user.authorities.map(a => a.authority).join(' ')}</td>
                     <td>
-                        <button type="button" class="btn text-white" data-bs-toggle="modal"
-                                data-bs-target="#userEditModal" id="userEditBtn"
+                        <button type="button" class="btn text-white" id="userEditBtn"
                                 style="background-color: #17a2b8">
                             Edit
                         </button>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                data-bs-target="#userDeleteModal" id="userDeleteBtn">
+                        <button type="button" class="btn btn-danger" id="userDeleteBtn">
                             Delete
                         </button>
                     </td>
@@ -158,20 +202,20 @@ function renderUsersTable(users) {
     usersTableBodyEl.innerHTML = userTableRows
 }
 
+// TODO: change id of Form and Modal
 function getModal(user, authorities, type) {
     const formIdPrefix = 'user' + capitalize(type) + 'Form'
     const modalIdPrefix = 'user' + capitalize(type) + 'Modal'
 
-    let disabled = false
+    let disabled = ''
     let btnClass = ''
     let btnText = ''
 
     if (type === 'edit') {
-        disabled = false;
         btnClass = 'btn btn-primary'
         btnText = 'Save'
     } else if (type === 'delete') {
-        disabled = true
+        disabled = 'disabled'
         btnClass = 'btn btn-danger'
         btnText = 'Delete'
     }
@@ -180,8 +224,6 @@ function getModal(user, authorities, type) {
         <div class="modal" tabindex="-1" role="dialog" id="${modalIdPrefix}">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-
-                    <form id="${formIdPrefix}" data-id="${user.id}">
 
                         <div class="modal-header">
                             <h5 class="modal-title">${capitalize(type)} user</h5>
@@ -192,68 +234,72 @@ function getModal(user, authorities, type) {
                         </div>
 
                         <div class="modal-body">
-                            <div class="row mb-4">
-                                <label for="${formIdPrefix}-id" class="fw-bold text-center">ID</label>
-                                <input type="text" id="${formIdPrefix}-id"
-                                       class="form-control" disabled
-                                       name="id" value="${user.id}">
-                            </div>
-
-                            <div class="row mb-4">
-                                <label for="${formIdPrefix}-firstName" class="fw-bold text-center">First name</label>
-                                <input type="text" id="${formIdPrefix}-firstName"
-                                       class="form-control" 
-                                       name="name"
-                                       value="${user.name}"
-                                       disabled="${disabled}">
-                            </div>
-
-                            <div class="row mb-4">
-                                <label for="${formIdPrefix}-lastName" class="fw-bold text-center">Last name</label>
-                                <input type="text" id="${formIdPrefix}-lastName"
-                                       class="form-control"
-                                       name="lastName"
-                                       value="${user.lastName}"
-                                       disabled="${disabled}">
-                            </div>
-
-                            <div class="row mb-4">
-                                <label for="${formIdPrefix}-age" class="fw-bold text-center">Age</label>
-                                <input type="number" id="${formIdPrefix}-age"
-                                       class="form-control" 
-                                       name="age"
-                                       value="${user.age}"
-                                       disabled="${disabled}">
-                            </div>
-
-                            <div class="row mb-4">
-                                <label for="${formIdPrefix}-email" class="fw-bold text-center">Email</label>
-                                <input type="email" id="${formIdPrefix}-email"
-                                       class="form-control" 
-                                       name="email"
-                                       value="${user.email}"
-                                       disabled="${disabled}">
-                            </div>
-
-                            <div class="row mb-4" hidden="${disabled}">
-                                <label for="${formIdPrefix}-password" class="fw-bold text-center">Password</label>
-                                <input type="password" id="${formIdPrefix}--password"
-                                       class="form-control"
-                                       name="password"
-                                       value="${user.password}"
-                                       disabled="${disabled}">
-                            </div>
-
-                            <div class="row mb-4">
-                                <label for="${formIdPrefix}-authorities" class="fw-bold text-center">Role</label>
-                                <select id="${formIdPrefix}-authorities" 
-                                        class="form-select"
-                                        multiple name="authorities"
-                                        disabled="${disabled}"
-                                        size="${authorities.length}">
-                                    ${getAuthoritiesOptions(user, authorities)}
-                                </select>
-                            </div>
+                        
+                            <form id="${formIdPrefix}" data-id="${user.id}">
+                                <div class="row mb-4">
+                                    <label for="${formIdPrefix}-id" class="fw-bold text-center">ID</label>
+                                    <input type="text" id="${formIdPrefix}-id"
+                                           class="form-control" readonly
+                                           name="id" value="${user.id}">
+                                </div>
+    
+                                <div class="row mb-4">
+                                    <label for="${formIdPrefix}-firstName" class="fw-bold text-center">First name</label>
+                                    <input type="text" id="${formIdPrefix}-firstName"
+                                           class="form-control" 
+                                           name="firstName"
+                                           value="${user.name}"
+                                           ${disabled}>
+                                </div>
+    
+                                <div class="row mb-4">
+                                    <label for="${formIdPrefix}-lastName" class="fw-bold text-center">Last name</label>
+                                    <input type="text" id="${formIdPrefix}-lastName"
+                                           class="form-control"
+                                           name="lastName"
+                                           value="${user.lastName}"
+                                           ${disabled}>
+                                </div>
+    
+                                <div class="row mb-4">
+                                    <label for="${formIdPrefix}-age" class="fw-bold text-center">Age</label>
+                                    <input type="number" id="${formIdPrefix}-age"
+                                           class="form-control" 
+                                           name="age"
+                                           value="${user.age}"
+                                           ${disabled}>
+                                </div>
+    
+                                <div class="row mb-4">
+                                    <label for="${formIdPrefix}-email" class="fw-bold text-center">Email</label>
+                                    <input type="email" id="${formIdPrefix}-email"
+                                           class="form-control" 
+                                           name="email"
+                                           value="${user.email}"
+                                           ${disabled}>
+                                </div>
+    
+                                <div class="row mb-4" hidden="${disabled}">
+                                    <label for="${formIdPrefix}-password" class="fw-bold text-center">Password</label>
+                                    <input type="password" id="${formIdPrefix}--password"
+                                           class="form-control"
+                                           name="password"
+                                           value="${user.password}"
+                                           ${disabled}>
+                                </div>
+    
+                                <div class="row mb-4">
+                                    <label for="${formIdPrefix}-authorities" class="fw-bold text-center">Role</label>
+                                    <select id="${formIdPrefix}-authorities" 
+                                            class="form-select"
+                                            multiple name="authorities"
+                                            ${disabled}
+                                            size="${authorities.length}">
+                                        ${getAuthoritiesOptions(user, authorities)}
+                                    </select>
+                                </div>
+                            </form>
+                            
                         </div>
 
                         <div class="modal-footer">
@@ -265,7 +311,6 @@ function getModal(user, authorities, type) {
                             </button>
                         </div>
 
-                    </form>
                 </div>
             </div>
         </div>
