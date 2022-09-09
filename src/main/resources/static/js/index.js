@@ -76,12 +76,10 @@ usersTableBodyEl.addEventListener('click', event => {
 
     let user = allUsers.filter(user => user.id == userTableRowEl.dataset.id)[0]
 
-    // Handle Delete button inside <tr>
     if (delBtnIsPressed) {
         handleUserModifyButtons(user, 'delete', userTableRowEl)
     }
 
-    // Handle Edit button inside <tr>
     if (editBtnIsPressed) {
         handleUserModifyButtons(user, 'edit')
     }
@@ -92,7 +90,6 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
     const userModal = $('#userModal')
     userModal.modal('show')
 
-    // Handle userModal button clicks
     userModal.get()[0].addEventListener('click', event => {
         event.preventDefault()
 
