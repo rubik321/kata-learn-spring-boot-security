@@ -154,7 +154,7 @@ function getModal(user, authorities, type) {
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
 
-                    <form id="${type}UserForm" data-id="${user.id}">
+                    <form id="${formIdPrefix}" data-id="${user.id}">
 
                         <div class="modal-header">
                             <h5 class="modal-title">${capitalize(type)} user</h5>
