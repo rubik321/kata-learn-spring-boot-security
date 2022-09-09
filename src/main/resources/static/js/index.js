@@ -102,8 +102,6 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
             userModal.remove()
         }
 
-        // Delete user
-        // Method: DELETE
         if (type === 'delete') {
             deleteUser(user)
                 .then(() => {
@@ -119,8 +117,6 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
         }
 
         if (modifyBtnIsPressed) {
-            // Edit user
-            // Method: PATCH
             if (type === 'edit') {
                 const newUser = getUserFromForm(document.getElementById('userForm'))
                 editUser(newUser)
