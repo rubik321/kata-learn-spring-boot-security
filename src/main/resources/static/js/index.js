@@ -51,17 +51,12 @@ newUserFormEl.addEventListener('submit', event => {
 
     const user = getUserFromForm(event.target)
 
-    fetch(adminUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(user)
-    })
-        .then(res => res.json())
+    createUser(user)
         .then(user => {
             allUsers.push(user)
             renderUsersTable([user])
+        })
+        .finally(() => {
             navUsersTableTabEl.click()
             event.target.reset()
         })
@@ -131,6 +126,17 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
             }
         }
     })
+}
+
+function createUser(user) {
+    return fetch(adminUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user)
+    })
+        .then(res => res.json())
 }
 
 function deleteUser(user) {
