@@ -67,6 +67,8 @@ newUserFormEl.addEventListener('submit', event => {
         })
 });
 
+// Delete & Edit user
+// Method: DELETE, PATCH
 usersTableBodyEl.addEventListener('click', event => {
     event.preventDefault()
 
