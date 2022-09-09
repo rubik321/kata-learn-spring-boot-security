@@ -19,6 +19,7 @@ class User {
     }
 }
 
+let allUsers = []
 let userTableRows = ''
 let allAuthorities = {}
 
@@ -36,7 +37,10 @@ fetch(roleUrl)
 // Method: GET
 fetch(adminUrl)
     .then(res => res.json())
-    .then(users => renderUsersTable(users))
+    .then(users => {
+        allUsers = users
+        renderUsersTable(users)
+    })
 
 // Create user
 // Method: POST
@@ -66,11 +70,13 @@ usersTableBodyEl.addEventListener('click', event => {
 
     const delBtnIsPressed = event.target.id === 'userDeleteBtn'
     const saveBtnIsPressed = event.target.id === 'userSaveBtn'
+    const userId = event.target.parentElement.parentElement.dataset.id
+
+    let user = allUsers.filter(user => user.id == userId)[0]
 
     // Delete user
     // Method: DELETE
     if (delBtnIsPressed) {
-        const id = event.target.parentElement.parentElement.dataset.id
         fetch(`${adminUrl}/${id}`, {
             method: 'DELETE'
         })
