@@ -102,21 +102,21 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
             userModal.remove()
         }
 
-        if (type === 'delete') {
-            deleteUser(user)
-                .then(() => {
-                    const index = allUsers.findIndex(aUser => aUser.id !== user.id)
-                    allUsers.splice(index, 1)
-                    userTableRows.splice(index, 1)
-                    userTableRowEl.remove()
-                })
-                .finally(() => {
-                    userModal.modal('hide')
-                    userModal.remove()
-                })
-        }
-
         if (modifyBtnIsPressed) {
+            if (type === 'delete') {
+                deleteUser(user)
+                    .then(() => {
+                        const index = allUsers.findIndex(aUser => aUser.id !== user.id)
+                        allUsers.splice(index, 1)
+                        userTableRows.splice(index, 1)
+                        userTableRowEl.remove()
+                    })
+                    .finally(() => {
+                        userModal.modal('hide')
+                        userModal.remove()
+                    })
+            }
+
             if (type === 'edit') {
                 const newUser = getUserFromForm(document.getElementById('userForm'))
                 editUser(newUser)
