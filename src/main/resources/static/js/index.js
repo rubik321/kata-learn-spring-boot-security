@@ -100,7 +100,10 @@ usersTableBodyEl.addEventListener('click', event => {
             // Method: DELETE
             if (deleteBtnIsPressed) {
                 fetch(`${adminUrl}/${user.id}`, {
-                    method: 'DELETE'
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
                 })
                     .then(() => {
                         userModal.modal('hide')
