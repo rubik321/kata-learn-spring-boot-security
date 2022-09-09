@@ -37,8 +37,7 @@ fetch(roleUrl)
 
 // Get users
 // Method: GET
-fetch(adminUrl)
-    .then(res => res.json())
+getUsers()
     .then(users => {
         allUsers = users
         renderUsersTable(users)
@@ -126,6 +125,11 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
             }
         }
     })
+}
+
+function getUsers() {
+    return fetch(adminUrl)
+        .then(res => res.json())
 }
 
 function createUser(user) {
