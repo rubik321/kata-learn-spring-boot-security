@@ -4,14 +4,14 @@ const roleUrl = baseUrl + '/api/v1/admin/role'
 
 const usersTableBodyEl = document.getElementById('users-tbody')
 const newUserFormEl = document.getElementById('newUserForm')
-const newUserFormAuthEl = newUserFormEl.querySelector('#newUserForm-authorities')
+const newUserFormAuthEl = newUserFormEl.querySelector('#authorities')
 const navUsersTableTabEl = document.getElementById('nav-users-table-tab')
 const modalDivEl = document.getElementById('modal-div')
 
-// TODO: add id attr
 class User {
-    constructor(name = '', lastName = '', age = 0,
+    constructor(id = 0, name = '', lastName = '', age = 0,
                 email = '', password = '', authorities = []) {
+        this.id = id
         this.name = name,
         this.lastName = lastName,
         this.age = age,
@@ -49,8 +49,7 @@ fetch(adminUrl)
 newUserFormEl.addEventListener('submit', event => {
     event.preventDefault()
 
-    const data = new FormData(event.target)
-    const user = getUserFromFormData(data)
+    const user = getUserFromForm(event.target)
 
     fetch(adminUrl, {
         method: 'POST',
@@ -88,9 +87,9 @@ usersTableBodyEl.addEventListener('click', event => {
         userDeleteModal.get()[0].addEventListener('click', event2 => {
             event2.preventDefault()
 
-            const closeBtnIsPressed = event2.target.id === 'userDeleteForm-closeBtn'
-                || event2.target.id === 'userDeleteForm-crossBtn' || event2.target.id === 'userDeleteModal'
-            const deleteBtnIsPressed = event2.target.id === 'userDeleteForm-deleteBtn'
+            const closeBtnIsPressed = event2.target.id === 'closeBtn'
+                || event2.target.id === 'crossBtn' || event2.target.id === 'userDeleteModal'
+            const deleteBtnIsPressed = event2.target.id === 'deleteBtn'
 
             if (closeBtnIsPressed) {
                 userDeleteModal.modal('hide')
@@ -122,9 +121,9 @@ usersTableBodyEl.addEventListener('click', event => {
         userEditModal.get()[0].addEventListener('click', event2 => {
             event2.preventDefault()
 
-            const closeBtnIsPressed = event2.target.id === 'userEditForm-closeBtn'
-                || event2.target.id === 'userEditForm-crossBtn' || event2.target.id === 'userEditModal'
-            const saveBtnIsPressed = event2.target.id === 'userEditForm-editBtn'
+            const closeBtnIsPressed = event2.target.id === 'closeBtn'
+                || event2.target.id === 'crossBtn' || event2.target.id === 'userEditModal'
+            const saveBtnIsPressed = event2.target.id === 'editBtn'
 
             if (closeBtnIsPressed) {
                 userEditModal.modal('hide')
@@ -135,9 +134,7 @@ usersTableBodyEl.addEventListener('click', event => {
             // Method: PATCH
             if (saveBtnIsPressed) {
                 const userEditForm = document.getElementById('userEditForm')
-                const data = new FormData(userEditForm)
-                const newUser = getUserFromFormData(data)
-                newUser.id = user.id // TODO: remove when adding id in getUserFromFormData()
+                const newUser = getUserFromForm(userEditForm)
 
                 fetch(`${adminUrl}/${user.id}`, {
                     method: 'PATCH',
@@ -157,15 +154,18 @@ usersTableBodyEl.addEventListener('click', event => {
     }
 })
 
-// TODO: get id from Form
-function getUserFromFormData(data) {
+function getUserFromForm(form) {
+    const userFormAuthorities = form.querySelector('#authorities')
+    const data = new FormData(form)
+
     let user = new User()
+    user.id = data.get('id')
     user.name = data.get('firstName')
     user.lastName = data.get('lastName')
     user.age = data.get('age')
     user.email = data.get('email')
     user.password = data.get('password')
-    user.authorities = Array.from(newUserFormAuthEl.selectedOptions).map(option => {
+    user.authorities = Array.from(userFormAuthorities.selectedOptions).map(option => {
         return {
             id: option.value,
             authority: option.text
@@ -230,22 +230,22 @@ function getModal(user, authorities, type) {
                             <button type="button" class="btn-close"
                                     data-bs-dismiss="modal"}
                                     aria-label="Close"
-                                    id="${formIdPrefix}-crossBtn"></button>
+                                    id="crossBtn"></button>
                         </div>
 
                         <div class="modal-body">
                         
                             <form id="${formIdPrefix}" data-id="${user.id}">
                                 <div class="row mb-4">
-                                    <label for="${formIdPrefix}-id" class="fw-bold text-center">ID</label>
-                                    <input type="text" id="${formIdPrefix}-id"
+                                    <label for="id" class="fw-bold text-center">ID</label>
+                                    <input type="text" id="id"
                                            class="form-control" readonly
                                            name="id" value="${user.id}">
                                 </div>
     
                                 <div class="row mb-4">
-                                    <label for="${formIdPrefix}-firstName" class="fw-bold text-center">First name</label>
-                                    <input type="text" id="${formIdPrefix}-firstName"
+                                    <label for="firstName" class="fw-bold text-center">First name</label>
+                                    <input type="text" id="firstName"
                                            class="form-control" 
                                            name="firstName"
                                            value="${user.name}"
@@ -253,8 +253,8 @@ function getModal(user, authorities, type) {
                                 </div>
     
                                 <div class="row mb-4">
-                                    <label for="${formIdPrefix}-lastName" class="fw-bold text-center">Last name</label>
-                                    <input type="text" id="${formIdPrefix}-lastName"
+                                    <label for="lastName" class="fw-bold text-center">Last name</label>
+                                    <input type="text" id="lastName"
                                            class="form-control"
                                            name="lastName"
                                            value="${user.lastName}"
@@ -262,8 +262,8 @@ function getModal(user, authorities, type) {
                                 </div>
     
                                 <div class="row mb-4">
-                                    <label for="${formIdPrefix}-age" class="fw-bold text-center">Age</label>
-                                    <input type="number" id="${formIdPrefix}-age"
+                                    <label for="age" class="fw-bold text-center">Age</label>
+                                    <input type="number" id="age"
                                            class="form-control" 
                                            name="age"
                                            value="${user.age}"
@@ -271,8 +271,8 @@ function getModal(user, authorities, type) {
                                 </div>
     
                                 <div class="row mb-4">
-                                    <label for="${formIdPrefix}-email" class="fw-bold text-center">Email</label>
-                                    <input type="email" id="${formIdPrefix}-email"
+                                    <label for="email" class="fw-bold text-center">Email</label>
+                                    <input type="email" id="email"
                                            class="form-control" 
                                            name="email"
                                            value="${user.email}"
@@ -280,8 +280,8 @@ function getModal(user, authorities, type) {
                                 </div>
     
                                 <div class="row mb-4" hidden="${disabled}">
-                                    <label for="${formIdPrefix}-password" class="fw-bold text-center">Password</label>
-                                    <input type="password" id="${formIdPrefix}--password"
+                                    <label for="password" class="fw-bold text-center">Password</label>
+                                    <input type="password" id="-password"
                                            class="form-control"
                                            name="password"
                                            value="${user.password}"
@@ -289,8 +289,8 @@ function getModal(user, authorities, type) {
                                 </div>
     
                                 <div class="row mb-4">
-                                    <label for="${formIdPrefix}-authorities" class="fw-bold text-center">Role</label>
-                                    <select id="${formIdPrefix}-authorities" 
+                                    <label for="authorities" class="fw-bold text-center">Role</label>
+                                    <select id="authorities" 
                                             class="form-select"
                                             multiple name="authorities"
                                             ${disabled}
@@ -304,9 +304,9 @@ function getModal(user, authorities, type) {
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary"
-                                    data-bs-dismiss="modal" id="${formIdPrefix}-closeBtn">Close
+                                    data-bs-dismiss="modal" id="closeBtn">Close
                             </button>
-                            <button type="submit" class="${btnClass}" id="${formIdPrefix}-${type}Btn">
+                            <button type="submit" class="${btnClass}" id="${type}Btn">
                                 ${btnText}
                             </button>
                         </div>
