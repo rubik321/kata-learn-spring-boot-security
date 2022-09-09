@@ -11,11 +11,11 @@ class User {
     constructor(name = '', lastName = '', age = 0,
                 email = '', password = '', authorities = []) {
         this.name = name,
-            this.lastName = lastName,
-            this.age = age,
-            this.email = email,
-            this.password = password,
-            this.authorities = authorities
+        this.lastName = lastName,
+        this.age = age,
+        this.email = email,
+        this.password = password,
+        this.authorities = authorities
     }
 }
 
@@ -70,8 +70,7 @@ usersTableBodyEl.addEventListener('click', event => {
 
     const delBtnIsPressed = event.target.id === 'userDeleteBtn'
     const saveBtnIsPressed = event.target.id === 'userSaveBtn'
-    const userTableRowEl = event.target.parentElement.parentElement
-    const userId = userTableRowEl.dataset.id
+    const userId = event.target.parentElement.parentElement.dataset.id
 
     let user = allUsers.filter(user => user.id == userId)[0]
 
