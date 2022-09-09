@@ -6,6 +6,7 @@ const usersTableBodyEl = document.getElementById('users-tbody')
 const newUserFormEl = document.getElementById('newUserForm')
 const newUserFormAuthEl = newUserFormEl.querySelector('#newUserForm-authorities')
 const navUsersTableTabEl = document.getElementById('nav-users-table-tab')
+const modalDivEl = document.getElementById('modal-div')
 
 class User {
     constructor(name = '', lastName = '', age = 0,
@@ -70,18 +71,43 @@ usersTableBodyEl.addEventListener('click', event => {
 
     const delBtnIsPressed = event.target.id === 'userDeleteBtn'
     const saveBtnIsPressed = event.target.id === 'userSaveBtn'
-    const userId = event.target.parentElement.parentElement.dataset.id
+    const userTableRowEl = event.target.parentElement.parentElement
+    const userId = userTableRowEl.dataset.id
 
     let user = allUsers.filter(user => user.id == userId)[0]
 
-    // Delete user
-    // Method: DELETE
+    // Handle Delete button inside <tr>
     if (delBtnIsPressed) {
-        fetch(`${adminUrl}/${id}`, {
-            method: 'DELETE'
+        modalDivEl.innerHTML += getModal(user, allAuthorities, 'delete')
+        const userDeleteModal = $('#userDeleteModal')
+        userDeleteModal.modal('show')
+
+        // Handle userDeleteModal button clicks
+        userDeleteModal.get()[0].addEventListener('click', event2 => {
+            event2.preventDefault()
+
+            const closeBtnIsPressed = event2.target.id === 'userDeleteForm-closeBtn'
+                || event2.target.id === 'userDeleteForm-crossBtn' || event2.target.id === 'userDeleteModal'
+            const deleteBtnIsPressed = event2.target.id === 'userDeleteForm-deleteBtn'
+
+            if (closeBtnIsPressed) {
+                userDeleteModal.modal('hide')
+                userDeleteModal.remove()
+            }
+
+            // Delete user
+            // Method: DELETE
+            if (deleteBtnIsPressed) {
+                fetch(`${adminUrl}/${user.id}`, {
+                    method: 'DELETE'
+                })
+                    .then(() => {
+                        userDeleteModal.modal('hide')
+                        userDeleteModal.remove()
+                        userTableRowEl.remove()
+                    })
+            }
         })
-            .then(res => res.json())
-            .then(() => location.reload())
     }
 })
 
@@ -168,7 +194,7 @@ function getModal(user, authorities, type) {
                             <div class="row mb-4">
                                 <label for="${formIdPrefix}-id" class="fw-bold text-center">ID</label>
                                 <input type="text" id="${formIdPrefix}-id"
-                                       class="form-control" readonly
+                                       class="form-control" disabled
                                        name="id" value="${user.id}">
                             </div>
 
