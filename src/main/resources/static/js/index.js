@@ -137,16 +137,9 @@ usersTableBodyEl.addEventListener('click', event => {
             // Method: PATCH
             if (saveBtnIsPressed) {
                 const newUser = getUserFromForm(document.getElementById('userForm'))
-
-                fetch(`${adminUrl}/${user.id}`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(newUser)
-                })
-                    .then(res => res.json())
-                    .then(() => {
+                editUser(newUser)
+                    .then((user) => console.log(user))
+                    .finally(() => {
                         userModal.modal('hide')
                         userModal.remove()
                         location.reload()
@@ -155,6 +148,17 @@ usersTableBodyEl.addEventListener('click', event => {
         })
     }
 })
+
+function editUser(user) {
+    return fetch(`${adminUrl}/${user.id}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user)
+    })
+        .then(res => res.json())
+}
 
 function getUserFromForm(form) {
     const userFormAuthorities = form.querySelector('#authorities')
