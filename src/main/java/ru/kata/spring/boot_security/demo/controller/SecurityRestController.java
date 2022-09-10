@@ -16,11 +16,11 @@ public class SecurityRestController {
 
     @GetMapping("/principal")
     public ResponseEntity<User> getPrincipal() {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (user == null) {
+        Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user.getClass() == String.class) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } else {
-            return ResponseEntity.ok(user);
+            return ResponseEntity.ok((User) user);
         }
     }
 }
