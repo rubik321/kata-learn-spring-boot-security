@@ -91,7 +91,7 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
         const modifyBtnIsPressed = event.target.id === 'modifyBtn'
 
         if (closeBtnIsPressed) {
-            removeModelFromPage(userModal)
+            removeModalFromPage(userModal)
         }
 
         if (modifyBtnIsPressed) {
@@ -103,7 +103,7 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
                         deleteUserTableRow(userTableRowEl, userIndex)
                     })
                     .finally(() => {
-                        removeModelFromPage(userModal)
+                        removeModalFromPage(userModal)
                     })
             }
 
@@ -114,7 +114,7 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
                         editUserTableRow(user, userIndex)
                     })
                     .finally(() => {
-                        removeModelFromPage(userModal)
+                        removeModalFromPage(userModal)
                     })
             }
         }
@@ -191,7 +191,7 @@ function createUserModalOnPage(user, type) {
     return modal
 }
 
-function removeModelFromPage(modal) {
+function removeModalFromPage(modal) {
     modal.modal('hide')
     modal.remove()
 }
