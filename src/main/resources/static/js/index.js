@@ -117,8 +117,7 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
                 const newUser = getUserFromForm(document.getElementById('userForm'))
                 editUser(newUser)
                     .then((user) => {
-                        allUsers[userIndex] = user
-                        updateUsersTable(user, userIndex)
+                        editUserTableRow(user, userIndex)
                     })
                     .finally(() => {
                         userModal.modal('hide')
@@ -191,7 +190,8 @@ function getUserFromForm(form) {
     return user
 }
 
-function updateUsersTable(user, index) {
+function editUserTableRow(user, index) {
+    allUsers[index] = user
     userTableRows[index] = getUserTableRowTemplate(user)
     usersTableBodyEl.innerHTML = userTableRows.join('')
 }
