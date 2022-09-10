@@ -93,8 +93,7 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
         const modifyBtnIsPressed = event.target.id === 'modifyBtn'
 
         if (closeBtnIsPressed) {
-            userModal.modal('hide')
-            userModal.remove()
+            removeModelFromPage(userModal)
         }
 
         if (modifyBtnIsPressed) {
@@ -106,8 +105,7 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
                         deleteUserTableRow(userTableRowEl, userIndex)
                     })
                     .finally(() => {
-                        userModal.modal('hide')
-                        userModal.remove()
+                        removeModelFromPage(userModal)
                     })
             }
 
@@ -118,8 +116,7 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
                         editUserTableRow(user, userIndex)
                     })
                     .finally(() => {
-                        userModal.modal('hide')
-                        userModal.remove()
+                        removeModelFromPage(userModal)
                     })
             }
         }
@@ -186,6 +183,11 @@ function getUserFromForm(form) {
     })
 
     return user
+}
+
+function removeModelFromPage(modal) {
+    modal.modal('hide')
+    modal.remove()
 }
 
 function deleteUserTableRow(trEl, index) {
