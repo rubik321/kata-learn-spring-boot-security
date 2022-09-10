@@ -81,9 +81,7 @@ usersTableBodyEl.addEventListener('click', event => {
 })
 
 function handleUserModifyButtons(user, type, userTableRowEl) {
-    modalDivEl.innerHTML += getModal(user, allAuthorities, type)
-    const userModal = $('#userModal')
-    userModal.modal('show')
+    const userModal = createUserModalOnPage(user, type)
 
     userModal.get()[0].addEventListener('click', event => {
         event.preventDefault()
@@ -183,6 +181,14 @@ function getUserFromForm(form) {
     })
 
     return user
+}
+
+function createUserModalOnPage(user, type) {
+    modalDivEl.innerHTML += getModal(user, allAuthorities, type)
+    const modal = $('#userModal')
+    modal.modal('show')
+
+    return modal
 }
 
 function removeModelFromPage(modal) {
