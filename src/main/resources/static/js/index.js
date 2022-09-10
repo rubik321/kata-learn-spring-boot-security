@@ -103,9 +103,7 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
             if (type === 'delete') {
                 deleteUser(user)
                     .then(() => {
-                        allUsers.splice(userIndex, 1)
-                        userTableRows.splice(userIndex, 1)
-                        userTableRowEl.remove()
+                        deleteUserTableRow(userTableRowEl, userIndex)
                     })
                     .finally(() => {
                         userModal.modal('hide')
@@ -188,6 +186,12 @@ function getUserFromForm(form) {
     })
 
     return user
+}
+
+function deleteUserTableRow(trEl, index) {
+    allUsers.splice(index, 1)
+    userTableRows.splice(index, 1)
+    trEl.remove()
 }
 
 function editUserTableRow(user, index) {
