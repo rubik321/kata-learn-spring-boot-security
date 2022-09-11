@@ -326,7 +326,7 @@ function getModal(user, authorities, type) {
                 <div class="modal-content">
 
                         <div class="modal-header">
-                            <h5 class="modal-title">${capitalize(type)} user</h5>
+                            <h5 class="modal-title">${type[0].toUpperCase() + type.slice(1)} user</h5>
                             <button type="button" class="btn-close"
                                     data-bs-dismiss="modal"}
                                     aria-label="Close"
@@ -427,7 +427,7 @@ function getAuthoritiesOptions(user, authorities) {
 
     authorities.forEach(auth => {
         const roleId = auth.id
-        const roleName = auth.authority.replace('ROLE_', '')
+        const roleName = getAuthorityName(auth)
 
         if (userAuthoritiesId.includes(roleId)) {
             res += `<option value="${auth.id}" selected>${roleName}</option>`
@@ -437,8 +437,4 @@ function getAuthoritiesOptions(user, authorities) {
     })
 
     return res
-}
-
-function capitalize(s) {
-    return s[0].toUpperCase() + s.slice(1);
 }
