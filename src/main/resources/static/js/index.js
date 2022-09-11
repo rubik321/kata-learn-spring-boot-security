@@ -32,23 +32,17 @@ getLoggedUser()
         loggedUserRolesEl.children[0].innerHTML = user.email
         loggedUserRolesEl.children[1].innerHTML = authorityNames.join(' ')
 
-        let isAdmin = false
-
-
-        if (authorityNames.includes('ADMIN')) {
-            getRoles()
-                .then((authorities) => {
-                    renderNewUserTab(authorities)
-                    addNewUserBtnListener()
-                })
-            getUsers()
-                .then((users) => {
-                    renderUsersTable(users)
-                    addUsersTableBtnListener()
-                })
-        }
-
-        renderSidebarLinks(isAdmin, true)
+        getRoles()
+            .then((authorities) => {
+                renderNewUserTab(authorities)
+                addNewUserBtnListener()
+            })
+        getUsers()
+            .then((users) => {
+                renderUsersTable(users)
+                addUsersTableBtnListener()
+                renderSidebarLinks()
+            })
     })
 
 function addNewUserBtnListener() {
@@ -416,24 +410,13 @@ function getAuthoritiesOptions(user, authorities) {
     return res
 }
 
-function renderSidebarLinks(isAdmin, isAdminPage) {
-    let res = ''
-    if (isAdmin) {
-        res += `
-            <a class="list-group-item list-group-item-action ripple rounded ${isAdminPage ? 'active' : ''}"
-               aria-current="true" onclick="renderAdminPage()" ">Admin</a>
-        `
-        res += `
-            <a class="list-group-item list-group-item-action ripple rounded ${!isAdminPage ? 'active' : ''}"
-               aria-current="true" onclick="renderUserPage()" ">User</a>
-        `
-    } else {
-        res = `
-            <a class="list-group-item list-group-item-action ripple rounded active"
-               aria-current="true" onclick="renderUserPage()" ">User</a>
-        `
-    }
-    sidebarEl.innerHTML = res
+function renderSidebarLinks() {
+    sidebarEl.innerHTML = `
+        <a class="list-group-item list-group-item-action ripple rounded active"
+           aria-current="true" href="/admin.html">Admin</a>
+        <a class="list-group-item list-group-item-action ripple rounded}"
+           aria-current="true" href="/user.html">User</a>
+    `
 }
 
 function renderNewUserTab(authorities) {
