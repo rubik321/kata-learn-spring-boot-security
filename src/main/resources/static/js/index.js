@@ -8,6 +8,7 @@ const newUserFormEl = document.getElementById('newUserForm')
 const newUserFormAuthEl = newUserFormEl.querySelector('#authorities')
 const navUsersTableTabEl = document.getElementById('nav-users-table-tab')
 const modalDivEl = document.getElementById('modal-div')
+const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
 
 class User {
     constructor(id = 0, name = '', lastName = '', age = 0,
@@ -98,17 +99,11 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
             const userIndex = allUsers.findIndex(aUser => aUser.id === user.id)
 
             if (type === 'delete') {
-                let msg = ''
                 fetchDeleteUser(user)
-                    .then((m) => {
-                        deleteUserTableRow(userTableRowEl, userIndex)
-                        console.log(msg)
-                    })
-                    .catch(m => {
-                        deleteUserTableRow(userTableRowEl, userIndex)
-                        console.log(msg)
-                    })
+                    .then((msg) => alertMessage(msg, 'success'))
+                    .catch(msg => alertMessage(msg, 'danger'))
                     .finally(() => {
+                        deleteUserTableRow(userTableRowEl, userIndex)
                         removeModalFromPage(userModal)
                     })
             }
@@ -158,10 +153,10 @@ async function fetchDeleteUser(user) {
         }
     })
     if (response.ok) {
-        return new Promise(resolve => resolve("User is sucessfuly deleted"))
+        return new Promise(resolve => resolve(`User ${user.email} is successfully deleted`))
     } else {
         return new Promise(function (resolve, reject) {
-            reject("User is not found")
+            reject(`User ${user.email} is not found`)
         })
     }
 }
@@ -175,6 +170,18 @@ function editUser(user) {
         body: JSON.stringify(user)
     })
         .then(res => res.json())
+}
+
+function alertMessage(message, type) {
+    const wrapper = document.createElement('div')
+    wrapper.innerHTML = [
+        `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+        `   <div>${message}</div>`,
+        '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+        '</div>'
+    ].join('')
+
+    alertPlaceholder.append(wrapper)
 }
 
 function getUserFromForm(form) {
