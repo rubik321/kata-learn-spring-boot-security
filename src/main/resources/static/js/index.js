@@ -50,21 +50,9 @@ getUsers()
 // Handle 'Add new user' user button clicks
 newUserFormEl.addEventListener('submit', event => {
     event.preventDefault()
-
-    const user = getUserFromForm(event.target)
-
-    fetchCreateUser(user)
-        .then(response => {
-            const user = response.user
-            allUsers.push(user)
-            renderUsersTable([user])
-            alertMessage(response.msg, 'success')
-        })
-        .catch(msg => alertMessage(msg, 'danger'))
-        .finally(() => {
-            navUsersTableTabEl.click()
-            event.target.reset()
-        })
+    createUser(getUserFromForm(event.target))
+    navUsersTableTabEl.click()
+    event.target.reset()
 });
 
 // Handle 'Delete & Edit' user buttons clicks
@@ -104,13 +92,9 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
             const userIndex = allUsers.findIndex(aUser => aUser.id === user.id)
 
             if (type === 'delete') {
-                fetchDeleteUser(user)
-                    .then((msg) => alertMessage(msg, 'success'))
-                    .catch(msg => alertMessage(msg, 'danger'))
-                    .finally(() => {
-                        deleteUserTableRow(userTableRowEl, userIndex)
-                        removeModalFromPage(userModal)
-                    })
+                deleteUser(user)
+                deleteUserTableRow(userTableRowEl, userIndex)
+                removeModalFromPage(userModal)
             }
 
             if (type === 'edit') {
@@ -161,7 +145,7 @@ async function getUsers() {
 
 // Create user
 // Method: POST
-async function fetchCreateUser(user) {
+async function createUser(user) {
     const response = await fetch(adminUrl, {
         method: 'POST',
         headers: {
@@ -170,20 +154,18 @@ async function fetchCreateUser(user) {
         body: JSON.stringify(user)
     })
     if (response.ok) {
-        return {
-            user: await response.json(),
-            msg: `User ${user.email} is successfully created`
-        }
+        const user = await response.json()
+        allUsers.push(user)
+        renderUsersTable([user])
+        alertMessage(`User ${user.email} is successfully created`, 'success')
     } else {
-        return new Promise(function (resolve, reject) {
-            reject(`User ${user.email} is already exists`)
-        })
+        alertMessage(`User ${user.email} is already exists`, 'danger')
     }
 }
 
 // Delete user
 // Method: DELETE
-async function fetchDeleteUser(user) {
+async function deleteUser(user) {
     const response = await fetch(`${adminUrl}/${user.id}`, {
         method: 'DELETE',
         headers: {
@@ -191,11 +173,9 @@ async function fetchDeleteUser(user) {
         }
     })
     if (response.ok) {
-        return new Promise(resolve => resolve(`User with id = ${user.id} is successfully deleted`))
+        alertMessage(`User with id = ${user.id} is successfully deleted`, 'success')
     } else {
-        return new Promise(function (resolve, reject) {
-            reject(`User with id = ${user.id} is not found`)
-        })
+        alertMessage(`User with id = ${user.id} is not found`, 'danger')
     }
 }
 
