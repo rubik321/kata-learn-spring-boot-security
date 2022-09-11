@@ -37,15 +37,19 @@ public class WebSecurityConfig {
     public SecurityFilterChain authorizeAllRequests(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/login.html").permitAll()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/user").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/api/v1/admin/**").hasRole("ADMIN")
+                .antMatchers("/api/v1/user").hasAnyRole("ADMIN", "USER")
                 .anyRequest().authenticated()
+
                 .and()
-                .formLogin().successHandler(successUserHandler)
+                .formLogin()
                 .loginPage("/login.html")
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/")
                 .usernameParameter("email")
                 .permitAll()
+
                 .and()
                 .logout()
                 .permitAll()
