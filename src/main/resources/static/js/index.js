@@ -44,13 +44,6 @@ fetchGetLoggedUser()
         renderSidebarLinks(isAdmin, true)
     })
 
-fetchGetRoles()
-    .then(authorities => {
-        allAuthorities = authorities
-        newUserFormAuthEl.setAttribute('size', authorities.length)
-        newUserFormAuthEl.innerHTML = getAuthoritiesOptions(new User(), authorities)
-    })
-
 fetchGetUsers()
     .then(users => {
         allUsers = users
@@ -154,8 +147,11 @@ async function fetchGetLoggedUser() {
 
 // Get roles
 // Method: GET
-async function fetchGetRoles() {
-    return (await fetch(roleUrl)).json()
+async function getRoles() {
+    let authorities = await (await fetch(roleUrl)).json()
+    allAuthorities = authorities
+    newUserFormAuthEl.setAttribute('size', authorities.length)
+    newUserFormAuthEl.innerHTML = getAuthoritiesOptions(new User(), authorities)
 }
 
 // Get users
