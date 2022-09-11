@@ -168,10 +168,10 @@ async function fetchDeleteUser(user) {
         }
     })
     if (response.ok) {
-        return new Promise(resolve => resolve(`User ${user.email} is successfully deleted`))
+        return new Promise(resolve => resolve(`User with id = ${user.id} is successfully deleted`))
     } else {
         return new Promise(function (resolve, reject) {
-            reject(`User ${user.email} is not found`)
+            reject(`User with id = ${user.id} is not found`)
         })
     }
 }
@@ -189,11 +189,11 @@ async function fetchEditUser(user) {
     if (response.ok) {
         return {
             user: await response.json(),
-            msg: `User ${user.email} is successfully edited`
+            msg: `User with id = ${user.id} is successfully edited`
         }
     } else {
         return new Promise(function (resolve, reject) {
-            reject(`User ${user.email} is not found`)
+            reject(`User with id = ${user.id} is not found`)
         })
     }
 }
