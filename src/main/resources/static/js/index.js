@@ -46,14 +46,16 @@ getLoggedUser()
 
 getRoles()
 getUsers()
+addNewUserBtnListener()
 
-// Handle 'Add new user' user button clicks
-newUserFormEl.addEventListener('submit', event => {
-    event.preventDefault()
-    createUser(getUserFromForm(event.target))
-    navUsersTableTabEl.click()
-    event.target.reset()
-});
+function addNewUserBtnListener() {
+    newUserFormEl.addEventListener('submit', event => {
+        event.preventDefault()
+        createUser(getUserFromForm(event.target))
+        navUsersTableTabEl.click()
+        event.target.reset()
+    })
+}
 
 // Handle 'Delete & Edit' user buttons clicks
 usersTableBodyEl.addEventListener('click', event => {
