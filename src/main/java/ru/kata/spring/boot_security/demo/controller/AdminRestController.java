@@ -77,11 +77,6 @@ public class AdminRestController {
 
     @GetMapping("/role")
     public ResponseEntity<List<Role>> getRoleList() {
-        List<Role> roles = roleService.getAllRoles();
-        if (roles == null) {
-            return ResponseEntity.badRequest().build();
-        } else {
-            return ResponseEntity.ok(roles);
-        }
+        return ResponseEntity.ok(roleService.getAllRoles());
     }
 }
