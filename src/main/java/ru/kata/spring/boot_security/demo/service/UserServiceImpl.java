@@ -25,8 +25,8 @@ public class UserServiceImpl implements UserService {
     }
     
     @Transactional
-    public User addUser(User user) {
-        Optional<User> userOptional = userRepository.findUserByUsername(user.getUsername());
+    public User addUser(User user) throws IllegalStateException {
+        Optional<User> userOptional = userRepository.findUserByEmail(user.getEmail());
         if (userOptional.isPresent()) {
             throw new IllegalStateException("User exists!");
         }

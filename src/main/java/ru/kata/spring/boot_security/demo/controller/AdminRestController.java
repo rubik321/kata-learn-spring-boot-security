@@ -38,15 +38,15 @@ public class AdminRestController {
 
     @PostMapping()
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        User createdUser = userService.addUser(user);
-        if (createdUser == null) {
-            return ResponseEntity.badRequest().build();
-        } else {
+        try {
+            User createdUser = userService.addUser(user);
             URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                     .path("/{id}")
                     .buildAndExpand(createdUser.getId())
                     .toUri();
             return ResponseEntity.created(uri).body(createdUser);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 
