@@ -28,12 +28,7 @@ public class AdminRestController {
 
     @GetMapping()
     public ResponseEntity<List<User>> getUserList() {
-        List<User> users = userService.getUserList();
-        if (users == null) {
-            return ResponseEntity.badRequest().build();
-        } else {
-            return ResponseEntity.ok(users);
-        }
+        return ResponseEntity.ok(userService.getUserList());
     }
 
     @PostMapping()
