@@ -1,3 +1,5 @@
+import { getAuthorityName, getAuthoritiesOptions } from "./helper";
+
 const baseUrl = 'http://localhost:8080'
 const adminUrl = baseUrl + '/api/v1/admin'
 const roleUrl = baseUrl + '/api/v1/admin/role'
@@ -415,26 +417,4 @@ function getModal(user, authorities, type) {
             </div>
         </div>
     `;
-}
-
-function getAuthorityName(a) {
-    return a.authority.replace('ROLE_', '')
-}
-
-function getAuthoritiesOptions(user, authorities) {
-    const userAuthoritiesId = user.authorities.map(a => a.id)
-    let res = ''
-
-    authorities.forEach(auth => {
-        const roleId = auth.id
-        const roleName = getAuthorityName(auth)
-
-        if (userAuthoritiesId.includes(roleId)) {
-            res += `<option value="${auth.id}" selected>${roleName}</option>`
-        } else {
-            res += `<option value="${auth.id}">${roleName}</option>`
-        }
-    })
-
-    return res
 }
