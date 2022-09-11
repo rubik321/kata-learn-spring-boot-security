@@ -47,6 +47,7 @@ getLoggedUser()
 getRoles()
 getUsers()
 addNewUserBtnListener()
+addUsersTableBtnListener()
 
 function addNewUserBtnListener() {
     newUserFormEl.addEventListener('submit', event => {
@@ -57,24 +58,25 @@ function addNewUserBtnListener() {
     })
 }
 
-// Handle 'Delete & Edit' user buttons clicks
-usersTableBodyEl.addEventListener('click', event => {
-    event.preventDefault()
+function addUsersTableBtnListener() {
+    usersTableBodyEl.addEventListener('click', event => {
+        event.preventDefault()
 
-    const delBtnIsPressed = event.target.id === 'userDeleteBtn'
-    const editBtnIsPressed = event.target.id === 'userEditBtn'
-    const userTableRowEl = event.target.parentElement.parentElement
+        const delBtnIsPressed = event.target.id === 'userDeleteBtn'
+        const editBtnIsPressed = event.target.id === 'userEditBtn'
+        const userTableRowEl = event.target.parentElement.parentElement
 
-    let user = allUsers.filter(user => user.id == userTableRowEl.dataset.id)[0]
+        let user = allUsers.filter(user => user.id == userTableRowEl.dataset.id)[0]
 
-    if (delBtnIsPressed) {
-        handleUserModifyButtons(user, 'delete', userTableRowEl)
-    }
+        if (delBtnIsPressed) {
+            handleUserModifyButtons(user, 'delete', userTableRowEl)
+        }
 
-    if (editBtnIsPressed) {
-        handleUserModifyButtons(user, 'edit', userTableRowEl)
-    }
-})
+        if (editBtnIsPressed) {
+            handleUserModifyButtons(user, 'edit', userTableRowEl)
+        }
+    })
+}
 
 function handleUserModifyButtons(user, type, userTableRowEl) {
     const userModal = createUserModalOnPage(user, type)
@@ -94,7 +96,7 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
             const userIndex = allUsers.findIndex(aUser => aUser.id === user.id)
 
             if (type === 'delete') {
-                let _ = deleteUser(user)
+                deleteUser(user)
                 deleteUserTableRow(userTableRowEl, userIndex)
                 removeModalFromPage(userModal)
             }
@@ -163,7 +165,6 @@ async function deleteUser(user) {
         }
     })
     if (response.ok) {
-        return await response.json()
         alertMessage(`User with id = ${user.id} is successfully deleted`, 'success')
     } else {
         alertMessage(`User with id = ${user.id} is not found`, 'danger')
