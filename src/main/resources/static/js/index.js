@@ -79,15 +79,15 @@ usersTableBodyEl.addEventListener('click', event => {
     let user = allUsers.filter(user => user.id == userTableRowEl.dataset.id)[0]
 
     if (delBtnIsPressed) {
-        createModalAndHandleButtons(user, 'delete', userTableRowEl)
+        handleUserModifyButtons(user, 'delete', userTableRowEl)
     }
 
     if (editBtnIsPressed) {
-        createModalAndHandleButtons(user, 'edit')
+        handleUserModifyButtons(user, 'edit')
     }
 })
 
-function createModalAndHandleButtons(user, type, userTableRowEl) {
+function handleUserModifyButtons(user, type, userTableRowEl) {
     const userModal = createUserModalOnPage(user, type)
 
     userModal.get()[0].addEventListener('click', event => {
