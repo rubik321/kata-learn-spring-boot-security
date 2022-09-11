@@ -29,7 +29,7 @@ let allUsers = []
 let userTableRows = []
 let allAuthorities = {}
 
-fetchGetLoggedUser()
+getLoggedUser()
     .then(user => {
         const authorityNames = user.authorities.map(a => getAuthorityName(a))
         loggedUserRolesEl.children[0].innerHTML = user.email
@@ -92,7 +92,7 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
             const userIndex = allUsers.findIndex(aUser => aUser.id === user.id)
 
             if (type === 'delete') {
-                deleteUser(user)
+                let _ = deleteUser(user)
                 deleteUserTableRow(userTableRowEl, userIndex)
                 removeModalFromPage(userModal)
             }
@@ -110,15 +110,8 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
 
 // Get logged user
 // Method: GET
-async function fetchGetLoggedUser() {
-    const response = await fetch(loggedUserUrl)
-    if (response.ok) {
-        return response.json();
-    } else {
-        return new Promise(function (resolve, reject) {
-            reject("You have to log in!")
-        });
-    }
+async function getLoggedUser() {
+    return (await fetch(loggedUserUrl)).json()
 }
 
 // Get roles
@@ -168,6 +161,7 @@ async function deleteUser(user) {
         }
     })
     if (response.ok) {
+        return await response.json()
         alertMessage(`User with id = ${user.id} is successfully deleted`, 'success')
     } else {
         alertMessage(`User with id = ${user.id} is not found`, 'danger')
