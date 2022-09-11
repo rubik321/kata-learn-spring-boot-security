@@ -14,9 +14,7 @@
     <div class="container-fluid">
 
         <a class="navbar-brand" style="margin-left: 15px" id="logged-user-roles">
-            <strong></strong>
-            with roles:
-            <span></span>
+            <strong></strong> with roles: <span></span>
         </a>
 
         <ul class="navbar-nav ml-auto mb-auto">
@@ -36,16 +34,7 @@
     <div class="row h-100">
         <div class="col-2 p-0 pt-3">
             <nav>
-                <div class="list-group list-group-flush" sec:authorize="hasRole('ADMIN')">
-                    <a class="list-group-item list-group-item-action ripple rounded active"
-                       th:classappend="${isAdminPage}? 'active'"
-                       aria-current="true"
-                       th:href="@{/admin}">Admin</a>
-                    <a class="list-group-item list-group-item-action ripple rounded"
-                       th:classappend="${!isAdminPage}? 'active'"
-                       aria-current="true"
-                       th:href="@{/user}">User</a>
-                </div>
+                <div class="list-group list-group-flush" id="sidebar"></div>
             </nav>
         </div>
         <div class="col-10 pt-3 px-4 pb-5" style="background-color: #f8f9fa">

@@ -10,6 +10,7 @@ const navUsersTableTabEl = document.getElementById('nav-users-table-tab')
 const modalDivEl = document.getElementById('modal-div')
 const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
 const loggedUserRolesEl = document.getElementById('logged-user-roles')
+const sidebarEl = document.getElementById('sidebar')
 
 class User {
     constructor(id = 0, name = '', lastName = '', age = 0,
@@ -30,9 +31,17 @@ let allAuthorities = {}
 
 fetchGetLoggedUser()
     .then(user => {
-        const children = loggedUserRolesEl.children
+        const authorityNames = user.authorities.map(a => getAuthorityName(a))
         loggedUserRolesEl.children[0].innerHTML = user.email
-        loggedUserRolesEl.children[1].innerHTML = user.authorities.map(a => getAuthorityName(a)).join(' ')
+        loggedUserRolesEl.children[1].innerHTML = authorityNames.join(' ')
+
+        let isAdmin = false
+
+        if (authorityNames.includes('ADMIN')) {
+            isAdmin = true
+        }
+
+        renderSidebarLinks(isAdmin, true)
     })
 
 fetchGetRoles()
@@ -437,4 +446,24 @@ function getAuthoritiesOptions(user, authorities) {
     })
 
     return res
+}
+
+function renderSidebarLinks(isAdmin, isAdminPage) {
+    let res = ''
+    if (isAdmin) {
+        res += `
+            <a class="list-group-item list-group-item-action ripple rounded ${isAdminPage ? 'active' : ''}"
+               aria-current="true" onclick="renderAdminPage()" ">Admin</a>
+        `
+        res += `
+            <a class="list-group-item list-group-item-action ripple rounded ${!isAdminPage ? 'active' : ''}"
+               aria-current="true" onclick="renderUserPage()" ">User</a>
+        `
+    } else {
+        res = `
+            <a class="list-group-item list-group-item-action ripple rounded active"
+               aria-current="true" onclick="renderUserPage()" ">User</a>
+        `
+    }
+    sidebarEl.innerHTML = res
 }
