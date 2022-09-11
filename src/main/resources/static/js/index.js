@@ -44,11 +44,8 @@ fetchGetLoggedUser()
         renderSidebarLinks(isAdmin, true)
     })
 
-fetchGetUsers()
-    .then(users => {
-        allUsers = users
-        renderUsersTable(users)
-    })
+getRoles()
+getUsers()
 
 // Handle 'Add new user' user button clicks
 newUserFormEl.addEventListener('submit', event => {
@@ -156,8 +153,10 @@ async function getRoles() {
 
 // Get users
 // Method: GET
-async function fetchGetUsers() {
-    return (await fetch(adminUrl)).json()
+async function getUsers() {
+    let users = await (await fetch(adminUrl)).json()
+    allUsers = users
+    renderUsersTable(users)
 }
 
 // Create user
