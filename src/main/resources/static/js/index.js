@@ -70,7 +70,7 @@ usersTableBodyEl.addEventListener('click', event => {
     }
 
     if (editBtnIsPressed) {
-        handleUserModifyButtons(user, 'edit')
+        handleUserModifyButtons(user, 'edit', userTableRowEl)
     }
 })
 
@@ -98,16 +98,11 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
             }
 
             if (type === 'edit') {
-                const editedUser = getUserFromForm(document.getElementById('userForm'))
-                fetchEditUser(editedUser)
-                    .then(response => {
-                        editUserTableRow(response.user, userIndex)
-                        alertMessage(response.msg, 'success')
-                    })
-                    .catch(msg => alertMessage(msg, 'danger'))
-                    .finally(() => {
-                        removeModalFromPage(userModal)
-                    })
+                const user = getUserFromForm(document.getElementById('userForm'))
+                editUser(user)
+                    .then(() => editUserTableRow(user, userIndex))
+                    .catch(() => deleteUserTableRow(userTableRowEl, userIndex))
+                removeModalFromPage(userModal)
             }
         }
     })
@@ -181,7 +176,7 @@ async function deleteUser(user) {
 
 // Edit user
 // Method: PATCH
-async function fetchEditUser(user) {
+async function editUser(user) {
     const response = await fetch(`${adminUrl}/${user.id}`, {
         method: 'PATCH',
         headers: {
@@ -190,14 +185,10 @@ async function fetchEditUser(user) {
         body: JSON.stringify(user)
     })
     if (response.ok) {
-        return {
-            user: await response.json(),
-            msg: `User with id = ${user.id} is successfully edited`
-        }
+        alertMessage(`User with id = ${user.id} is successfully edited`, 'success')
     } else {
-        return new Promise(function (resolve, reject) {
-            reject(`User with id = ${user.id} is not found`)
-        })
+        alertMessage(`User with id = ${user.id} is not found`, 'danger')
+        return new Promise(function (resolve, reject) { reject() })
     }
 }
 
