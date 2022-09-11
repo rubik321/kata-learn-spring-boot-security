@@ -1,7 +1,7 @@
 const baseUrl = 'http://localhost:8080'
 const adminUrl = baseUrl + '/api/v1/admin'
 const roleUrl = baseUrl + '/api/v1/admin/role'
-const authUrl = baseUrl + '/api/v1/auth'
+const loggedUserUrl = baseUrl + '/api/v1/auth/principal'
 
 const usersTableBodyEl = document.getElementById('users-tbody')
 const newUserFormEl = document.getElementById('newUserForm')
@@ -9,6 +9,7 @@ const newUserFormAuthEl = newUserFormEl.querySelector('#authorities')
 const navUsersTableTabEl = document.getElementById('nav-users-table-tab')
 const modalDivEl = document.getElementById('modal-div')
 const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
+const loggedUserRolesEl = document.getElementById('logged-user-roles')
 
 class User {
     constructor(id = 0, name = '', lastName = '', age = 0,
@@ -26,6 +27,13 @@ class User {
 let allUsers = []
 let userTableRows = []
 let allAuthorities = {}
+
+fetchGetLoggedUser()
+    .then(user => {
+        const children = loggedUserRolesEl.children
+        loggedUserRolesEl.children[0].innerHTML = user.email
+        loggedUserRolesEl.children[1].innerHTML = user.authorities.map(a => getAuthorityName(a)).join(' ')
+    })
 
 fetchGetRoles()
     .then(authorities => {
@@ -120,6 +128,19 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
             }
         }
     })
+}
+
+// Get logged user
+// Method: GET
+async function fetchGetLoggedUser() {
+    const response = await fetch(loggedUserUrl)
+    if (response.ok) {
+        return response.json();
+    } else {
+        return new Promise(function (resolve, reject) {
+            reject("You have to log in!")
+        });
+    }
 }
 
 // Get roles
@@ -394,6 +415,10 @@ function getModal(user, authorities, type) {
             </div>
         </div>
     `;
+}
+
+function getAuthorityName(a) {
+    return a.authority.replace('ROLE_', '')
 }
 
 function getAuthoritiesOptions(user, authorities) {

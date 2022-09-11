@@ -13,10 +13,10 @@
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
     <div class="container-fluid">
 
-        <a class="navbar-brand" style="margin-left: 15px">
-            <strong th:text="${principal.email}"></strong>
+        <a class="navbar-brand" style="margin-left: 15px" id="logged-user-roles">
+            <strong></strong>
             with roles:
-            <span th:text="${#strings.setJoin(principal.authorities, ' ')}"></span>
+            <span></span>
         </a>
 
         <ul class="navbar-nav ml-auto mb-auto">
