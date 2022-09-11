@@ -111,11 +111,13 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
             }
 
             if (type === 'edit') {
-                const newUser = getUserFromForm(document.getElementById('userForm'))
-                editUser(newUser)
-                    .then((user) => {
-                        editUserTableRow(user, userIndex)
+                const editedUser = getUserFromForm(document.getElementById('userForm'))
+                fetchEditUser(editedUser)
+                    .then(response => {
+                        editUserTableRow(response.user, userIndex)
+                        alertMessage(response.msg, 'success')
                     })
+                    .catch(msg => alertMessage(msg, 'danger'))
                     .finally(() => {
                         removeModalFromPage(userModal)
                     })
@@ -174,15 +176,26 @@ async function fetchDeleteUser(user) {
     }
 }
 
-function editUser(user) {
-    return fetch(`${adminUrl}/${user.id}`, {
+// Edit user
+// Method: PATCH
+async function fetchEditUser(user) {
+    const response = await fetch(`${adminUrl}/${user.id}`, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(user)
     })
-        .then(res => res.json())
+    if (response.ok) {
+        return {
+            user: await response.json(),
+            msg: `User ${user.email} is successfully edited`
+        }
+    } else {
+        return new Promise(function (resolve, reject) {
+            reject(`User ${user.email} is not found`)
+        })
+    }
 }
 
 function alertMessage(message, type) {
