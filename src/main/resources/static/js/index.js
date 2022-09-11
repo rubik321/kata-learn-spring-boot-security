@@ -36,9 +36,7 @@ getRoles()
         newUserFormAuthEl.innerHTML = getAuthoritiesOptions(new User(), authorities)
     })
 
-// Get users
-// Method: GET
-getUsers()
+fetchGetUsers()
     .then(users => {
         allUsers = users
         renderUsersTable(users)
@@ -131,9 +129,10 @@ function getRoles() {
         .then(res => res.json())
 }
 
-function getUsers() {
-    return fetch(adminUrl)
-        .then(res => res.json())
+// Get users
+// Method: GET
+async function fetchGetUsers() {
+    return (await fetch(adminUrl)).json()
 }
 
 // Create user
