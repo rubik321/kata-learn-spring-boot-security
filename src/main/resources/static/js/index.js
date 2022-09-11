@@ -1,7 +1,6 @@
 const baseUrl = 'http://localhost:8080'
 const adminUrl = baseUrl + '/api/v1/admin'
 const roleUrl = baseUrl + '/api/v1/admin/role'
-const authUrl = baseUrl + '/api/v1/auth'
 
 const usersTableBodyEl = document.getElementById('users-tbody')
 const newUserFormEl = document.getElementById('newUserForm')
