@@ -23,7 +23,7 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return authority.replace("ROLE_", "");
+        return authority;
     }
 
     public void setAuthority(String authority) {
