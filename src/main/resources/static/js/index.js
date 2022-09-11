@@ -44,25 +44,27 @@ getUsers()
         renderUsersTable(users)
     })
 
-// Create user
-// Method: POST
+// Handle 'Add new user' user button clicks
 newUserFormEl.addEventListener('submit', event => {
     event.preventDefault()
 
     const user = getUserFromForm(event.target)
 
-    createUser(user)
-        .then(user => {
+    fetchCreateUser(user)
+        .then(response => {
+            const user = response.user
             allUsers.push(user)
             renderUsersTable([user])
+            alertMessage(response.msg, 'success')
         })
+        .catch(msg => alertMessage(msg, 'danger'))
         .finally(() => {
             navUsersTableTabEl.click()
             event.target.reset()
         })
 });
 
-// Handle Delete & Edit user button clicks
+// Handle 'Delete & Edit' user buttons clicks
 usersTableBodyEl.addEventListener('click', event => {
     event.preventDefault()
 
@@ -132,15 +134,26 @@ function getUsers() {
         .then(res => res.json())
 }
 
-function createUser(user) {
-    return fetch(adminUrl, {
+// Create user
+// Method: POST
+async function fetchCreateUser(user) {
+    const response = await fetch(adminUrl, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(user)
     })
-        .then(res => res.json())
+    if (response.ok) {
+        return {
+            user: await response.json(),
+            msg: `User ${user.email} is successfully created`
+        }
+    } else {
+        return new Promise(function (resolve, reject) {
+            reject(`User ${user.email} is already exists`)
+        })
+    }
 }
 
 // Delete user
