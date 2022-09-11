@@ -269,7 +269,7 @@ function getUserTableRowTemplate(user) {
             <td>${user.lastName}</td>
             <td>${user.age}</td>
             <td>${user.email}</td>
-            <td>${user.authorities.map(a => a.authority).join(' ')}</td>
+            <td>${user.authorities.map(a => a.authority.replace('ROLE_', '')).join(' ')}</td>
             <td>
                 <button type="button" class="btn text-white" id="userEditBtn"
                         style="background-color: #17a2b8">
@@ -397,16 +397,17 @@ function getModal(user, authorities, type) {
 }
 
 function getAuthoritiesOptions(user, authorities) {
-    const userAuthorities = user.authorities.map(a => a.authority)
+    const userAuthoritiesId = user.authorities.map(a => a.id)
     let res = ''
 
     authorities.forEach(auth => {
-        const role = auth.authority
+        const roleId = auth.id
+        const roleName = auth.authority.replace('ROLE_', '')
 
-        if (userAuthorities.includes(role)) {
-            res += `<option value="${auth.id}" selected>${role}</option>`
+        if (userAuthoritiesId.includes(roleId)) {
+            res += `<option value="${auth.id}" selected>${roleName}</option>`
         } else {
-            res += `<option value="${auth.id}">${role}</option>`
+            res += `<option value="${auth.id}">${roleName}</option>`
         }
     })
 
