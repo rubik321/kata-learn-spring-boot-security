@@ -37,13 +37,13 @@ public class WebSecurityConfig {
     public SecurityFilterChain authorizeAllRequests(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
+                .antMatchers("/login.html").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user").hasAnyRole("ADMIN", "USER")
-//                .anyRequest().authenticated()
+                .anyRequest().authenticated()
                 .and()
                 .formLogin().successHandler(successUserHandler)
-                .loginPage("/login")
+                .loginPage("/login.html")
                 .usernameParameter("email")
                 .permitAll()
                 .and()
