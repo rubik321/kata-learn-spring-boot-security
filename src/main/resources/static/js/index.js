@@ -3,25 +3,22 @@ const userUrl = baseUrl + '/api/v1/user'
 const adminUrl = baseUrl + '/api/v1/admin'
 const roleUrl = baseUrl + '/api/v1/admin/role'
 
-const usersTableBodyEl = document.getElementById('users-tbody')
-const newUserFormEl = document.getElementById('newUserForm')
-const newUserFormAuthEl = newUserFormEl.querySelector('#authorities')
-const navUsersTableTabEl = document.getElementById('nav-users-table-tab')
-const modalDivEl = document.getElementById('modal-div')
 const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
 const loggedUserRolesEl = document.getElementById('logged-user-roles')
 const sidebarEl = document.getElementById('sidebar')
+const navTabContentEl = document.getElementById('nav-tabContent')
+const navTabEl = document.getElementById('nav-tab')
 
 class User {
     constructor(id = 0, name = '', lastName = '', age = 0,
                 email = '', password = '', authorities = []) {
         this.id = id
         this.name = name,
-        this.lastName = lastName,
-        this.age = age,
-        this.email = email,
-        this.password = password,
-        this.authorities = authorities
+            this.lastName = lastName,
+            this.age = age,
+            this.email = email,
+            this.password = password,
+            this.authorities = authorities
     }
 }
 
@@ -37,29 +34,34 @@ getLoggedUser()
 
         let isAdmin = false
 
+
         if (authorityNames.includes('ADMIN')) {
-            isAdmin = true
+            getRoles()
+                .then((authorities) => {
+                    renderNewUserTab(authorities)
+                    addNewUserBtnListener()
+                })
+            getUsers()
+                .then((users) => {
+                    renderUsersTable(users)
+                    addUsersTableBtnListener()
+                })
         }
 
         renderSidebarLinks(isAdmin, true)
     })
 
-getRoles()
-getUsers()
-addNewUserBtnListener()
-addUsersTableBtnListener()
-
 function addNewUserBtnListener() {
-    newUserFormEl.addEventListener('submit', event => {
+    document.getElementById('newUserForm').addEventListener('submit', event => {
         event.preventDefault()
         createUser(getUserFromForm(event.target))
-        navUsersTableTabEl.click()
+        document.getElementById('nav-users-table-tab').click()
         event.target.reset()
     })
 }
 
 function addUsersTableBtnListener() {
-    usersTableBodyEl.addEventListener('click', event => {
+    document.getElementById('users-tbody').addEventListener('click', event => {
         event.preventDefault()
 
         const delBtnIsPressed = event.target.id === 'userDeleteBtn'
@@ -104,7 +106,7 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
             if (type === 'edit') {
                 const user = getUserFromForm(document.getElementById('userForm'))
                 editUser(user)
-                    .then(() => editUserTableRow(user, userIndex))
+                    .then((user) => editUserTableRow(user, userIndex))
                     .catch(() => deleteUserTableRow(userTableRowEl, userIndex))
                 removeModalFromPage(userModal)
             }
@@ -115,24 +117,24 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
 // Get logged user
 // Method: GET
 async function getLoggedUser() {
-    return (await fetch(userUrl)).json()
+    const user = await (await fetch(userUrl)).json()
+    return user
 }
 
 // Get roles
 // Method: GET
 async function getRoles() {
-    let authorities = await (await fetch(roleUrl)).json()
+    const authorities = await (await fetch(roleUrl)).json()
     allAuthorities = authorities
-    newUserFormAuthEl.setAttribute('size', authorities.length)
-    newUserFormAuthEl.innerHTML = getAuthoritiesOptions(new User(), authorities)
+    return authorities
 }
 
 // Get users
 // Method: GET
 async function getUsers() {
-    let users = await (await fetch(adminUrl)).json()
+    const users = await (await fetch(adminUrl)).json()
     allUsers = users
-    renderUsersTable(users)
+    return users
 }
 
 // Create user
@@ -185,8 +187,11 @@ async function editUser(user) {
         alertMessage(`User with id = ${user.id} is successfully edited`, 'success')
     } else {
         alertMessage(`User with id = ${user.id} is not found`, 'danger')
-        return new Promise(function (resolve, reject) { reject() })
+        return new Promise(function (resolve, reject) {
+            reject()
+        })
     }
+    return response.json()
 }
 
 function alertMessage(message, type) {
@@ -215,7 +220,7 @@ function getUserFromForm(form) {
     user.authorities = Array.from(userFormAuthorities.selectedOptions).map(option => {
         return {
             id: option.value,
-            authority: option.text
+            authority: 'ROLE_' + option.text
         }
     })
 
@@ -223,7 +228,7 @@ function getUserFromForm(form) {
 }
 
 function createUserModalOnPage(user, type) {
-    modalDivEl.innerHTML += getModal(user, allAuthorities, type)
+    document.getElementById('modal-div').innerHTML = getModal(user, allAuthorities, type)
     const modal = $('#userModal')
     modal.modal('show')
 
@@ -244,14 +249,14 @@ function deleteUserTableRow(trEl, index) {
 function editUserTableRow(user, index) {
     allUsers[index] = user
     userTableRows[index] = getUserTableRowTemplate(user)
-    usersTableBodyEl.innerHTML = userTableRows.join('')
+    document.getElementById('users-tbody').innerHTML = userTableRows.join('')
 }
 
 function renderUsersTable(users) {
     users.forEach(user => {
         userTableRows.push(getUserTableRowTemplate(user))
     })
-    usersTableBodyEl.innerHTML = userTableRows.join('')
+    document.getElementById('users-tbody').innerHTML = userTableRows.join('')
 }
 
 function getUserTableRowTemplate(user) {
@@ -429,4 +434,74 @@ function renderSidebarLinks(isAdmin, isAdminPage) {
         `
     }
     sidebarEl.innerHTML = res
+}
+
+function renderNewUserTab(authorities) {
+    navTabEl.innerHTML += `
+        <a class="nav-item nav-link" id="nav-new-user-tab" data-bs-toggle="tab"
+           href="#nav-new-user"
+           role="tab" aria-controls="nav-new-user" aria-selected="false">New User</a>
+    `
+
+    navTabContentEl.innerHTML += `
+        <div class="tab-pane fade" id="nav-new-user"
+             role="tabpanel"
+             aria-labelledby="nav-new-user-tab">
+    
+            <div class="d-print-inline-block py-3 px-4 border-top border-bottom">
+                <h5 class="m-0">New User</h5>
+            </div>
+    
+            <div class="py-4 bg-white d-flex justify-content-center">
+                <form id="newUserForm">
+                    <div class="row mb-4">
+                        <label for="firstName" class="fw-bold text-center">First
+                            name</label>
+                        <input type="text" name="firstName" id="firstName"
+                               class="form-control">
+                    </div>
+    
+                    <div class="row mb-4">
+                        <label for="lastName" class="fw-bold text-center">Last
+                            name</label>
+                        <input type="text" name="lastName" id="lastName"
+                               class="form-control">
+                    </div>
+    
+                    <div class="row mb-4">
+                        <label for="age" class="fw-bold text-center">Age</label>
+                        <input type="number" name="age" id="age"
+                               class="form-control">
+                    </div>
+    
+                    <div class="row mb-4">
+                        <label for="email" class="fw-bold text-center">Email</label>
+                        <input type="email" name="email" id="email"
+                               class="form-control">
+                    </div>
+    
+                    <div class="row mb-4">
+                        <label for="password"
+                               class="fw-bold text-center">Password</label>
+                        <input type="password" name="password" id="password"
+                               class="form-control">
+                    </div>
+    
+                    <div class="row mb-4">
+                        <label for="authorities"
+                               class="fw-bold text-center">Role</label>
+                        <select name="authorities" id="authorities"
+                                class="form-select" size="${authorities.length}">
+                                ${getAuthoritiesOptions(new User(), authorities)}
+                        </select>
+                    </div>
+    
+                    <div class="mb-4 d-flex justify-content-center">
+                        <input type="submit" value="Add new user" class="btn btn-lg btn-success"
+                               id="addBtn">
+                    </div>
+                </form>
+            </div>
+        </div>
+    `
 }
