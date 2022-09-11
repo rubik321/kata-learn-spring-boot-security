@@ -1,6 +1,7 @@
 const baseUrl = 'http://localhost:8080'
 const adminUrl = baseUrl + '/api/v1/admin'
 const roleUrl = baseUrl + '/api/v1/admin/role'
+const authUrl = baseUrl + '/api/v1/auth'
 
 const usersTableBodyEl = document.getElementById('users-tbody')
 const newUserFormEl = document.getElementById('newUserForm')
@@ -60,8 +61,7 @@ newUserFormEl.addEventListener('submit', event => {
         })
 });
 
-// Delete & Edit user
-// Method: DELETE, PATCH
+// Handle Delete & Edit user button clicks
 usersTableBodyEl.addEventListener('click', event => {
     event.preventDefault()
 
@@ -98,9 +98,15 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
             const userIndex = allUsers.findIndex(aUser => aUser.id === user.id)
 
             if (type === 'delete') {
-                deleteUser(user)
-                    .then(() => {
+                let msg = ''
+                fetchDeleteUser(user)
+                    .then((m) => {
                         deleteUserTableRow(userTableRowEl, userIndex)
+                        console.log(msg)
+                    })
+                    .catch(m => {
+                        deleteUserTableRow(userTableRowEl, userIndex)
+                        console.log(msg)
                     })
                     .finally(() => {
                         removeModalFromPage(userModal)
@@ -142,13 +148,22 @@ function createUser(user) {
         .then(res => res.json())
 }
 
-function deleteUser(user) {
-    return fetch(`${adminUrl}/${user.id}`, {
+// Delete user
+// Method: DELETE
+async function fetchDeleteUser(user) {
+    const response = await fetch(`${adminUrl}/${user.id}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
         }
     })
+    if (response.ok) {
+        return new Promise(resolve => resolve("User is sucessfuly deleted"))
+    } else {
+        return new Promise(function (resolve, reject) {
+            reject("User is not found")
+        })
+    }
 }
 
 function editUser(user) {
