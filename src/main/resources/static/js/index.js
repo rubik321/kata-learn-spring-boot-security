@@ -1,7 +1,7 @@
 const baseUrl = 'http://localhost:8080'
+const userUrl = baseUrl + '/api/v1/user'
 const adminUrl = baseUrl + '/api/v1/admin'
 const roleUrl = baseUrl + '/api/v1/admin/role'
-const loggedUserUrl = baseUrl + '/api/v1/auth/principal'
 
 const usersTableBodyEl = document.getElementById('users-tbody')
 const newUserFormEl = document.getElementById('newUserForm')
@@ -115,7 +115,7 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
 // Get logged user
 // Method: GET
 async function getLoggedUser() {
-    return (await fetch(loggedUserUrl)).json()
+    return (await fetch(userUrl)).json()
 }
 
 // Get roles
