@@ -33,22 +33,32 @@ getLoggedUser()
         loggedUserRolesEl.children[1].innerHTML = authorityNames.join(' ')
 
         let isAdmin = false
-
+        let isAdminPage = false
 
         if (authorityNames.includes('ADMIN')) {
+            isAdmin = true
+            isAdminPage = true
             getRoles()
                 .then((authorities) => {
+                    document.getElementById('users-thead-tr').innerHTML += `
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                    `
                     renderNewUserTab(authorities)
                     addNewUserBtnListener()
                 })
             getUsers()
                 .then((users) => {
+                    setTitles('Admin panel', 'Admin panel')
                     renderUsersTable(users)
                     addUsersTableBtnListener()
                 })
+        } else {
+            setTitles('User page', 'User information-page')
+            renderUsersTable([user], isAdmin)
         }
 
-        renderSidebarLinks(isAdmin, true)
+        renderSidebarLinks(isAdmin, isAdminPage)
     })
 
 function addNewUserBtnListener() {
@@ -252,35 +262,48 @@ function editUserTableRow(user, index) {
     document.getElementById('users-tbody').innerHTML = userTableRows.join('')
 }
 
-function renderUsersTable(users) {
+function renderUsersTable(users, isAdmin) {
     users.forEach(user => {
-        userTableRows.push(getUserTableRowTemplate(user))
+        userTableRows.push(getUserTableRowTemplate(user, isAdmin))
     })
     document.getElementById('users-tbody').innerHTML = userTableRows.join('')
 }
 
-function getUserTableRowTemplate(user) {
-    return `
-        <tr class="align-middle" data-id="${user.id}">
-            <td>${user.id}</td>
-            <td>${user.name}</td>
-            <td>${user.lastName}</td>
-            <td>${user.age}</td>
-            <td>${user.email}</td>
-            <td>${user.authorities.map(a => a.authority.replace('ROLE_', '')).join(' ')}</td>
-            <td>
-                <button type="button" class="btn text-white" id="userEditBtn"
-                        style="background-color: #17a2b8">
-                    Edit
-                </button>
-            </td>
-            <td>
-                <button type="button" class="btn btn-danger" id="userDeleteBtn">
-                    Delete
-                </button>
-            </td>
-        </tr>
-    `
+function getUserTableRowTemplate(user, isAdmin = true) {
+    if (isAdmin) {
+        return `
+            <tr class="align-middle" data-id="${user.id}">
+                <td>${user.id}</td>
+                <td>${user.name}</td>
+                <td>${user.lastName}</td>
+                <td>${user.age}</td>
+                <td>${user.email}</td>
+                <td>${user.authorities.map(a => a.authority.replace('ROLE_', '')).join(' ')}</td>
+                <td>
+                    <button type="button" class="btn text-white" id="userEditBtn"
+                            style="background-color: #17a2b8">
+                        Edit
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-danger" id="userDeleteBtn">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        `
+    } else  {
+        return `
+            <tr class="align-middle" data-id="${user.id}">
+                <td>${user.id}</td>
+                <td>${user.name}</td>
+                <td>${user.lastName}</td>
+                <td>${user.age}</td>
+                <td>${user.email}</td>
+                <td>${user.authorities.map(a => a.authority.replace('ROLE_', '')).join(' ')}</td>
+            </tr>
+        `
+    }
 }
 
 function getModal(user, authorities, type) {
@@ -414,6 +437,11 @@ function getAuthoritiesOptions(user, authorities) {
     })
 
     return res
+}
+
+function setTitles(tab, page) {
+    document.getElementById('tab-title').innerHTML = tab
+    document.getElementById('page-title').innerHTML = page
 }
 
 function renderSidebarLinks(isAdmin, isAdminPage) {
