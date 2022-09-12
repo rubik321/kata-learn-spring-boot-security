@@ -5,7 +5,7 @@ const roleUrl = baseUrl + '/api/v1/admin/role'
 
 const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
 const loggedUserRolesEl = document.getElementById('logged-user-roles')
-const navTabEl = document.getElementById('nav-tab')
+const navTabEl =$('#nav-tab')
 const navNewUserEl = $('#nav-new-user')
 const adminPageBtnEl = $('#admin-page-btn')
 const userPageBtnEl = $('#user-page-btn')
@@ -49,6 +49,23 @@ getLoggedUser()
                     renderUsersTable(users)
                     addUsersTableBtnListener()
                 })
+
+            userPageBtnEl.click(() => {
+                setTitles('User page', 'User information-page', 'About user')
+                navTabEl.hide()
+                navNewUserEl.hide()
+                adminPageBtnEl.removeClass('active')
+                userPageBtnEl.addClass('active')
+            })
+
+            adminPageBtnEl.click(() => {
+                setTitles('Admin panel', 'Admin panel', 'All users')
+                navTabEl.show()
+                navNewUserEl.show()
+                userPageBtnEl.removeClass('active')
+                adminPageBtnEl.addClass('active')
+            })
+
         } else {
             setTitles('User page', 'User information-page', 'About user')
             navTabEl.remove()
