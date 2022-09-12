@@ -53,7 +53,24 @@ getLoggedUser()
             getUsers()
                 .then((users) => {
                     renderUsersTable(users)
-                    addUsersTableBtnListener()
+
+                    $('#users-tbody').click(event => {
+                        event.preventDefault()
+
+                        const delBtnIsPressed = event.target.id === 'userDeleteBtn'
+                        const editBtnIsPressed = event.target.id === 'userEditBtn'
+                        const userTableRowEl = event.target.parentElement.parentElement
+
+                        let user = allUsers.filter(user => user.id == userTableRowEl.dataset.id)[0]
+
+                        if (delBtnIsPressed) {
+                            handleUserModifyButtons(user, 'delete', userTableRowEl)
+                        }
+
+                        if (editBtnIsPressed) {
+                            handleUserModifyButtons(user, 'edit', userTableRowEl)
+                        }
+                    })
                 })
 
             userPageBtnEl.click(() => {
@@ -90,26 +107,6 @@ function setTitles(tab, page, table) {
     $('#tab-title').text(tab)
     $('#page-title').text(page)
     $('#table-title').text(table)
-}
-
-function addUsersTableBtnListener() {
-    document.getElementById('users-tbody').addEventListener('click', event => {
-        event.preventDefault()
-
-        const delBtnIsPressed = event.target.id === 'userDeleteBtn'
-        const editBtnIsPressed = event.target.id === 'userEditBtn'
-        const userTableRowEl = event.target.parentElement.parentElement
-
-        let user = allUsers.filter(user => user.id == userTableRowEl.dataset.id)[0]
-
-        if (delBtnIsPressed) {
-            handleUserModifyButtons(user, 'delete', userTableRowEl)
-        }
-
-        if (editBtnIsPressed) {
-            handleUserModifyButtons(user, 'edit', userTableRowEl)
-        }
-    })
 }
 
 function handleUserModifyButtons(user, type, userTableRowEl) {
