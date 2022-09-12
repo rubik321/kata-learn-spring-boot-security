@@ -31,8 +31,8 @@ let allAuthorities = {}
 getLoggedUser()
     .then(user => {
         const userRoles = user.authorities.map(a => getAuthorityName(a))
-        loggedUserRolesEl.children().html(user.email)
-        loggedUserRolesEl.children().html(userRoles.join(' '))
+        loggedUserRolesEl.children()[0].innerHTML = user.email
+        loggedUserRolesEl.children()[1].innerHTML = userRoles.join(' ')
         adminTableRows.push(getUserTableRowTemplate(user))
 
         if (userRoles.includes('ADMIN')) {
