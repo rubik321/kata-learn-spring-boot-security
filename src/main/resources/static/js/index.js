@@ -36,7 +36,7 @@ getLoggedUser()
         loggedUserRolesEl.children[1].innerHTML = authorityNames.join(' ')
 
         if (authorityNames.includes('ADMIN')) {
-            adminPageBtnEl.classList.add('active')
+            adminPageBtnEl.addClass('active')
             getRoles()
                 .then((authorities) => {
                     const newUserAuthEl = document.getElementById('authorities')
