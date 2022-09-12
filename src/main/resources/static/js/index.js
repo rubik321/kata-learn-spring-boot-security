@@ -23,7 +23,6 @@ class User {
     }
 }
 
-let loggedUser = {}
 let allUsers = []
 let userTableRows = []
 let adminTableRows = []
@@ -31,13 +30,12 @@ let allAuthorities = {}
 
 getLoggedUser()
     .then(user => {
-        loggedUser = user
-        const authorityNames = user.authorities.map(a => getAuthorityName(a))
+        const userRoles = user.authorities.map(a => getAuthorityName(a))
         loggedUserRolesEl.children().html(user.email)
-        loggedUserRolesEl.children().html(authorityNames.join(' '))
+        loggedUserRolesEl.children().html(userRoles.join(' '))
         adminTableRows.push(getUserTableRowTemplate(user))
 
-        if (authorityNames.includes('ADMIN')) {
+        if (userRoles.includes('ADMIN')) {
             adminPageBtnEl.addClass('active')
             getRoles()
                 .then((authorities) => {
