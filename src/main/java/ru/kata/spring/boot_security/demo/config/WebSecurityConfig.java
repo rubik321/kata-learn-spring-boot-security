@@ -52,7 +52,7 @@ public class WebSecurityConfig {
                 .logout()
                 .permitAll()
                 .and()
-                .csrf().disable().cors();
+                .csrf().disable();
         return http.build();
     }
 

@@ -12,7 +12,6 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 import java.net.URI;
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @RequestMapping("api/v1/admin")
 public class AdminRestController {
