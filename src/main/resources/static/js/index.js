@@ -3,8 +3,8 @@ const userUrl = baseUrl + '/api/v1/user'
 const adminUrl = baseUrl + '/api/v1/admin'
 const roleUrl = baseUrl + '/api/v1/admin/role'
 
-const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
-const loggedUserRolesEl = document.getElementById('logged-user-roles')
+const alertPlaceholder = $('#liveAlertPlaceholder')
+const loggedUserRolesEl = $('#logged-user-roles')
 const navTabEl =$('#nav-tab')
 const navNewUserEl = $('#nav-new-user')
 const adminPageBtnEl = $('#admin-page-btn')
@@ -33,17 +33,17 @@ getLoggedUser()
     .then(user => {
         loggedUser = user
         const authorityNames = user.authorities.map(a => getAuthorityName(a))
-        loggedUserRolesEl.children[0].innerHTML = user.email
-        loggedUserRolesEl.children[1].innerHTML = authorityNames.join(' ')
+        loggedUserRolesEl.children().html(user.email)
+        loggedUserRolesEl.children().html(authorityNames.join(' '))
         adminTableRows.push(getUserTableRowTemplate(user))
 
         if (authorityNames.includes('ADMIN')) {
             adminPageBtnEl.addClass('active')
             getRoles()
                 .then((authorities) => {
-                    const newUserAuthEl = document.getElementById('authorities')
-                    newUserAuthEl.setAttribute('size', authorities.length)
-                    newUserAuthEl.innerHTML = getAuthoritiesOptions(new User(), authorities)
+                    const newUserAuthEl = $('#authorities')
+                    newUserAuthEl.attr('size', authorities.length)
+                    newUserAuthEl.html(getAuthoritiesOptions(new User(), authorities))
 
                     $('#newUserForm').submit(event => {
                         event.preventDefault()
