@@ -5,9 +5,10 @@ const roleUrl = baseUrl + '/api/v1/admin/role'
 
 const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
 const loggedUserRolesEl = document.getElementById('logged-user-roles')
-const sidebarEl = document.getElementById('sidebar')
-const navTabContentEl = document.getElementById('nav-tabContent')
 const navTabEl = document.getElementById('nav-tab')
+const navNewUserEl = $('#nav-new-user')
+const adminPageBtnEl = $('#admin-page-btn')
+const userPageBtnEl = $('#user-page-btn')
 
 class User {
     constructor(id = 0, name = '', lastName = '', age = 0,
@@ -22,30 +23,51 @@ class User {
     }
 }
 
+let loggedUser = {}
 let allUsers = []
 let userTableRows = []
 let allAuthorities = {}
 
 getLoggedUser()
     .then(user => {
+        loggedUser = user
         const authorityNames = user.authorities.map(a => getAuthorityName(a))
         loggedUserRolesEl.children[0].innerHTML = user.email
         loggedUserRolesEl.children[1].innerHTML = authorityNames.join(' ')
 
-        getRoles()
-            .then((authorities) => {
-                const newUserAuthEl = document.getElementById('authorities')
-                newUserAuthEl.setAttribute('size', authorities.length)
-                newUserAuthEl.innerHTML = getAuthoritiesOptions(new User(), authorities)
-                addNewUserBtnListener()
-            })
-        getUsers()
-            .then((users) => {
-                renderUsersTable(users)
-                addUsersTableBtnListener()
-                renderSidebarLinks()
-            })
+        if (authorityNames.includes('ADMIN')) {
+            adminPageBtnEl.classList.add('active')
+            getRoles()
+                .then((authorities) => {
+                    const newUserAuthEl = document.getElementById('authorities')
+                    newUserAuthEl.setAttribute('size', authorities.length)
+                    newUserAuthEl.innerHTML = getAuthoritiesOptions(new User(), authorities)
+                    addNewUserBtnListener()
+                })
+            getUsers()
+                .then((users) => {
+                    renderUsersTable(users)
+                    addUsersTableBtnListener()
+                })
+        } else {
+            setTitles('User page', 'User information-page', 'About user')
+            navTabEl.remove()
+            navNewUserEl.remove()
+            adminPageBtnEl.remove()
+            userPageBtnEl.addClass('active')
+            renderUsersTable([user])
+            $('#th-edit').hide()
+            $('#th-delete').hide()
+            $('#td-edit-btn').hide()
+            $('#td-delete-btn').hide()
+        }
     })
+
+function setTitles(tab, page, table) {
+    $('#tab-title').text(tab)
+    $('#page-title').text(page)
+    $('#table-title').text(table)
+}
 
 function addNewUserBtnListener() {
     document.getElementById('newUserForm').addEventListener('submit', event => {
@@ -264,13 +286,13 @@ function getUserTableRowTemplate(user) {
             <td>${user.age}</td>
             <td>${user.email}</td>
             <td>${user.authorities.map(a => a.authority.replace('ROLE_', '')).join(' ')}</td>
-            <td>
+            <td id="td-edit-btn">
                 <button type="button" class="btn text-white" id="userEditBtn"
                         style="background-color: #17a2b8">
                     Edit
                 </button>
             </td>
-            <td>
+            <td id="td-delete-btn">
                 <button type="button" class="btn btn-danger" id="userDeleteBtn">
                     Delete
                 </button>
@@ -410,13 +432,4 @@ function getAuthoritiesOptions(user, authorities) {
     })
 
     return res
-}
-
-function renderSidebarLinks() {
-    sidebarEl.innerHTML = `
-        <a class="list-group-item list-group-item-action ripple rounded active"
-           aria-current="true" href="/admin.html">Admin</a>
-        <a class="list-group-item list-group-item-action ripple rounded}"
-           aria-current="true" href="/user.html">User</a>
-    `
 }
