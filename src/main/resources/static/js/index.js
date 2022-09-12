@@ -112,7 +112,7 @@ function setTitles(tab, page, table) {
 function handleUserModifyButtons(user, type, userTableRowEl) {
     const userModal = createUserModalOnPage(user, type)
 
-    userModal.get()[0].addEventListener('click', event => {
+    userModal.click(event => {
         event.preventDefault()
 
         const closeBtnIsPressed = event.target.id === 'closeBtn'
@@ -257,7 +257,7 @@ function getUserFromForm(form) {
 }
 
 function createUserModalOnPage(user, type) {
-    document.getElementById('modal-div').innerHTML = getModal(user, allAuthorities, type)
+    $('#modal-div').html(getModal(user, allAuthorities, type))
     const modal = $('#userModal')
     modal.modal('show')
 
@@ -278,14 +278,14 @@ function deleteUserTableRow(trEl, index) {
 function editUserTableRow(user, index) {
     allUsers[index] = user
     userTableRows[index] = getUserTableRowTemplate(user)
-    document.getElementById('users-tbody').innerHTML = userTableRows.join('')
+    $('#users-tbody').html(userTableRows.join(''))
 }
 
 function renderUsersTable(users) {
     users.forEach(user => {
         userTableRows.push(getUserTableRowTemplate(user))
     })
-    document.getElementById('users-tbody').innerHTML = userTableRows.join('')
+    $('#users-tbody').html(userTableRows.join(''))
 }
 
 function getUserTableRowTemplate(user) {
