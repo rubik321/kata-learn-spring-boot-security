@@ -42,7 +42,13 @@ getLoggedUser()
                     const newUserAuthEl = document.getElementById('authorities')
                     newUserAuthEl.setAttribute('size', authorities.length)
                     newUserAuthEl.innerHTML = getAuthoritiesOptions(new User(), authorities)
-                    addNewUserBtnListener()
+
+                    $('#newUserForm').submit(event => {
+                        event.preventDefault()
+                        createUser(getUserFromForm(event.target))
+                        $('#nav-users-table-tab')[0].click()
+                        event.target.reset()
+                    })
                 })
             getUsers()
                 .then((users) => {
@@ -84,15 +90,6 @@ function setTitles(tab, page, table) {
     $('#tab-title').text(tab)
     $('#page-title').text(page)
     $('#table-title').text(table)
-}
-
-function addNewUserBtnListener() {
-    document.getElementById('newUserForm').addEventListener('submit', event => {
-        event.preventDefault()
-        createUser(getUserFromForm(event.target))
-        document.getElementById('nav-users-table-tab').click()
-        event.target.reset()
-    })
 }
 
 function addUsersTableBtnListener() {
