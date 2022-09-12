@@ -34,7 +34,6 @@ getLoggedUser()
 
         getRoles()
             .then((authorities) => {
-                renderNewUserTab(authorities)
                 addNewUserBtnListener()
             })
         getUsers()
@@ -416,75 +415,5 @@ function renderSidebarLinks() {
            aria-current="true" href="/admin.html">Admin</a>
         <a class="list-group-item list-group-item-action ripple rounded}"
            aria-current="true" href="/user.html">User</a>
-    `
-}
-
-function renderNewUserTab(authorities) {
-    navTabEl.innerHTML += `
-        <a class="nav-item nav-link" id="nav-new-user-tab" data-bs-toggle="tab"
-           href="#nav-new-user"
-           role="tab" aria-controls="nav-new-user" aria-selected="false">New User</a>
-    `
-
-    navTabContentEl.innerHTML += `
-        <div class="tab-pane fade" id="nav-new-user"
-             role="tabpanel"
-             aria-labelledby="nav-new-user-tab">
-    
-            <div class="d-print-inline-block py-3 px-4 border-top border-bottom">
-                <h5 class="m-0">New User</h5>
-            </div>
-    
-            <div class="py-4 bg-white d-flex justify-content-center">
-                <form id="newUserForm">
-                    <div class="row mb-4">
-                        <label for="firstName" class="fw-bold text-center">First
-                            name</label>
-                        <input type="text" name="firstName" id="firstName"
-                               class="form-control">
-                    </div>
-    
-                    <div class="row mb-4">
-                        <label for="lastName" class="fw-bold text-center">Last
-                            name</label>
-                        <input type="text" name="lastName" id="lastName"
-                               class="form-control">
-                    </div>
-    
-                    <div class="row mb-4">
-                        <label for="age" class="fw-bold text-center">Age</label>
-                        <input type="number" name="age" id="age"
-                               class="form-control">
-                    </div>
-    
-                    <div class="row mb-4">
-                        <label for="email" class="fw-bold text-center">Email</label>
-                        <input type="email" name="email" id="email"
-                               class="form-control">
-                    </div>
-    
-                    <div class="row mb-4">
-                        <label for="password"
-                               class="fw-bold text-center">Password</label>
-                        <input type="password" name="password" id="password"
-                               class="form-control">
-                    </div>
-    
-                    <div class="row mb-4">
-                        <label for="authorities"
-                               class="fw-bold text-center">Role</label>
-                        <select name="authorities" id="authorities"
-                                class="form-select" size="${authorities.length}">
-                                ${getAuthoritiesOptions(new User(), authorities)}
-                        </select>
-                    </div>
-    
-                    <div class="mb-4 d-flex justify-content-center">
-                        <input type="submit" value="Add new user" class="btn btn-lg btn-success"
-                               id="addBtn">
-                    </div>
-                </form>
-            </div>
-        </div>
     `
 }
