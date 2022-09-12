@@ -26,6 +26,7 @@ class User {
 let loggedUser = {}
 let allUsers = []
 let userTableRows = []
+let adminTableRows = []
 let allAuthorities = {}
 
 getLoggedUser()
@@ -34,6 +35,7 @@ getLoggedUser()
         const authorityNames = user.authorities.map(a => getAuthorityName(a))
         loggedUserRolesEl.children[0].innerHTML = user.email
         loggedUserRolesEl.children[1].innerHTML = authorityNames.join(' ')
+        adminTableRows.push(getUserTableRowTemplate(user))
 
         if (authorityNames.includes('ADMIN')) {
             adminPageBtnEl.addClass('active')
@@ -78,6 +80,11 @@ getLoggedUser()
                 navTabEl.hide()
                 adminPageBtnEl.removeClass('active')
                 userPageBtnEl.addClass('active')
+                $('#users-tbody').html(adminTableRows.join(''))
+                $('#th-edit').hide()
+                $('#th-delete').hide()
+                $('#td-edit-btn').hide()
+                $('#td-delete-btn').hide()
             })
 
             adminPageBtnEl.click(() => {
@@ -85,6 +92,9 @@ getLoggedUser()
                 navTabEl.show()
                 userPageBtnEl.removeClass('active')
                 adminPageBtnEl.addClass('active')
+                $('#th-edit').show()
+                $('#th-delete').show()
+                renderUsersTable([])
             })
 
         } else {
