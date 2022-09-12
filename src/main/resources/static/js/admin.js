@@ -34,6 +34,9 @@ getLoggedUser()
 
         getRoles()
             .then((authorities) => {
+                const newUserAuthEl = document.getElementById('authorities')
+                newUserAuthEl.setAttribute('size', authorities.length)
+                newUserAuthEl.innerHTML = getAuthoritiesOptions(new User(), authorities)
                 addNewUserBtnListener()
             })
         getUsers()
