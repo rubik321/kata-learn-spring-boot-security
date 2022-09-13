@@ -15,11 +15,11 @@ class User {
                 email = '', password = '', authorities = []) {
         this.id = id
         this.name = name,
-            this.lastName = lastName,
-            this.age = age,
-            this.email = email,
-            this.password = password,
-            this.authorities = authorities
+        this.lastName = lastName,
+        this.age = age,
+        this.email = email,
+        this.password = password,
+        this.authorities = authorities
     }
 }
 
