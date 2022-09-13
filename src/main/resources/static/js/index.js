@@ -33,9 +33,9 @@ getLoggedUser()
         const userRoles = user.authorities.map(a => getAuthorityName(a))
         loggedUserRolesEl.children()[0].innerHTML = user.email
         loggedUserRolesEl.children()[1].innerHTML = userRoles.join(' ')
-        adminTableRows.push(getUserTableRowTemplate(user))
 
         if (userRoles.includes('ADMIN')) {
+            adminTableRows.push(getUserTableRowTemplate(user))
             adminPageBtnEl.addClass('active')
             getRoles()
                 .then((authorities) => {
