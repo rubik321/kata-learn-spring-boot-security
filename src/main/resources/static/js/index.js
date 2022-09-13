@@ -134,8 +134,7 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
 
             if (type === 'delete') {
                 deleteUser(user)
-                deleteUserTableRow(userTableRowEl, userIndex)
-                removeModalFromPage(userModal)
+                    .then(() => deleteUserTableRow(userTableRowEl, userIndex))
             }
 
             if (type === 'edit') {
@@ -143,8 +142,9 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
                 editUser(user)
                     .then((user) => editUserTableRow(user, userIndex))
                     .catch(() => deleteUserTableRow(userTableRowEl, userIndex))
-                removeModalFromPage(userModal)
             }
+
+            removeModalFromPage(userModal)
         }
     })
 }
