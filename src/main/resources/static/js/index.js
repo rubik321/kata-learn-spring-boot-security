@@ -21,6 +21,26 @@ class User {
         this.password = password,
         this.authorities = authorities
     }
+
+    getFromForm(form) {
+        const userFormAuthorities = form.querySelector('#authorities')
+        const data = new FormData(form)
+
+        this.id = data.get('id')
+        this.name = data.get('firstName')
+        this.lastName = data.get('lastName')
+        this.age = data.get('age')
+        this.email = data.get('email')
+        this.password = data.get('password')
+        this.authorities = Array.from(userFormAuthorities.selectedOptions).map(option => {
+            return {
+                id: option.value,
+                authority: 'ROLE_' + option.text
+            }
+        })
+
+        return this
+    }
 }
 
 let allUsers = []
@@ -45,7 +65,7 @@ getLoggedUser()
 
                     $('#newUserForm').submit(event => {
                         event.preventDefault()
-                        createUser(getUserFromForm(event.target))
+                        createUser(new User().getFromForm(event.target))
                         $('#nav-users-table-tab')[0].click()
                         event.target.reset()
                     })
@@ -138,7 +158,7 @@ function handleUserModifyButtons(user, type, userTableRowEl) {
             }
 
             if (type === 'edit') {
-                const user = getUserFromForm(document.getElementById('userForm'))
+                const user = new User().getFromForm(document.getElementById('userForm'))
                 editUser(user)
                     .then((user) => editUserTableRow(user, userIndex))
                     .catch(() => deleteUserTableRow(userTableRowEl, userIndex))
