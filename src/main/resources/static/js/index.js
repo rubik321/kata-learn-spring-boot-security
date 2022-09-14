@@ -78,14 +78,6 @@ class Roles extends Array {
         this.roles = []
     }
 
-    get array() {
-        return this.roles
-    }
-
-    set array(roles) {
-        this.roles = roles
-    }
-
     addFromObject(obj) {
         this.roles.push(new Role().getFromObject(obj))
         return this.roles[-1]
