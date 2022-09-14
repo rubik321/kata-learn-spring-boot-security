@@ -37,6 +37,16 @@ class User {
 
         return this
     }
+
+    getFromObject(obj) {
+        for (let attr in obj) {
+            if (attr === 'authorities') {
+                this[attr] = obj[attr].map(o => new Role().getFromObject(o))
+            }
+            this[attr] = obj[attr]
+        }
+        return this
+    }
 }
 
 class Role {
@@ -48,6 +58,13 @@ class Role {
     getFromOption(option) {
         this.id = option.value
         this.authority = option.text
+        return this
+    }
+
+    getFromObject(obj) {
+        for (let attr in obj) {
+            this[attr] = obj[attr]
+        }
         return this
     }
 
