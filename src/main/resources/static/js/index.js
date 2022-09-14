@@ -40,9 +40,6 @@ class User {
 
     getFromObject(obj) {
         for (let attr in obj) {
-            if (attr === 'authorities') {
-                this[attr] = obj[attr].map(o => new Role().getFromObject(o))
-            }
             this[attr] = obj[attr]
         }
         return this
@@ -68,7 +65,7 @@ class Role {
         return this
     }
 
-    getName() {
+    toString() {
         return this.authority.replace('ROLE_', '')
     }
 }
