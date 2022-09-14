@@ -61,7 +61,7 @@ class Role {
     }
 
     getFromObject(obj) {
-        for (let attr in obj) {
+        for (let attr in this) {
             this[attr] = obj[attr]
         }
         return this
