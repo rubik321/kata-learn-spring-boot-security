@@ -70,6 +70,34 @@ class Role {
     }
 }
 
+class Roles extends Array {
+    constructor() {
+        super();
+        this.roles = []
+    }
+
+    get array() {
+        return this.roles
+    }
+
+    set array(roles) {
+        this.roles = roles
+    }
+
+    addFromObject(obj) {
+        this.roles.push(new Role().getFromObject(obj))
+        return this.roles[-1]
+    }
+
+    toString() {
+        return this.roles.map(r => r.toString()).join(' ')
+    }
+
+    includes(searchElement) {
+        return !!this.roles.filter(el => el.toString() === searchElement).length
+    }
+}
+
 let allUsers = []
 let userTableRows = []
 let adminTableRows = []
