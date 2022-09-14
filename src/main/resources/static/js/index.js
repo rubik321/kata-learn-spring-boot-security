@@ -32,8 +32,10 @@ class User {
         this.age = data.get('age')
         this.email = data.get('email')
         this.password = data.get('password')
+
+        const auth = new Roles()
         this.authorities = Array.from(form.querySelector('#authorities').selectedOptions)
-            .map(o => new Role().getFromOption(o))
+            .map(o => auth.addFromOption(o))
 
         return this
     }
@@ -87,6 +89,12 @@ class Roles extends Array {
     addFromObject(obj) {
         this.roles.push(new Role().getFromObject(obj))
         return this.roles[-1]
+    }
+
+    addFromOption(option) {
+        const role = new Role().getFromOption(option)
+        this.roles.push(role)
+        return role
     }
 
     toString() {
