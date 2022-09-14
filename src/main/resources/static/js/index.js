@@ -48,6 +48,24 @@ class User {
     }
 }
 
+class Users extends Array {
+    constructor() {
+        super();
+        this.users = []
+    }
+
+    getFromArray(array) {
+        for (let i = 0; i < array.length; i++) {
+            this.users.push(new User().getFromObject(array[i]))
+        }
+        return this.users
+    }
+
+    includes(user) {
+        return !!this.users.filter(u => u.id === user.id).length
+    }
+}
+
 class Role {
     constructor(id = 0, authority = '') {
         this.id = id
@@ -245,6 +263,7 @@ async function getRoles() {
 // Method: GET
 async function getUsers() {
     const users = await (await fetch(adminUrl)).json()
+    console.log(new Users().getFromArray(users))
     allUsers = users
     return users
 }
