@@ -79,8 +79,9 @@ class Roles extends Array {
     }
 
     addFromObject(obj) {
-        this.roles.push(new Role().getFromObject(obj))
-        return this.roles[-1]
+        const role = new Role().getFromObject(obj)
+        this.roles.push(role)
+        return role
     }
 
     addFromOption(option) {
