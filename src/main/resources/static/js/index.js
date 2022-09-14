@@ -261,27 +261,6 @@ function alertMessage(message, type) {
     alertPlaceholder.append(wrapper)
 }
 
-function getUserFromForm(form) {
-    const userFormAuthorities = form.querySelector('#authorities')
-    const data = new FormData(form)
-
-    let user = new User()
-    user.id = data.get('id')
-    user.name = data.get('firstName')
-    user.lastName = data.get('lastName')
-    user.age = data.get('age')
-    user.email = data.get('email')
-    user.password = data.get('password')
-    user.authorities = Array.from(userFormAuthorities.selectedOptions).map(option => {
-        return {
-            id: option.value,
-            authority: 'ROLE_' + option.text
-        }
-    })
-
-    return user
-}
-
 function createUserModalOnPage(user, type) {
     $('#modal-div').html(getModal(user, allAuthorities, type))
     const modal = $('#userModal')
