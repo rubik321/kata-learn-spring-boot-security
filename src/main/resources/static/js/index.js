@@ -10,6 +10,7 @@ const navNewUserEl = $('#nav-new-user')
 const adminPageBtnEl = $('#admin-page-btn')
 const userPageBtnEl = $('#user-page-btn')
 
+// noinspection JSCheckFunctionSignatures,JSValidateTypes
 class User {
     constructor(id = 0, name = '', lastName = '', age = 0,
                 email = '', password = '', authorities = []) {
@@ -23,7 +24,6 @@ class User {
     }
 
     getFromForm(form) {
-        const userFormAuthorities = form.querySelector('#authorities')
         const data = new FormData(form)
 
         this.id = data.get('id')
@@ -32,14 +32,27 @@ class User {
         this.age = data.get('age')
         this.email = data.get('email')
         this.password = data.get('password')
-        this.authorities = Array.from(userFormAuthorities.selectedOptions).map(option => {
-            return {
-                id: option.value,
-                authority: 'ROLE_' + option.text
-            }
-        })
+        this.authorities = Array.from(form.querySelector('#authorities').selectedOptions)
+            .map(o => new Role().getFromOption(o))
 
         return this
+    }
+}
+
+class Role {
+    constructor(id = 0, authority = '') {
+        this.id = id
+        this.authority = authority
+    }
+
+    getFromOption(option) {
+        this.id = option.value
+        this.authority = option.text
+        return this
+    }
+
+    getName() {
+        return this.authority.replace('ROLE_', '')
     }
 }
 
