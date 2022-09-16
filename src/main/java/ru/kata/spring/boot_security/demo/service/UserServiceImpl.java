@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
     public User editUser(User user) {
         String newPassword = user.getPassword();
 
-        if (!newPassword.equals(getUser(user.getId()).getPassword())) {
+        if (!passwordEncoder.matches(newPassword, getUser(user.getId()).getPassword())) {
             user.setPassword(passwordEncoder.encode(newPassword));
         }
 
