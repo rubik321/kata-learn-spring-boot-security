@@ -375,6 +375,7 @@ function getUserTableRowTemplate(user) {
 }
 
 function getModal(user, authorities, type) {
+    let hidden = ''
     let disabled = ''
     let btnClass = ''
     let btnText = ''
@@ -383,6 +384,7 @@ function getModal(user, authorities, type) {
         btnClass = 'btn btn-primary'
         btnText = 'Save'
     } else if (type === 'delete') {
+        hidden = 'hidden'
         disabled = 'disabled'
         btnClass = 'btn btn-danger'
         btnText = 'Delete'
@@ -447,9 +449,9 @@ function getModal(user, authorities, type) {
                                            ${disabled}>
                                 </div>
     
-                                <div class="row mb-4" hidden="${disabled}">
+                                <div class="row mb-4" ${hidden}>
                                     <label for="password" class="fw-bold text-center">Password</label>
-                                    <input type="password" id="-password"
+                                    <input type="password" id="password"
                                            class="form-control"
                                            name="password"
                                            value="${user.password}"
