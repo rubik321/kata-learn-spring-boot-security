@@ -7,6 +7,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
+import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -27,6 +28,7 @@ public class Init {
         Init.roleRepository = roleRepository;
     }
 
+    @PostConstruct
     public static void run() {
         Role role1 = new Role();
         role1.setAuthority("ROLE_ADMIN");
